@@ -9,20 +9,34 @@ use function Core\view;
 class UserController
 {
     public function store() {
-        $name = $_GET['name'];
-        $email = $_GET['email'];
-        $password = $_GET['password'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-        if (empty($name) || empty($email) || empty($password)) {
-            return view('register', ['error' => 'All fields are required.']);
+        $errors = [];
+
+        if (empty($name)) {
+            $errors['error_name'] = 'Name is required.';
+        }
+
+        if (empty($email)) {
+            $errors['error_email'] = 'Email is required.';
+        }
+
+        if (empty($password)) {
+            $errors['error_password'] = 'Password is required.';
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return view('register', ['error' => 'Invalid email address.']);
+            $errors['error_email'] = 'Invalid email address.';
         }
 
         if (strlen($password) < 8 || !preg_match('/[0-9]/', $password) || !preg_match('/[a-zA-Z]/', $password)) {
-            return view('register', ['error' => 'Password must be at least 8 characters long and contain at least one letter and one number.']);
+            $errors['error_password'] = 'Password must be at least 8 characters long and contain at least one letter and one number.';
+        }
+
+        if (!empty($errors)) {
+            return view('auth/register', ['errors' => $errors]);
         }
 
         $db = Database::getInstance();
@@ -32,7 +46,8 @@ class UserController
         $existingUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($existingUser) {
-            return view('register', ['message' => 'User already exists.']);
+            $errors['error_email'] = 'User already exists.';
+            return view('auth/register', ['errors' => $errors]);
         }
 
         try {
@@ -43,19 +58,20 @@ class UserController
                 'password' => password_hash($password, PASSWORD_BCRYPT)
             ]);
             
-            return view('login', ['success' => 'User registered successfully.']);
+            return view('auth/login', ['success' => 'User registered successfully.']);
 
         } catch (\PDOException $e) {
-            die('Erro ao cadastrar o usuário: ' . $e->getMessage());
+            die('Error registering the user: ' . $e->getMessage());
         }
     }
+    
 
     public function login() {
         $email = $_GET['email'];
         $password = $_GET['password'];
 
         if (empty($email) || empty($password)) {
-            return view('login', ['error' => 'All fields are required.']);
+            return view('auth/login', ['error' => 'All fields are required.']);
         }
 
         $db = Database::getInstance();
@@ -65,7 +81,7 @@ class UserController
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user || !password_verify($password, $user['password'])) {
-            return view('login', ['error' => 'Invalid email or password.']);
+            return view('auth/login', ['error' => 'Invalid email or password.']);
         }
 
         session_start();

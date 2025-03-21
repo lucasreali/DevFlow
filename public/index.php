@@ -13,6 +13,8 @@ $dotenv->load();
 
 session_start();
 
+ob_start();
+
 require_once __DIR__ . '/../routes/web.php';
 
 ?><!DOCTYPE html>
@@ -27,6 +29,9 @@ require_once __DIR__ . '/../routes/web.php';
     <!-- Style Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
     <?= Router::dispatch(); ?>
@@ -37,5 +42,8 @@ require_once __DIR__ . '/../routes/web.php';
 
 <!-- Script jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<!-- Script JS -->
+<script src="js/script.js"></script>
 
 </html>

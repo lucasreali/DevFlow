@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 class AuthController
 {
-    public static function login()
+    public static function github()
     {
         $clientId = $_ENV['GITHUB_CLIENT_ID'];
         $redirectUri = $_ENV['GITHUB_REDIRECT_URI'];

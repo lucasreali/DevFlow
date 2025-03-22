@@ -16,6 +16,11 @@ composer install
 composer du
 ```
 
+### 3. Baixar a biblioteca de variaveis de ambiente
+```bash
+composer require vlucas/phpdotenv
+``` 
+
 ### 3. Rodar o Servidor
 ```bash
 composer start

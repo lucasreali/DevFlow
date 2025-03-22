@@ -37,9 +37,23 @@ DB_NAME=meu_banco
 DB_USER=root
 DB_PASS=minha_senha
 ```
+## Integração com GitHub
 
+Para configurar a integração com o GitHub, siga os passos abaixo:
 
+1. Acesse as configurações do GitHub e vá até o último tópico chamado **Developer Settings**.
+2. Dentro de **Developer Settings**, selecione **OAuth Apps** e clique em **New OAuth App** para criar um novo aplicativo.
+3. Preencha os campos obrigatórios:
+    - **Homepage URL**: `http://127.0.0.1:8000`
+    - **Authorization callback URL**: `http://localhost:8000/callback.php`
+4. Após criar o OAuth App, você receberá um **Client ID** e um **Client Secret**. Esses valores devem ser adicionados ao arquivo `.env` do projeto:
 
+```
+GITHUB_CLIENT_ID=seu_client_id
+GITHUB_CLIENT_SECRET=seu_client_secret
+```
+
+Com isso, o DevFlow estará configurado para autenticar usuários e interagir com o GitHub.
 
 ## Estrutura de Roteamento e Lógica do DevFlow
 

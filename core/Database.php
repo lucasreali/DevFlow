@@ -23,7 +23,7 @@ class Database {
                 self::$connection = new PDO($dsn, $username, $password);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                die('Conexão falhu: ' . $e->getMessage());
+                die('Failed to connect: ' . $e->getMessage());
             }
         }
         return self::$connection;

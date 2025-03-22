@@ -45,7 +45,7 @@ Para configurar a integração com o GitHub, siga os passos abaixo:
 2. Dentro de **Developer Settings**, selecione **OAuth Apps** e clique em **New OAuth App** para criar um novo aplicativo.
 3. Preencha os campos obrigatórios:
     - **Homepage URL**: `http://127.0.0.1:8000`
-    - **Authorization callback URL**: `http://localhost:8000/callback.php`
+    - **Authorization callback URL**: `http://localhost:8000/callback`
 4. Após criar o OAuth App, você receberá um **Client ID** e um **Client Secret**. Esses valores devem ser adicionados ao arquivo `.env` do projeto:
 
 ```

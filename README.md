@@ -23,7 +23,7 @@ composer require vlucas/phpdotenv
 
 ### 4. Rodar o Servidor
 ```bash
-composer require vlucas/phpdotenv
+composer start
 ``` 
 
 

@@ -87,7 +87,7 @@ if (!$user) {
 AccountController::store($user, $accessToken);
 
 // Inicia a sessão, se ainda não estiver iniciada
-if (!isset($_SESSION)) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 

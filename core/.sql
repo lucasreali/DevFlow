@@ -4,11 +4,15 @@ USE dev_flow;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255),
+    nickname VARCHAR(255),
     password VARCHAR(255),
     email VARCHAR(255) UNIQUE,
+    
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
     avatar_url VARCHAR(255),
     access_token VARCHAR(255),
-    github_id INT
+    github_id INT UNIQUE
 );

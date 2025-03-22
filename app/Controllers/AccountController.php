@@ -2,58 +2,49 @@
 
 namespace App\Controllers;
 
-use Core\Database;
-use PDO;
-
-
+use App\Models\Account;
 
 class AccountController
 {
     public static function store($user, $accessToken)
     {
-        $db = Database::getInstance();
-
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
         try {
-            $stmt = $db->prepare('SELECT * FROM users WHERE github_id = :github_id');
-            $stmt->execute(['github_id' => $user['id']]);
-            $account = $stmt->fetch(PDO::FETCH_ASSOC);
+            $account = Account::findByGithubId($user['id']);
 
-            if ($account) {
-                $stmt = $db->prepare('UPDATE users 
-                    SET access_token = :access_token, avatar_url = :avatar_url 
-                    WHERE github_id = :github_id');
-                $stmt->execute([
-                    'access_token' => $accessToken,
-                    'avatar_url' => $user['avatar_url'],
-                    'github_id' => $user['id']
-                ]);
-            } else {
-                $stmt = $db->prepare('INSERT INTO users (name, nickname, avatar_url, access_token, github_id) 
-                    VALUES (:name, :nickname, :avatar_url, :access_token, :github_id)');
-                $stmt->execute([
-                    'name' => $user['name'],
-                    'nickname' => $user['login'],
-                    'avatar_url' => $user['avatar_url'],
-                    'access_token' => $accessToken,
-                    'github_id' => $user['id']
-                ]);
-            }
-
-            $_SESSION['user'] = [
-                'id' => $user['id'],
+            $data = [
+                'name' => $user['name'],
                 'nickname' => $user['login'],
                 'avatar_url' => $user['avatar_url'],
-                'access_token' => $accessToken
+                'access_token' => $accessToken,
+                'github_id' => $user['id']
             ];
+
+            if ($account) {
+                Account::update($data);
+            } else {
+                Account::create($data);
+            }
+
+            self::setUserSession($data);
 
         } catch (\PDOException $e) {
             error_log('Erro ao salvar a conta: ' . $e->getMessage());
             header('Location: /error');
             exit;
         }
+    }
+
+    private static function setUserSession($user)
+    {
+        $_SESSION['user'] = [
+            'id' => $user['github_id'],
+            'nickname' => $user['nickname'],
+            'avatar_url' => $user['avatar_url'],
+            'access_token' => $user['access_token']
+        ];
     }
 }

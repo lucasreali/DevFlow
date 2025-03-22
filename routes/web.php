@@ -13,7 +13,7 @@ Router::post('/logout', [AuthController::class, 'logout']);
 
 Router::post('/register', [UserController::class, 'store']);
 
-Router::post('/login', [AuthController::class, 'login']);
+Router::post('/login', [UserController::class, 'login']);
 
 Router::get('/register', function() {
     GuestMiddleware::handle();

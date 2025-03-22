@@ -67,11 +67,21 @@ class UserController
     
 
     public function login() {
-        $email = $_GET['email'];
-        $password = $_GET['password'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-        if (empty($email) || empty($password)) {
-            return view('auth/login', ['error' => 'All fields are required.']);
+        $errors = [];
+
+        if (empty($email)) {
+            $errors['error_email'] = 'Email is required.';
+        }
+
+        if (empty($password)) {
+            $errors['error_password'] = 'Password is required.';
+        }
+
+        if (!empty($errors)) {
+            return view('auth/login', ['errors' => $errors]);
         }
 
         $db = Database::getInstance();
@@ -80,11 +90,19 @@ class UserController
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$user || !password_verify($password, $user['password'])) {
-            return view('auth/login', ['error' => 'Invalid email or password.']);
+        if (!$user) {
+            $errors['error'] = 'Wrong credentials.';
+            return view('auth/login', ['errors' => $errors]);
         }
 
-        session_start();
+        if (!password_verify($password, $user['password'])) {
+            $errors['error'] = 'Wrong credentials.';
+            return view('auth/login', ['errors' => $errors]);
+        }
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $_SESSION['user'] = $user;
 
         return view('dashboard', ['user' => $user]);

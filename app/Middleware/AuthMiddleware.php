@@ -15,7 +15,7 @@ class AuthMiddleware
     {
 
         if (!isset($_SESSION['user'])) {
-            header('Location: /auth/login');
+            header('Location: /login');
             exit;
         }
     }

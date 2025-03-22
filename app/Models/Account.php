@@ -35,12 +35,12 @@ class Account
     {
         $db = Database::getInstance();
         $stmt = $db->prepare('
-            INSERT INTO users (name, nickname, avatar_url, access_token, github_id)
-            VALUES (:name, :nickname, :avatar_url, :access_token, :github_id)
+            INSERT INTO users (name, username, avatar_url, access_token, github_id)
+            VALUES (:name, :username, :avatar_url, :access_token, :github_id)
         ');
         return $stmt->execute([
             'name' => $data['name'],
-            'nickname' => $data['nickname'],
+            'username' => $data['username'],
             'avatar_url' => $data['avatar_url'],
             'access_token' => $data['access_token'],
             'github_id' => $data['github_id'],

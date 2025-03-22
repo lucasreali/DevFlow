@@ -17,7 +17,7 @@ class AccountController
 
             $data = [
                 'name' => $user['name'],
-                'nickname' => $user['login'],
+                'username' => $user['login'],
                 'avatar_url' => $user['avatar_url'],
                 'access_token' => $accessToken,
                 'github_id' => $user['id']
@@ -42,7 +42,7 @@ class AccountController
     {
         $_SESSION['user'] = [
             'id' => $user['github_id'],
-            'nickname' => $user['nickname'],
+            'username' => $user['username'],
             'avatar_url' => $user['avatar_url'],
             'access_token' => $user['access_token']
         ];

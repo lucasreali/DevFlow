@@ -1,6 +1,7 @@
 <?php
 
-use App\Controllers\AuthController;
+use App\Controllers\Auth\AuthController;
+use App\Controllers\Auth\CallbackController;
 use App\Controllers\UserController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -8,6 +9,8 @@ use Core\Router;
 use function Core\view;
 
 Router::post('/github', [AuthController::class, 'github']);
+
+Router::get('/callback', [CallbackController::class, 'handle']);
 
 Router::post('/logout', [AuthController::class, 'logout']);
 

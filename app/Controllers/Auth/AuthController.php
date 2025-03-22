@@ -1,6 +1,6 @@
-<?
+<?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
 class AuthController
 {
@@ -17,6 +17,9 @@ class AuthController
 
     public static function logout()
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         session_destroy();
         header('Location: /');
         exit;

@@ -101,7 +101,7 @@ use Core\Database;
 
 class AuthController
 {
-    public function login()
+    public static function login()
     {
         // Lógica para obter informações do usuário
         $name = $_GET['name'];
@@ -115,3 +115,38 @@ class AuthController
     }
 }
 ```
+
+### 3. Modelos (Models)
+
+Os modelos são responsáveis por interagir com o banco de dados e representar as entidades da aplicação. Eles estão localizados na pasta `app/Models`. Cada modelo geralmente corresponde a uma tabela no banco de dados e contém métodos para realizar operações como criação, leitura, atualização e exclusão de registros (CRUD).
+
+- **Exemplo de Modelo (User.php):**
+```php
+namespace App\Models;
+
+use Core\Database;
+
+class User
+{
+    public static create($name, $email, $password) {
+        // logica ...
+    }
+
+    public static read($user_id) {
+        // logica ...
+    }
+
+    public static update($user_id, $content) {
+        // logica ...
+    }
+
+    public static delete($user_id) {
+        // logica ...
+    }
+}
+```
+
+Cada modelo contém:
+
+Os modelos permitem que a aplicação manipule os dados de forma estruturada e organizada, seguindo os princípios da arquitetura MVC.
+a

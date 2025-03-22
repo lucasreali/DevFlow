@@ -32,9 +32,10 @@ class AccountController
                     'github_id' => $user['id']
                 ]);
             } else {
-                $stmt = $db->prepare('INSERT INTO users (nickname, avatar_url, access_token, github_id) 
-                    VALUES (:nickname, :avatar_url, :access_token, :github_id)');
+                $stmt = $db->prepare('INSERT INTO users (name, nickname, avatar_url, access_token, github_id) 
+                    VALUES (:name, :nickname, :avatar_url, :access_token, :github_id)');
                 $stmt->execute([
+                    'name' => $user['name'],
                     'nickname' => $user['login'],
                     'avatar_url' => $user['avatar_url'],
                     'access_token' => $accessToken,

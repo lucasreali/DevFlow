@@ -1,20 +1,29 @@
 <?php
 
+// Carrega o autoloader do Composer para gerenciar automaticamente as dependências do projeto
 require_once __DIR__ . '/../vendor/autoload.php';
+
+// Inclui funções auxiliares personalizadas
 require_once __DIR__ . '/../core/helpers.php';
 
+// Importa as classes necessárias
 use Core\Router;
 use Dotenv\Dotenv;
 
+// Define o tempo de vida do cookie de sessão para 30 dias
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 30);
 
+// Carrega as variáveis de ambiente do arquivo .env localizado no diretório raiz do projeto
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
+// Inicia a sessão PHP
 session_start();
 
+// Inicia o buffer de saída para capturar e manipular a saída antes de enviá-la ao navegador
 ob_start();
 
+// Inclui o arquivo de rotas da aplicação
 require_once __DIR__ . '/../routes/web.php';
 
 ?><!DOCTYPE html>
@@ -34,6 +43,7 @@ require_once __DIR__ . '/../routes/web.php';
 
 </head>
 <body>
+    <!-- Renderiza o conteúdo da rota correspondente -->
     <?= Router::dispatch(); ?>
 </body>
 

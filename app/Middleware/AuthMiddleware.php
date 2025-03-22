@@ -4,6 +4,13 @@ namespace App\Middleware;
 
 class AuthMiddleware
 {
+    /**
+     * Verifica se o usuário está logado,
+     * bloqueando o acesso à páginas que necessitam
+     * de autenticação.
+     * 
+     * @return void
+     */
     public static function handle()
     {
 

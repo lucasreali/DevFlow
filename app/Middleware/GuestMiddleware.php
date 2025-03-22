@@ -4,6 +4,13 @@ namespace App\Middleware;
 
 class GuestMiddleware
 {
+    /**
+     * Verifica se o usuário está logado,
+     * bloqueando o acesso à páginas
+     * que não é permitida para usuários logados.
+     * 
+     * @return void
+     */
     public static function handle()
     {
         if (!isset($_SESSION)) {

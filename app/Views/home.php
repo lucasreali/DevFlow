@@ -1,6 +1,3 @@
-<?php
-use function Core\returnDir;
-?>
 <title>Home</title>
 <div>
     Home

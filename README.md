@@ -16,24 +16,16 @@ composer install
 composer du
 ```
 
-<<<<<<< HEAD
 ### 3. Baixar biblioteca de variaveis de ambiente
 ```bash
 composer require vlucas/phpdotenv
 ```
 
 ### 4. Rodar o Servidor
-=======
-### 3. Baixar a biblioteca de variaveis de ambiente
 ```bash
 composer require vlucas/phpdotenv
 ``` 
 
-### 3. Rodar o Servidor
->>>>>>> fazer-cadastro
-```bash
-composer start
-```
 
 ## Variaveis de Ambiente
 

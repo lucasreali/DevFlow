@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\SessionHelper;
 use App\Models\User;
 use function Core\view;
 
@@ -43,7 +44,6 @@ class UserController
             return view('auth/login', ['errors' => $errors]);
         }
 
-        
         $user = User::findByEmail($email);
 
         if (!$user || !password_verify($password, $user['password'])) {
@@ -51,14 +51,9 @@ class UserController
             return view('auth/login', ['errors' => $errors]);
         }
 
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $_SESSION['user'] = $user;
+        SessionHelper::setUserSession($user);
         return view('dashboard', ['user' => $user]);
     }
-
     private static function validateRegister($name, $email, $password)
     {
         $errors = [];

@@ -35,12 +35,6 @@ class CallbackController
 
         AccountController::store($user, $accessToken);
 
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $_SESSION['user'] = $user;
-
         header('Location: /');
         exit;
     }

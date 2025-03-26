@@ -32,8 +32,10 @@ class AccountController
             else {
                 $account = Account::findByGithubId($githubUser['id']);
 
+                // Se a conta não existe esses dados podem ser inseridos
                 $data['name'] = $githubUser['name'] ?? $githubUser['login'];
                 $data['email'] = $githubUser['email'] ?? null;
+                
                 if ($account) {
                     Account::updateByGithubId($githubUser['id'], $data);
                     $data = array_merge($account, $data);

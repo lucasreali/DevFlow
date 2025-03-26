@@ -2,159 +2,77 @@
 
 namespace App\Services;
 
+
 class GitHubService
 {
-
-    public static function getRepositories() {
+    private static function request($endpoint)
+    {
         if (!isset($_SESSION['user']['username'])) {
-            die("Error: User not logged in with github");
+            throw new \Exception("Error: GitHub user not found in session");
         }
-    
-        $username = $_SESSION['user']['username'];
-        $access_token = $_SESSION['user']['access_token'] ?? null;
-        $url = "https://api.github.com/users/$username/repos";
-    
-        $ch = curl_init($url);
-    
-        // Define as opções do cURL
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "User-Agent: DevFlow",
-            $access_token ? "Authorization: token $access_token" : "" // Header opcional
-        ]);
-        
-        // Executa a requisição
-        $response = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    
-        if (curl_errno($ch)) {
-            echo "Erro cURL: " . curl_error($ch);
-            curl_close($ch);
-            return null;
-        }
-    
-        curl_close($ch);
-    
-        // Verifica o status HTTP
-        if ($http_status !== 200) {
-            echo "Erro: Status HTTP $http_status";
-            return null;
-        }
-    
-        $repositories = json_decode($response, true);
-    
-        // Retorna a lista de repositórios
-        return $repositories;
-    }
-    
 
-    public static function getRepositoryDetails($repo) {
         $access_token = $_SESSION['user']['access_token'] ?? null;
-        $username = $_SESSION['user']['username'];
-        $url = "https://api.github.com/repos/$username/$repo";
+        $url = "https://api.github.com/$endpoint";
 
         $ch = curl_init($url);
 
-        // Define as opções do cURL
+        // Opções do cURL
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "User-Agent: DevFlow",
-            $access_token ? "Authorization: token $access_token" : "" // Header opcional
+            $access_token ? "Authorization: token $access_token" : "" 
         ]);
 
-        // Executa a requisição
         $response = curl_exec($ch);
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if (curl_errno($ch)) {
-            echo "Erro cURL: " . curl_error($ch);
-            curl_close($ch);
-            return null;
-        }
+        $error = curl_error($ch);
 
         curl_close($ch);
 
-        // Verifica o status HTTP
+        if ($error) {
+            throw new \Exception("Erro cURL: $error");
+        }
+
         if ($http_status !== 200) {
-            echo "Erro: Status HTTP $http_status";
-            return null;
+            throw new \Exception("Erro: Status HTTP $http_status");
         }
 
-        $repoDetails = json_decode($response, true);
-
-        // Retorna os detalhes do repositório
-        return $repoDetails;
-    }
-
-    public static function getBranches($repo) {
-        $access_token = $_SESSION['user']['access_token'] ?? null;
-        $username = $_SESSION['user']['username'];
-        $url = "https://api.github.com/repos/$username/$repo/branches";
-
-        $ch = curl_init($url);
-
-        // Define as opções do cURL
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "User-Agent: DevFlow",
-            $access_token ? "Authorization: token $access_token" : "" // Header opcional
-        ]);
-
-        // Executa a requisição
-        $response = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if (curl_errno($ch)) {
-            echo "Erro cURL: " . curl_error($ch);
-            curl_close($ch);
-            return null;
-        }
-
-        curl_close($ch);
-
-        // Verifica o status HTTP
-        if ($http_status !== 200) {
-            echo "Erro: Status HTTP $http_status";
-            return null;
-        }
-
-        // Retorna a lista de branches
         return json_decode($response, true);
     }
 
-    public static function getCommits($repo) {
-        $access_token = $_SESSION['user']['access_token'] ?? null;
+    public static function getRepositories()
+    {
         $username = $_SESSION['user']['username'];
-        $url = "https://api.github.com/repos/$username/$repo/commits";
+        return self::request("users/$username/repos");
+    }
 
-        $ch = curl_init($url);
+    public static function getRepository($repo)
+    {
+        $username = $_SESSION['user']['username'];
+        return self::request("repos/$username/$repo");
+    }
 
-        // Define as opções do cURL
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "User-Agent: DevFlow",
-            $access_token ? "Authorization: token $access_token" : "" // Header opcional
-        ]);
+    public static function getBranches($repo)
+    {
+        $username = $_SESSION['user']['username'];
+        return self::request("repos/$username/$repo/branches");
+    }
 
-        // Executa a requisição
-        $response = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    public static function getCommits($repo)
+    {
+        $username = $_SESSION['user']['username'];
+        return self::request("repos/$username/$repo/commits");
+    }
 
-        if (curl_errno($ch)) {
-            echo "Erro cURL: " . curl_error($ch);
-            curl_close($ch);
-            return null;
-        }
+    public static function getContributors($repo)
+    {
+        $username = $_SESSION['user']['username'];
+        return self::request("repos/$username/$repo/contributors");
+    }
 
-        curl_close($ch);
-
-        // Verifica o status HTTP
-        if ($http_status !== 200) {
-            echo "Erro: Status HTTP $http_status";
-            return null;
-        }
-
-        // Retorna a lista de commits
-        return json_decode($response, true);
+    public static function getPullRequests($repo)
+    {
+        $username = $_SESSION['user']['username'];
+        return self::request("repos/$username/$repo/pulls");
     }
 }

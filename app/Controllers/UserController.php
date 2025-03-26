@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Helpers\SessionHelper;
+use App\Controllers\Auth\AuthController;
 use App\Models\User;
 use function Core\view;
 
@@ -51,8 +51,8 @@ class UserController
             return view('auth/login', ['errors' => $errors]);
         }
 
-        SessionHelper::setUserSession($user);
-        return view('dashboard', ['user' => $user]);
+        AuthController::setUserSession($user);
+        header('Location: /dashboard');
     }
     private static function validateRegister($name, $email, $password)
     {

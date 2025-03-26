@@ -1,12 +1,8 @@
 <?php
 
-// Carrega o autoloader do Composer para gerenciar automaticamente as dependências do projeto
 require_once __DIR__ . '/../vendor/autoload.php';
-
-// Inclui funções auxiliares personalizadas
 require_once __DIR__ . '/../core/helpers.php';
 
-// Importa as classes necessárias
 use Core\Router;
 use Dotenv\Dotenv;
 

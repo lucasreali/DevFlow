@@ -46,7 +46,9 @@ class Account
                 username = :username,
                 avatar_url = :avatar_url,
                 access_token = :access_token,
-                github_id = :github_id
+                github_id = :github_id,
+                name = :name,
+                email = :email
             WHERE id = :id
         ');
         return $stmt->execute([
@@ -54,9 +56,12 @@ class Account
             'avatar_url' => $data['avatar_url'],
             'access_token' => $data['access_token'],
             'github_id' => $data['github_id'],
+            'name' => $data['name'],
+            'email' => $data['email'],
             'id' => $userId,
         ]);
     }
+
 
     // Cria um novo usuário
     public static function create($data)
@@ -73,5 +78,11 @@ class Account
             'access_token' => $data['access_token'],
             'github_id' => $data['github_id'],
         ]);
+    }
+
+    public static function getLastInsertId()
+    {
+        $db = Database::getInstance();
+        return $db->lastInsertId();
     }
 }

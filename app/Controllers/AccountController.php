@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Controllers\Auth\AuthController;
 use App\Models\Account;
-use App\Helpers\SessionHelper;
 
 class AccountController
 {
@@ -24,23 +24,26 @@ class AccountController
                 'github_id' => $githubUser['id'],
             ];
 
-            // Se houver usuário logado, atualiza apenas os campos desejados
             if ($loggedUser) {
+                $data = array_merge($loggedUser, $data);
                 Account::updateById($loggedUser['id'], $data);
-                SessionHelper::setUserSession(array_merge($loggedUser, $data));
+                AuthController::setUserSession($data);
             } 
-            // Se não houver usuário logado, tenta criar ou atualizar por github_id
             else {
                 $account = Account::findByGithubId($githubUser['id']);
 
+                $data['name'] = $githubUser['name'] ?? $githubUser['login'];
+                $data['email'] = $githubUser['email'] ?? null;
                 if ($account) {
                     Account::updateByGithubId($githubUser['id'], $data);
+                    $data = array_merge($account, $data);
                 } else {
-                    Account::create(array_merge($data, [
-                        'name' => $githubUser['name'] ?? 'Unknown',
-                    ]));
+                    
+                    Account::create($data);
+
+                    $data['id'] = Account::getLastInsertId();
                 }
-                SessionHelper::setUserSession($data);
+                AuthController::setUserSession($data);
             }
 
         } catch (\PDOException $e) {

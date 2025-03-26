@@ -42,23 +42,34 @@ class CallbackController
     private static function getAccessToken($clientId, $clientSecret, $code, $redirectUri)
     {
         $tokenUrl = 'https://github.com/login/oauth/access_token';
-        $tokenData = http_build_query([
+        $postFields = [
             'client_id' => $clientId,
             'client_secret' => $clientSecret,
             'code' => $code,
-            'redirect_uri' => $redirectUri
-        ]);
-
-        $options = [
-            'http' => [
-                'header' => "Content-Type: application/x-www-form-urlencoded\r\nAccept: application/json\r\n",
-                'method' => 'POST',
-                'content' => $tokenData,
-            ],
+            'redirect_uri' => $redirectUri,
         ];
 
-        $context = stream_context_create($options);
-        $response = file_get_contents($tokenUrl, false, $context);
+        $ch = curl_init();
+        // Define a URL para onde a requisição será enviada
+        curl_setopt($ch, CURLOPT_URL, $tokenUrl);
+
+        // Define que o método da requisição será POST
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        // Define os dados que serão enviados no corpo da requisição
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postFields));
+
+        // Configura para que a resposta da requisição seja retornada como string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Define o cabeçalho da requisição, especificando que a resposta deve ser em JSON
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Accept: application/json'
+        ]);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
         $result = json_decode($response, true);
 
         return $result['access_token'] ?? null;
@@ -67,15 +78,22 @@ class CallbackController
     private static function getUser($accessToken)
     {
         $userUrl = 'https://api.github.com/user';
-        $options = [
-            'http' => [
-                'header' => "User-Agent: DevFlow\r\nAuthorization: token $accessToken\r\n",
-                'method' => 'GET',
-            ],
-        ];
 
-        $context = stream_context_create($options);
-        $response = file_get_contents($userUrl, false, $context);
+        $ch = curl_init();
+        // Define a URL para onde a requisição será enviada
+        curl_setopt($ch, CURLOPT_URL, $userUrl);
+
+        // Configura para que a resposta da requisição seja retornada como string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Define o cabeçalho da requisição, incluindo o User-Agent e o token de autorização
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'User-Agent: DevFlow', // Identifica o cliente que está fazendo a requisição
+            'Authorization: token ' . $accessToken // Inclui o token de acesso para autenticação
+        ]);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
 
         return json_decode($response, true);
     }

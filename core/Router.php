@@ -65,6 +65,6 @@ class Router {
 
         // Caso nenhuma rota correspondente seja encontrada, retorna uma resposta 404
         http_response_code(404);
-        view('404');
+        return view('404');
     }
 }

@@ -11,6 +11,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
+    -- GitHub
     username VARCHAR(255),
     avatar_url VARCHAR(255),
     access_token VARCHAR(255),

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\Auth\AuthController;
 use App\Models\Account;
+use App\Models\User;
 
 class AccountController
 {
@@ -25,27 +26,31 @@ class AccountController
             ];
 
             if ($loggedUser) {
-                $data = array_merge($loggedUser, $data);
-                Account::updateById($loggedUser['id'], $data);
-                AuthController::setUserSession($data);
-            } 
-            else {
+                $data['user_id'] = $loggedUser['id'];
+                Account::updateByUserId($loggedUser['id'], $data);
+                AuthController::setUserSession(array_merge($loggedUser, $data));
+            } else {
                 $account = Account::findByGithubId($githubUser['id']);
 
-                // Se a conta não existe esses dados podem ser inseridos
-                $data['name'] = $githubUser['name'] ?? $githubUser['login'];
-                $data['email'] = $githubUser['email'] ?? null;
-                
                 if ($account) {
                     Account::updateByGithubId($githubUser['id'], $data);
-                    $data = array_merge($account, $data);
+                    $userId = $account['user_id'];
                 } else {
-                    
-                    Account::create($data);
+                    $userId = User::create(
+                        $githubUser['name'] ?? $githubUser['login'],
+                        $githubUser['email'] ?? null,
+                    );
 
-                    $data['id'] = Account::getLastInsertId();
+                    $data['user_id'] = $userId;
+                    Account::create($data);
                 }
-                AuthController::setUserSession($data);
+
+                $account = Account::findByGithubId($githubUser['id']);
+                
+                $account['id'] = $userId;
+                $account['name'] = $githubUser['name'];
+
+                AuthController::setUserSession($account);
             }
 
         } catch (\PDOException $e) {

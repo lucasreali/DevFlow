@@ -7,21 +7,21 @@ use PDO;
 
 class Account
 {
-    // Busca usuário pelo github_id
+    // Busca conta pelo github_id
     public static function findByGithubId($githubId)
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare('SELECT * FROM users WHERE github_id = :github_id');
+        $stmt = $db->prepare('SELECT * FROM accounts WHERE github_id = :github_id');
         $stmt->execute(['github_id' => $githubId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Atualiza pelo github_id
+    // Atualiza conta pelo github_id
     public static function updateByGithubId($githubId, $data)
     {
         $db = Database::getInstance();
         $stmt = $db->prepare('
-            UPDATE users
+            UPDATE accounts
             SET 
                 username = :username,
                 avatar_url = :avatar_url,
@@ -36,53 +36,40 @@ class Account
         ]);
     }
 
-    // Atualiza pelo id do usuário logado
-    public static function updateById($userId, $data)
+    // Atualiza conta pelo user_id
+    public static function updateByUserId($userId, $data)
     {
         $db = Database::getInstance();
         $stmt = $db->prepare('
-            UPDATE users
+            UPDATE accounts
             SET 
                 username = :username,
                 avatar_url = :avatar_url,
-                access_token = :access_token,
-                github_id = :github_id,
-                name = :name,
-                email = :email
-            WHERE id = :id
+                access_token = :access_token
+            WHERE user_id = :user_id
         ');
         return $stmt->execute([
             'username' => $data['username'],
             'avatar_url' => $data['avatar_url'],
             'access_token' => $data['access_token'],
-            'github_id' => $data['github_id'],
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'id' => $userId,
+            'user_id' => $userId,
         ]);
     }
 
-
-    // Cria um novo usuário
+    // Cria uma nova conta
     public static function create($data)
     {
         $db = Database::getInstance();
         $stmt = $db->prepare('
-            INSERT INTO users (name, username, avatar_url, access_token, github_id)
-            VALUES (:name, :username, :avatar_url, :access_token, :github_id)
+            INSERT INTO accounts (user_id, username, avatar_url, access_token, github_id)
+            VALUES (:user_id, :username, :avatar_url, :access_token, :github_id)
         ');
         return $stmt->execute([
-            'name' => $data['name'],
+            'user_id' => $data['user_id'],
             'username' => $data['username'],
             'avatar_url' => $data['avatar_url'],
             'access_token' => $data['access_token'],
             'github_id' => $data['github_id'],
         ]);
-    }
-
-    public static function getLastInsertId()
-    {
-        $db = Database::getInstance();
-        return $db->lastInsertId();
     }
 }

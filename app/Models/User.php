@@ -7,7 +7,7 @@ use PDO;
 
 class User
 {
-    public static function create($name, $email, $password)
+    public static function create($name, $email = null, $password = null)
     {
         $db = Database::getInstance();
         $stmt = $db->prepare('
@@ -15,11 +15,17 @@ class User
             VALUES (:name, :email, :password)
         ');
 
-        return $stmt->execute([
+        if ($password !== null) {
+            $password = password_hash($password, PASSWORD_BCRYPT);
+        }
+
+        $stmt->execute([
             'name' => $name,
             'email' => $email,
-            'password' => password_hash($password, PASSWORD_BCRYPT),
+            'password' => $password,
         ]);
+
+        return self::getLastInsertId();
     }
 
     public static function findByEmail($email)
@@ -28,5 +34,11 @@ class User
         $stmt = $db->prepare('SELECT * FROM users WHERE email = :email');
         $stmt->execute(['email' => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getLastInsertId()
+    {
+        $db = Database::getInstance();
+        return $db->lastInsertId();
     }
 }

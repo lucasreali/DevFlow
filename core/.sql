@@ -10,10 +10,17 @@ CREATE TABLE users (
     
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    -- GitHub
+);
+
+CREATE TABLE accounts (
+    github_id INT PRIMARY KEY,
+    user_id INT,
     username VARCHAR(255),
     avatar_url VARCHAR(255),
     access_token VARCHAR(255),
-    github_id INT UNIQUE
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

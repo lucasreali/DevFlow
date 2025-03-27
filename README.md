@@ -33,7 +33,7 @@ Renomear o arquivo ``.env.exemple`` para ``.env`` e ajustar as informações sob
 
 ```
 DB_HOST=localhost:3306
-DB_NAME=meu_banco
+DB_NAME=dev_flow
 DB_USER=root
 DB_PASS=minha_senha
 ```
@@ -149,4 +149,3 @@ class User
 Cada modelo contém:
 
 Os modelos permitem que a aplicação manipule os dados de forma estruturada e organizada, seguindo os princípios da arquitetura MVC.
-a

@@ -1,0 +1,107 @@
+:root {
+    --light-gray: #f5f5f5;
+    --light-gray-hover: #e0e0e0;
+}
+
+
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Navbar */
+.project-menu {
+    height: 60px;
+    width: 60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 5px;
+}
+
+.li-menu {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+
+    gap: 5px;
+    padding: 0 10px;
+
+    cursor: pointer;
+    transition: all 100ms;
+}
+
+.li-menu:hover {
+    background-color: var(--light-gray-hover);
+}
+
+/* Board Menu */
+
+.main-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+
+    padding: 100px 50px 0 50px;
+
+    width: 100%;
+
+}
+
+.title-board {
+    display: flex;
+    align-items: center;
+
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+
+    border-radius: 5px;
+
+    color: var(--light-gray);
+    background: #ff4a4ac2;
+}
+
+.dot-title-board {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+}
+
+.card-task {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+
+    border-radius: 5px;
+
+    background-color: var(--light-gray);
+}
+
+.card-task p {
+    margin: 0;
+}
+
+.add-task {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 5px;
+
+    border-radius: 5px;
+
+    border: none;
+
+    background: #7676766d;
+}

@@ -36,5 +36,3 @@ Router::get('/dashboard', function() {
     AuthMiddleware::handle();
     return view('dashboard');
 });
-
-

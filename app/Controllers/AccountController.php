@@ -26,8 +26,15 @@ class AccountController
             ];
 
             if ($loggedUser) {
-                $data['user_id'] = $loggedUser['id'];
-                Account::updateByUserId($loggedUser['id'], $data);
+                $account = Account::findByUserId($loggedUser['id']);
+
+                if ($account) {
+                    Account::updateByUserId($loggedUser['id'], $data);
+                } else {
+                    $data['user_id'] = $loggedUser['id'];
+                    Account::create($data);
+                }
+
                 AuthController::setUserSession(array_merge($loggedUser, $data));
             } else {
                 $account = Account::findByGithubId($githubUser['id']);

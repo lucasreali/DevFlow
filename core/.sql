@@ -68,7 +68,7 @@ CREATE TABLE tasks (
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Tabela de eitquetas (labels)
+-- Tabela de etiquetas (labels)
 CREATE TABLE labels (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,

@@ -10,10 +10,30 @@ class Account
     // Busca conta pelo github_id
     public static function findByGithubId($githubId)
     {
-        $db = Database::getInstance();
-        $stmt = $db->prepare('SELECT * FROM accounts WHERE github_id = :github_id');
-        $stmt->execute(['github_id' => $githubId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $db = Database::getInstance();
+            $stmt = $db->prepare('SELECT * FROM accounts WHERE github_id = :github_id');
+            $stmt->execute(['github_id' => $githubId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Busca conta pelo user_id
+    public static function findByUserId($userId)
+    {
+        try {
+            $db = Database::getInstance();
+            $stmt = $db->prepare('SELECT * FROM accounts WHERE user_id = :user_id');
+            $stmt->execute(['user_id' => $userId]);
+            $account = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $account ?: null;
+        } catch (\PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return false;
+        }
     }
 
     // Atualiza conta pelo github_id

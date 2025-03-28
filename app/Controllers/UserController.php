@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Auth\AuthController;
+use App\Models\Account;
 use App\Models\User;
 use function Core\view;
 
@@ -45,14 +46,19 @@ class UserController
         }
 
         $user = User::findByEmail($email);
+        $accont = Account::findByGithubId($email);
 
         if (!$user || !password_verify($password, $user['password'])) {
             $errors['error'] = 'Wrong credentials.';
             return view('auth/login', ['errors' => $errors]);
         }
 
+        if ($accont) {
+            $user = array_merge($user, $accont);
+        }
+
         AuthController::setUserSession($user);
-        header('Location: /dashboard');
+        return view('dashboard');
     }
     private static function validateRegister($name, $email, $password)
     {

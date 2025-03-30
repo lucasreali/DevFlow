@@ -36,6 +36,14 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public static function findById($id)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function getLastInsertId()
     {
         $db = Database::getInstance();

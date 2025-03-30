@@ -42,22 +42,31 @@ class AccountController
                 if ($account) {
                     Account::updateByGithubId($githubUser['id'], $data);
                     $userId = $account['user_id'];
+
+                    $user = User::findById($userId);
                 } else {
                     $userId = User::create(
                         $githubUser['name'] ?? $githubUser['login'],
-                        $githubUser['email'] ?? null,
+                        $githubUser['email'] ?? null
                     );
 
                     $data['user_id'] = $userId;
                     Account::create($data);
+
+                    $user = [
+                        'id' => $userId,
+                        'name' => $githubUser['name'] ?? $githubUser['login'],
+                        'email' => $githubUser['email'] ?? null
+                    ];
                 }
 
                 $account = Account::findByGithubId($githubUser['id']);
                 
-                $account['id'] = $userId;
-                $account['name'] = $githubUser['name'];
-
-                AuthController::setUserSession($account);
+                AuthController::setUserSession(array_merge($account, [
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    'email' => $user['email']
+                ]));
             }
 
         } catch (\PDOException $e) {

@@ -72,10 +72,9 @@ Router::get('home', function () {
     return view('home', ['title' => 'Página inicial']); // Retorna a pagina home com um valor atribuida à variavel $title que pode ser usada na view
 })
 
-Router::get('/dashboard', function () {
-    AuthMiddleware::handle(); // Só permite acessar a pagina com o usuario logado
+Router::get('/dashboard', function () { // Só permite acessar a pagina com o usuario logado
     return view('dashboard') // Retorna a pagina dashboard em app/Views
- });
+ })->middleware(AuthMiddleware::class); // Autentica se o usuario pode acessar essa pagina
 
 Router::post('/login', [AuthController::class, 'login']); // Chama a classe AuthController e seu método login
 
@@ -83,7 +82,7 @@ Router::post('/login', [AuthController::class, 'login']); // Chama a classe Auth
 
 Cada rota é composta por:
 
-- Método HTTP (GET, POST, UPDATE, DELETE)
+- Método HTTP (GET, POST, PUT, DELETE)
 - URL (exemplo: /dashboard)
 - Controlador (exemplo: UserController::class)
 - Método do Controlador (exemplo: dashboard)

@@ -11,7 +11,7 @@ class GuestMiddleware
      * 
      * @return void
      */
-    public static function handle()
+    public function handle()
     {
         if (!isset($_SESSION)) {
             session_start();

@@ -24,14 +24,12 @@ Router::post('/login', [UserController::class, 'login']);
 // Auth pages
 
 Router::get('/register', function() {
-    GuestMiddleware::handle();
     return view('auth/register');
-});
+})->middleware(GuestMiddleware::class);
 
 Router::get('/login', function() {
-    GuestMiddleware::handle();
     return view('auth/login');
-});
+})->middleware(GuestMiddleware::class);
 
 // Pages
 
@@ -40,8 +38,7 @@ Router::get('/', function() {
 });
 
 Router::get('/dashboard', function() {
-    AuthMiddleware::handle();
     return view('dashboard');
-});
+})->middleware(AuthMiddleware::class);
 
 Router::post('/board', [BoardController::class, 'store']);

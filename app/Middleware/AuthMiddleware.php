@@ -11,7 +11,7 @@ class AuthMiddleware
      * 
      * @return void
      */
-    public static function handle()
+    public function handle()
     {
 
         if (!isset($_SESSION['user'])) {

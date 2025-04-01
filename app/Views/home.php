@@ -23,6 +23,5 @@
         <pre>
             <?= var_dump($_SESSION['user']) ?>
         </pre>
-    <?php endif; ?>
-    
+    <?php endif; ?>    
 </div>

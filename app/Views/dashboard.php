@@ -56,12 +56,12 @@ $boards = [
                 </button>
             </li>
             <li>
-                <button data-tooltip="notifications" class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-title="Notifications">
+                <button data-tooltip="notifications" class="btn menu-nav-item">
                     <i class="fa-solid fa-bell"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="profile" class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-title="Profile">
+                <button data-tooltip="profile" class="btn menu-nav-item">
                     <i class="fa-solid fa-user"></i>
                 </button>
             </li>

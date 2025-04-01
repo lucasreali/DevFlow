@@ -25,7 +25,7 @@ class User
             'password' => $password,
         ]);
 
-        return self::getLastInsertId();
+        return $db->lastInsertId();
     }
 
     public static function findByEmail($email)
@@ -42,11 +42,5 @@ class User
         $stmt = $db->prepare('SELECT * FROM users WHERE id = :id');
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public static function getLastInsertId()
-    {
-        $db = Database::getInstance();
-        return $db->lastInsertId();
     }
 }

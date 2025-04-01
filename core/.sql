@@ -43,7 +43,8 @@ CREATE TABLE projects (
 -- Tabela de quadros (boards)
 CREATE TABLE boards (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    color ENUM('red', 'green', 'blue', 'yellow', 'purple') NOT NULL,
     project_id INT NOT NULL,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -71,7 +72,7 @@ CREATE TABLE tasks (
 -- Tabela de etiquetas (labels)
 CREATE TABLE labels (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

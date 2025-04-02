@@ -86,13 +86,83 @@ $boards = [
             <p><?= htmlspecialchars($task['description']) ?></p>
             </div>
             <?php endforeach; ?>
-            <button class="add-task">
+            <button class="add-task" id="addTask" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <i class="fa-solid fa-plus"></i>
             </button>
             </div>
+
+
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Nova Tarefa</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <div class="mb-3">
+                        <label for="taskTitle" class="form-label">Título da Tarefa</label>
+                        <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Digite o título da tarefa">
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Descreva a tarefa com detalhes"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
+            </div>
         </div>
+    </div>
+</div>
+
 
         <?php endforeach; ?>
-    </main>
-
+</main>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // Quando o botão com id "addTask" é clicado
+        $("#addTask").on('click', function() {
+            // Abre o modal
+            $('#staticBackdrop').modal('show');
+        });
+
+        // Quando clicar no botão Salvar Tarefa
+        $("#saveTask").on('click', function() {
+            // Valida se o título foi preenchido
+            if($("#taskTitle").val() === '') {
+                alert("Por favor, insira um título para a tarefa");
+                return;
+            }
+            
+            // Aqui você pode adicionar o código para enviar os dados
+            // Exemplo com AJAX:
+            /*
+            $.ajax({
+                url: 'salvar_tarefa.php',
+                method: 'POST',
+                data: {
+                    title: $("#taskTitle").val(),
+                    description: $("#taskDescription").val()
+                },
+                success: function(response) {
+                    // Fecha o modal após salvar
+                    $('#staticBackdrop').modal('hide');
+                    // Limpa o formulário
+                    $('#taskForm')[0].reset();
+                    // Atualiza a lista de tarefas (se necessário)
+                    alert("Tarefa salva com sucesso!");
+                }
+            });
+            */
+            
+            // Por enquanto, apenas fecha o modal
+            $('#staticBackdrop').modal('hide');
+        });
+    });
+</script>

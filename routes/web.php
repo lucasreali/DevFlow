@@ -3,6 +3,7 @@
 use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
+use App\Controllers\TaskController;
 use App\Controllers\UserController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -42,3 +43,7 @@ Router::get('/dashboard', function() {
 })->middleware(AuthMiddleware::class);
 
 Router::post('/board', [BoardController::class, 'store']);
+
+
+Router::post ('/task', [TaskController::class, 'store']);
+

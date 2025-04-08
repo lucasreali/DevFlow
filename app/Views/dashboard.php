@@ -100,7 +100,7 @@ $boards = [
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="taskForm">
+                <form id="taskForm" action="/task" method="POST">
                     <div class="mb-3">
                         <label for="taskTitle" class="form-label">Título da Tarefa</label>
                         <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Digite o título da tarefa">
@@ -113,7 +113,7 @@ $boards = [
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
+                <button type="submit" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
             </div>
         </div>
     </div>
@@ -141,26 +141,7 @@ $boards = [
             }
             
             // Aqui você pode adicionar o código para enviar os dados
-            // Exemplo com AJAX:
-            /*
-            $.ajax({
-                url: 'salvar_tarefa.php',
-                method: 'POST',
-                data: {
-                    title: $("#taskTitle").val(),
-                    description: $("#taskDescription").val()
-                },
-                success: function(response) {
-                    // Fecha o modal após salvar
-                    $('#staticBackdrop').modal('hide');
-                    // Limpa o formulário
-                    $('#taskForm')[0].reset();
-                    // Atualiza a lista de tarefas (se necessário)
-                    alert("Tarefa salva com sucesso!");
-                }
-            });
-            */
-            
+            //Exemplo com AJAX:
             // Por enquanto, apenas fecha o modal
             $('#staticBackdrop').modal('hide');
         });

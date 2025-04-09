@@ -91,6 +91,10 @@
     <?php endif; ?>
 
     <h1>Documentação do Projeto</h1>
+
+    <div style="margin-bottom: 20px;">
+        <a href="/" class="btn btn-secondary" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Voltar à Página Inicial</a>
+    </div>
     
     <form action="/documentation" method="POST">
         <div class="form-group">

@@ -11,7 +11,7 @@ class Task
         $db = Database::getInstance(); //pega  a instância do banco de dados (tabela) 
 
         $stmt = $db->prepare( //preparando a query
-         "INSERT INTO tasks (title, description, board_id, created_by, expired_at) VALUES (:title, :description, :board_id, :created_by, :expired_at)"
+         "INSERT INTO tasks (title, description, board_id, created_by, expired_at) VALUES (:title, :description, :board_id, :created_by, :expired_at, NOW(), NOW())"
         );
 
 // Executa a consulta SQL (query) no banco de dados, inserindo os valores fornecidos

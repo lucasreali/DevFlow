@@ -1,4 +1,4 @@
-<?php
+0---<?php
 $boards = [
     'Backlog' => [
         'bgColor' => 'bg-danger',
@@ -109,12 +109,13 @@ $boards = [
                         <label for="taskDescription" class="form-label">Descrição</label>
                         <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Descreva a tarefa com detalhes"></textarea>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
+                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
-            </div>
+            
         </div>
     </div>
 </div>

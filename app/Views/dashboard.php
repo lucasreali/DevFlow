@@ -1,4 +1,4 @@
-0---<?php
+<?php
 $boards = [
     'Backlog' => [
         'bgColor' => 'bg-danger',
@@ -72,8 +72,8 @@ $boards = [
     <!-- Conteúdo -->
     <main class="main-dashboard">
         <?php foreach ($boards as $boardName => $boardData): ?>
-            
-k        <div class="board">
+        
+        <div class="board">
             <h4 class="title-board <?= htmlspecialchars($boardData['bgColor']) ?>" style="--bs-bg-opacity: .2;">
             <div class="dot-title-board <?= htmlspecialchars($boardData['bgColor']) ?>"></div>
             <span class="ms-2 <?= htmlspecialchars($boardData['textColor']) ?>"><?= htmlspecialchars($boardName) ?></span>
@@ -91,35 +91,33 @@ k        <div class="board">
             </button>
             </div>
 
-
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Nova Tarefa</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="taskForm" action="/task" method="POST">
-                    <div class="mb-3">
-                        <label for="taskTitle" class="form-label">Título da Tarefa</label>
-                        <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Digite o título da tarefa">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Nova Tarefa</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="taskForm" action="/task" method="POST">
+                                <div class="mb-3">
+                                    <label for="taskTitle" class="form-label">Título da Tarefa</label>
+                                    <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Digite o título da tarefa">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="taskDescription" class="form-label">Descrição</label>
+                                    <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Descreva a tarefa com detalhes"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="taskDescription" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Descreva a tarefa com detalhes"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
-                     </div>
-                </form>
+                </div>
             </div>
-            
         </div>
-    </div>
-</div>
-
 
         <?php endforeach; ?>
 </main>

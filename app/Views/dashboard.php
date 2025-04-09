@@ -73,7 +73,7 @@ $boards = [
     <main class="main-dashboard">
         <?php foreach ($boards as $boardName => $boardData): ?>
             
-k        <div class="board">
+        <div class="board">
             <h4 class="title-board <?= htmlspecialchars($boardData['bgColor']) ?>" style="--bs-bg-opacity: .2;">
             <div class="dot-title-board <?= htmlspecialchars($boardData['bgColor']) ?>"></div>
             <span class="ms-2 <?= htmlspecialchars($boardData['textColor']) ?>"><?= htmlspecialchars($boardName) ?></span>

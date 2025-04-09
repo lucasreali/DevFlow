@@ -71,6 +71,21 @@ $boards = [
 
     <!-- Conteúdo -->
     <main class="main-dashboard">
+
+        <!-- Example single danger button -->
+        <div class="btn-group btn-project">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Project Name
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Project 1</a></li>
+                <li><a class="dropdown-item" href="#">Project 2</a></li>
+                <li><a class="dropdown-item" href="#">Project 3</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-plus"></i> Add new project</a></li>
+            </ul>
+        </div>
+
         <?php foreach ($boards as $boardName => $boardData): ?>
         
         <div class="board">

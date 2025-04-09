@@ -1,6 +1,5 @@
 <?php $title = $doc['title']; ?>
-<?php require 'partials/meta.php'; ?>
-<?php require 'partials/nav.php'; ?>
+
 
 <style>
     .doc-container {
@@ -50,8 +49,8 @@
         <h1><?= htmlspecialchars($doc['title']) ?></h1>
         <div class="doc-actions">
             <a href="/documentation" class="back-btn">Back to List</a>
-            <a href="/documentation/edit/<?= $doc['id'] ?>" class="edit-btn">Edit</a>
-            <a href="/documentation/delete/<?= $doc['id'] ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this document?')">Delete</a>
+            <a href="/documentation/edit?id=<?= $doc['id'] ?>" class="edit-btn">Edit</a>
+            <a href="/documentation/delete?id=<?= $doc['id'] ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this document?')">Delete</a>
         </div>
     </div>
     

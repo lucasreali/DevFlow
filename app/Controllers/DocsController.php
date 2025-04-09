@@ -78,8 +78,13 @@ class DocsController{
         return view('documentation', ['docs' => $docs]);
     }
 
-    public static function viewDoc($id)
+    public static function viewDoc()
     {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            return view('documentation', ['error' => "Document ID is required"]);
+        }
+        
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -130,7 +135,7 @@ class DocsController{
     {
 
         $id = $_GET['id'] ?? null;
-        
+
         if (!$id) {
             return view('documentation', ['error' => "Document ID is required"]);
         }
@@ -164,8 +169,12 @@ class DocsController{
         }
     }
 
-    public static function deleteDoc($id)
+    public static function deleteDoc()
     {
+        $id = $_GET["id"] ?? null;
+        if (!$id) {
+            return view('documentation', ['error' => "Document ID is required"]);
+        }
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }

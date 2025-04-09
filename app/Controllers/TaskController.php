@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Task;
+use function Core\view;
 
 
 
@@ -20,15 +21,13 @@ class TaskController{
         $taskId = Task::create($title, $description, $boardId, $createdBy, $expiredAt);
 
         // Redireciona para a página do dashboard após a inserção
-        $message = [ 
-        ];
+        $message = [];
         if ($taskId) {
-            $message['message'] = 'Tarefa criada com sucesso!';
+            $message['message'] = 'Task created successfully!';
         } else {
-            $message['message'] = 'Erro ao criar a tarefa.';
+            $message['message'] = 'Error creating the task.';
         }
-       echo "Salvo";
 
-
+        return view('dashboard', ['message' => $message]);
     } 
 }

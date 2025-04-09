@@ -36,4 +36,5 @@ class Board
 
         return $stmt->fetchAll();
     }
+    
 }

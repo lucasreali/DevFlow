@@ -25,6 +25,13 @@ Router::post('/login', [UserController::class, 'login'])->middleware(GuestMiddle
 
 Router::post('/documentation', [DocsController::class, 'store'])->middleware(AuthMiddleware::class);
 
+// Documentation routes - Updated to properly handle all actions
+Router::get('/documentation', [DocsController::class, 'showDocs'])->middleware(AuthMiddleware::class);
+Router::get('/documentation/view', [DocsController::class, 'viewDoc'])->middleware(AuthMiddleware::class);
+Router::get('/documentation/edit', [DocsController::class, 'editForm'])->middleware(AuthMiddleware::class);
+Router::post('/documentation/update', [DocsController::class, 'updateDoc'])->middleware(AuthMiddleware::class);
+Router::get('/documentation/delete', [DocsController::class, 'deleteDoc'])->middleware(AuthMiddleware::class);
+
 // Auth pages
 
 Router::get('/register', function() {
@@ -46,7 +53,3 @@ Router::get('/dashboard', function() {
 })->middleware(AuthMiddleware::class);
 
 Router::post('/board', [BoardController::class, 'store']);
-
-Router::get('/documentation', function() {
-    return view('documentation');
-})->middleware(AuthMiddleware::class);

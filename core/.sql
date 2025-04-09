@@ -89,3 +89,15 @@ CREATE TABLE task_labels (
     FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
     FOREIGN KEY (label_id) REFERENCES labels(id) ON DELETE CASCADE
 );
+
+CREATE TABLE project_docs(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    created_by INT,
+
+    title VARCHAR(255),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content TEXT,
+
+    FOREIGN KEY (created_by) REFERENCES users(id)
+);

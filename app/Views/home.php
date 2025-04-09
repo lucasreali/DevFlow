@@ -8,6 +8,8 @@
     <a class="btn btn-secondary" href="/register">Página de cadastro</a>
     <br>
     <a class="btn btn-secondary" href="/dashboard">Dashboard</a>
+    <br>
+    <a class="btn btn-secondary" href="/documentation">Documentação</a>
 
 
     <form action="/github" method="post">

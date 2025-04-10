@@ -43,8 +43,8 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
 
 // Public Routes
 // Home
-Router::get('/home/{number}', [PageController::class, 'home']);
-Router::get('/home', [PageController::class, 'home']);
+Router::get('/{number}', [PageController::class, 'home']);
+Router::get('/', [PageController::class, 'home']);
 
 
 

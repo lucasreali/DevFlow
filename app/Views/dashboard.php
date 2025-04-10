@@ -9,22 +9,22 @@
 
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
             <li>
-                <button data-tooltip="Collaborators" class="btn menu-nav-item">
+                <button class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Collaborators">
                     <i class="fa-solid fa-users"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="Settings" class="btn menu-nav-item">
+                <button class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Settings">
                     <i class="fa-solid fa-gear"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="Notifications" class="btn menu-nav-item">
+                <button class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Notifications">
                     <i class="fa-solid fa-bell"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="Profile" class="btn menu-nav-item">
+                <button class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Profile">
                     <i class="fa-solid fa-user"></i>
                 </button>
             </li>
@@ -150,64 +150,28 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        // Quando o botão com id "addTask" é clicado
-        $("#addTask").on('click', function() {
-            // Abre o modal
+    $(document).ready(function () {
+    // Quando o botão com id "addTask" é clicado
+        $('#addTask').on('click', function () {
             $('#staticBackdrop').modal('show');
         });
 
         // Quando clicar no botão Salvar Tarefa
-        $("#saveTask").on('click', function() {
-            // Valida se o título foi preenchido
-            if($("#taskTitle").val() === '') {
-                alert("Please enter a title for the task");
+        $('#saveTask').on('click', function () {
+            if ($('#taskTitle').val() === '') {
+                alert('Please enter a title for the task');
                 return;
             }
-            
-            // Aqui você pode adicionar o código para enviar os dados
-            // Exemplo com AJAX:
-            // Por enquanto, apenas fecha o modal
             $('#staticBackdrop').modal('hide');
         });
 
         // Quando clicar no botão Salvar Board
-        $("#saveBoard").on('click', function() {
-            // Valida se o nome do board foi preenchido
-            if($("#boardName").val() === '') {
-                alert("Please enter a name for the board");
+        $('#saveBoard').on('click', function () {
+            if ($('#boardName').val() === '') {
+                alert('Please enter a name for the board');
                 return false;
             }
-            
-            // Aqui você pode adicionar o código para enviar os dados
-            // Exemplo com AJAX:
-            // Por enquanto, apenas fecha o modal
             $('#addBoardModal').modal('hide');
         });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const boardColorSelect = document.getElementById('boardColor');
-
-        // Mapeamento de nomes de cores para tons menos saturados
-        const colorMap = {
-            red: '#ffcccc',
-            blue: '#cce5ff',
-            green: '#d4edda',
-            yellow: '#fff3cd',
-            purple: '#e2ccff',
-            orange: '#ffd8b3'
-        };
-
-        // Atualiza a cor de fundo do select quando uma opção é selecionada
-        boardColorSelect.addEventListener('change', function () {
-            const selectedColorName = this.value;
-            const selectedColorHex = colorMap[selectedColorName] || '#ffffff'; // Fallback para branco
-            this.style.backgroundColor = selectedColorHex;
-        });
-
-        // Define a cor inicial do select com base no valor padrão
-        const initialColorName = boardColorSelect.value;
-        boardColorSelect.style.backgroundColor = colorMap[initialColorName] || '#ffffff';
     });
 </script>

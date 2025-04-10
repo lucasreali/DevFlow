@@ -90,6 +90,7 @@ CREATE TABLE task_labels (
     FOREIGN KEY (label_id) REFERENCES labels(id) ON DELETE CASCADE
 );
 
+-- Tabela de documentos do projeto
 CREATE TABLE project_docs(
     id INT AUTO_INCREMENT PRIMARY KEY,
     created_by INT,

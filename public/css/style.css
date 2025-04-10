@@ -76,6 +76,12 @@ button.menu-nav-item:hover::after {
 
 /* Board Menu */
 
+.board {
+    min-width: 350px;
+    max-width: 350px;
+
+}
+
 .btn-project {
     position: absolute; 
     top: 10px; 
@@ -83,8 +89,7 @@ button.menu-nav-item:hover::after {
 }
 
 .main-dashboard {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: flex;
     gap: 30px;
 
     padding: 100px 50px 0 50px;
@@ -92,6 +97,7 @@ button.menu-nav-item:hover::after {
     width: 100%;
 
     position: relative;
+    overflow-y: scroll;
 
 }
 
@@ -103,7 +109,13 @@ button.menu-nav-item:hover::after {
     font-weight: bold;
     padding: 10px 15px;
 
+    max-height: 35px;
+
     border-radius: 5px;
+}
+
+.title-board * {
+    font-size: 18px;
 }
 
 .dot-title-board {

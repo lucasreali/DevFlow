@@ -58,3 +58,8 @@ Router::post('/board', [BoardController::class, 'store']);
 
 Router::post ('/task', [TaskController::class, 'store']);
 
+// Board Routes
+
+Router::post('/board', [BoardController::class, 'store'])->middleware(AuthMiddleware::class);
+
+

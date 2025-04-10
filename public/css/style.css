@@ -1,9 +1,26 @@
 :root {
     --light-gray: #f5f5f5;
     --light-gray-hover: #e0e0e0;
+
+    /* New color variables */
+    --red-text: #ff0000;
+    --red-bg: #ffe5e5;
+
+    --blue-text: #0000ff;
+    --blue-bg: #e5e5ff;
+
+    --green-text: #008000;
+    --green-bg: #e5ffe5;
+
+    --yellow-text: #cbcb00;
+    --yellow-bg: #ffffe5;
+
+    --purple-text: #800080;
+    --purple-bg: #f5e5f5;
+
+    --orange-text: #ffa500;
+    --orange-bg: #fff5e5;
 }
-
-
 
 li {
     list-style-type: none;
@@ -58,7 +75,7 @@ button.menu-nav-item::after {
     z-index: 1;
     border-radius: 5px;
     padding: 2px 10px;
-    font-size: .8rem;
+    font-size: 0.8rem;
     left: calc(100% + 20px);
     top: 50%;
     transform: translateY(-50%);
@@ -73,18 +90,16 @@ button.menu-nav-item:hover::after {
     visibility: visible;
 }
 
-
 /* Board Menu */
 
 .board {
     min-width: 350px;
     max-width: 350px;
-
 }
 
 .btn-project {
-    position: absolute; 
-    top: 10px; 
+    position: absolute;
+    top: 10px;
     left: 10px;
 }
 
@@ -98,7 +113,6 @@ button.menu-nav-item:hover::after {
 
     position: relative;
     overflow-y: scroll;
-
 }
 
 .title-board {

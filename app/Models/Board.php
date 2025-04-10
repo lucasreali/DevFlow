@@ -7,16 +7,15 @@ use Core\Database;
 class Board
 {
 
-    public static function create($userId, $title, $color, $projectId)
+    public static function create($title, $color, $projectId)
     {
         $db = Database::getInstance();
 
         $stmt = $db->prepare('
-            INSERT INTO boards (user_id, title, color, project_id)
-            VALUES (:user_id, :name, :color, :project_id)
+            INSERT INTO boards (title, color, project_id)
+            VALUES (:name, :color, :project_id)
         ');
         $stmt->execute([
-            'user_id' => $userId,
             'name' => $title,
             'color' => $color,
             'project_id' => $projectId,
@@ -25,14 +24,14 @@ class Board
         return $db->lastInsertId();
     }
 
-    public static function getAll($userId)
+    public static function getAll($projectId)
     {
         $db = Database::getInstance();
 
         $stmt = $db->prepare('
-            SELECT * FROM boards WHERE user_id = :user_id
+            SELECT * FROM boards WHERE project_id = :project_id
         ');
-        $stmt->execute(['user_id' => $userId]);
+        $stmt->execute(['project_id' => $projectId]);
 
         return $stmt->fetchAll();
     }

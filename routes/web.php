@@ -56,7 +56,7 @@ Router::get('/dashboard', function() {
 Router::post('/board', [BoardController::class, 'store']);
 
 
-Router::post ('/task', [TaskController::class, 'store']);
+Router::post('/task', [TaskController::class, 'store']);
 
 // Board Routes
 

@@ -78,7 +78,12 @@
 </style>
 
 <div class="container">
-    <h1><strong>DevFlow</strong></h1>
+    <h1><strong>DevFlow
+        <?php if (isset($number)) : ?>
+            <?= htmlspecialchars($number) ?>
+        <?php endif; ?>
+
+    </strong></h1>
 
     <div class="btn-group">
         <a class="btn btn-secondary" href="/login">Página de Login</a>
@@ -94,11 +99,11 @@
         <button class="btn btn-primary" type="submit">Logout</button>
     </form>
 
-    <?php if (isset($_SESSION['user'])) : ?>
+    <?php if (isset($user)) : ?>
         <div class="user-info">
-            <h2>Olá, <?= htmlspecialchars($_SESSION['user']['name']) ?></h2>
+            <h2>Olá, <?= htmlspecialchars($user['name']) ?></h2>
             <pre>
-                <?= var_dump($_SESSION['user']) ?>
+                <?= var_dump($user) ?>
             </pre>
         </div>
     <?php endif; ?>

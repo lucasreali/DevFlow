@@ -3,63 +3,48 @@
 use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
+use App\Controllers\PageController;
 use App\Controllers\TaskController;
 use App\Controllers\UserController;
+use App\Controllers\DocsController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
-use App\Controllers\DocsController;
 use Core\Router;
-use function Core\view;
 
-
-// Auth Controllers
-
-Router::post('/github', [AuthController::class, 'github'])->middleware(GuestMiddleware::class);
-
-Router::get('/callback', [CallbackController::class, 'handle'])->middleware(GuestMiddleware::class);
-
-Router::post('/logout', [AuthController::class, 'logout'])->middleware(AuthMiddleware::class);
-
-Router::post('/register', [UserController::class, 'store'])->middleware(GuestMiddleware::class);
-
-Router::post('/login', [UserController::class, 'login'])->middleware(GuestMiddleware::class);
-
-Router::post('/documentation', [DocsController::class, 'store'])->middleware(AuthMiddleware::class);
-
-// Documentation routes - Updated to properly handle all actions
-Router::get('/documentation', [DocsController::class, 'showDocs'])->middleware(AuthMiddleware::class);
-Router::get('/documentation/view', [DocsController::class, 'viewDoc'])->middleware(AuthMiddleware::class);
-Router::get('/documentation/edit', [DocsController::class, 'editForm'])->middleware(AuthMiddleware::class);
-Router::post('/documentation/update', [DocsController::class, 'updateDoc'])->middleware(AuthMiddleware::class);
-Router::get('/documentation/delete', [DocsController::class, 'deleteDoc'])->middleware(AuthMiddleware::class);
-
-// Auth pages
-
-Router::get('/register', function() {
-    return view('auth/register');
-})->middleware(GuestMiddleware::class);
-
-Router::get('/login', function() {
-    return view('auth/login');
-})->middleware(GuestMiddleware::class);
-
-// Pages
-
-Router::get('/', function() {
-    return view('home');
+// Guest Routes
+// Login and Registration
+Router::group(['middleware' => GuestMiddleware::class], function() {
+    Router::post('/github', [AuthController::class, 'github']);
+    Router::get('/callback', [CallbackController::class, 'handle']);
+    Router::post('/register', [UserController::class, 'store']);
+    Router::post('/login', [UserController::class, 'login']);
+    Router::get('/register', [PageController::class, 'register']);
+    Router::get('/login', [PageController::class, 'login']);
 });
 
-Router::get('/dashboard', function() {
-    return view('dashboard');
-})->middleware(AuthMiddleware::class);
+// Authenticated Routes
+// User Actions
+Router::group(['middleware' => AuthMiddleware::class], function() {
+    Router::post('/logout', [AuthController::class, 'logout']);
+    Router::get('/dashboard', [PageController::class, 'dashboard']);
 
-Router::post('/board', [BoardController::class, 'store']);
+    // Documentation
+    Router::post('/documentation', [DocsController::class, 'store']);
+    Router::get('/documentation', [DocsController::class, 'showDocs']);
+    Router::get('/documentation/view', [DocsController::class, 'viewDoc']);
+    Router::get('/documentation/edit', [DocsController::class, 'editForm']);
+    Router::post('/documentation/update', [DocsController::class, 'updateDoc']);
+    Router::get('/documentation/delete', [DocsController::class, 'deleteDoc']);
 
+    // Board and Task Management
+    Router::post('/board', [BoardController::class, 'store']);
+    Router::post('/task', [TaskController::class, 'store']);
+});
 
-Router::post('/task', [TaskController::class, 'store']);
+// Public Routes
+// Home
+Router::get('/home/{number}', [PageController::class, 'home']);
+Router::get('/home', [PageController::class, 'home']);
 
-// Board Routes
-
-Router::post('/board', [BoardController::class, 'store'])->middleware(AuthMiddleware::class);
 
 

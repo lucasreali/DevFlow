@@ -1,16 +1,11 @@
-<?php
-
-use App\Models\Board;
-$boards = Board::getAll(1); // Aqui você pode passar o ID do projeto desejado
-
-?>
-
 <div class="w-100 vh-100 d-flex">
     <!-- Menu -->
 
     <div class="w-auto vh-100 menu-bar shadow d-flex flex-column aling-items-center px-2 pt-4" style="background-color: var(--light-gray)">
         
-        <div class="bg-primary" style="width: 50px; height: 50px;"> LOGO </div>
+        <a href="/">
+            <div class="bg-primary a" style="width: 50px; height: 50px;"> LOGO </div>
+        </a>
 
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
             <li>

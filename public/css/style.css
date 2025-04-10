@@ -26,9 +26,9 @@ li {
     list-style-type: none;
 }
 
-a.a {
+.a {
     text-decoration: none;
-    color: inherit;
+    color: black;
 }
 
 /* Navbar */

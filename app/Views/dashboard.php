@@ -46,22 +46,22 @@ $boards = [
 
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
             <li>
-                <button data-tooltip="colaborators" class="btn menu-nav-item" >
+                <button data-tooltip="Collaborators" class="btn menu-nav-item">
                     <i class="fa-solid fa-users"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="settings" class="btn menu-nav-item">
+                <button data-tooltip="Settings" class="btn menu-nav-item">
                     <i class="fa-solid fa-gear"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="notifications" class="btn menu-nav-item">
+                <button data-tooltip="Notifications" class="btn menu-nav-item">
                     <i class="fa-solid fa-bell"></i>
                 </button>
             </li>
             <li>
-                <button data-tooltip="profile" class="btn menu-nav-item">
+                <button data-tooltip="Profile" class="btn menu-nav-item">
                     <i class="fa-solid fa-user"></i>
                 </button>
             </li>
@@ -72,7 +72,7 @@ $boards = [
     <!-- Conteúdo -->
     <main class="main-dashboard">
 
-        <!-- Example single danger button -->
+        <!-- Botão de seleção de projeto -->
         <div class="btn-group btn-project">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Project Name
@@ -95,38 +95,39 @@ $boards = [
             </h4>
 
             <div class="d-flex flex-column gap-2 mt-5">
-            <?php foreach ($boardData['tasks'] as $task): ?>
-            <div class="card-task">
-            <h5><?= htmlspecialchars($task['title']) ?></h5>
-            <p><?= htmlspecialchars($task['description']) ?></p>
-            </div>
-            <?php endforeach; ?>
+                <?php foreach ($boardData['tasks'] as $task): ?>
+                    <div class="card-task">
+                        <h5><?= htmlspecialchars($task['title']) ?></h5>
+                        <p><?= htmlspecialchars($task['description']) ?></p>
+                    </div>
+                <?php endforeach; ?>
             <button class="add-task" id="addTask" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            <i class="fa-solid fa-plus"></i>
+                <i class="fa-solid fa-plus"></i>
             </button>
             </div>
 
+            <!-- Modal para adicionar nova tarefa -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Nova Tarefa</h1>
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Task</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form id="taskForm" action="/task" method="POST">
                                 <div class="mb-3">
-                                    <label for="taskTitle" class="form-label">Título da Tarefa</label>
-                                    <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Digite o título da tarefa">
+                                    <label for="taskTitle" class="form-label">Task Title</label>
+                                    <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Enter the task title">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="taskDescription" class="form-label">Descrição</label>
-                                    <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Descreva a tarefa com detalhes"></textarea>
+                                    <label for="taskDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Describe the task in detail"></textarea>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary" id="saveTask">Salvar Tarefa</button>
-                                </div>
+                                
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="saveTask">Save Task</button>
+                                
                             </form>
                         </div>
                     </div>
@@ -135,6 +136,41 @@ $boards = [
         </div>
 
         <?php endforeach; ?>
+
+        <!-- Botão para adicionar um novo board -->
+        <div class="board">
+            <button class="title-board bg-secondary text-secondary d-flex align-items-center justify-content-center" style="--bs-bg-opacity: .2; border: none; width: 100%;" id="addBoard" data-bs-toggle="modal" data-bs-target="#addBoardModal">
+                <i class="fa-solid fa-plus"></i> <span class="ms-2 m-0">Add New Board</span>
+            </button>
+        </div>
+
+        <!-- Modal para adicionar novo board -->
+        <div class="modal fade" id="addBoardModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addBoardModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addBoardModalLabel">Add New Board</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addBoardForm" action="/board?project=1" method="POST">
+                            <div class="mb-3 d-flex align-items-end gap-3">
+                                <div class="flex-grow-1">
+                                    <label for="boardName" class="form-label">Board Name</label>
+                                    <input type="text" class="form-control" id="boardName" name="title" required placeholder="Enter the board name">
+                                </div>
+                                <div class="d-flex align-items-center h-100">
+                                    <input type="color" class="form-control form-control-color" id="boardColor" name="color" value="#0000ff" title="Choose board color">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="saveBoard">Save Board</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 </main>
 </div>
 
@@ -150,14 +186,28 @@ $boards = [
         $("#saveTask").on('click', function() {
             // Valida se o título foi preenchido
             if($("#taskTitle").val() === '') {
-                alert("Por favor, insira um título para a tarefa");
+                alert("Please enter a title for the task");
                 return;
             }
             
             // Aqui você pode adicionar o código para enviar os dados
-            //Exemplo com AJAX:
+            // Exemplo com AJAX:
             // Por enquanto, apenas fecha o modal
             $('#staticBackdrop').modal('hide');
+        });
+
+        // Quando clicar no botão Salvar Board
+        $("#saveBoard").on('click', function() {
+            // Valida se o nome do board foi preenchido
+            if($("#boardName").val() === '') {
+                alert("Please enter a name for the board");
+                return false;
+            }
+            
+            // Aqui você pode adicionar o código para enviar os dados
+            // Exemplo com AJAX:
+            // Por enquanto, apenas fecha o modal
+            $('#addBoardModal').modal('hide');
         });
     });
 </script>

@@ -72,8 +72,6 @@ $boards = Board::getAll(1); // Aqui você pode passar o ID do projeto desejado
                                     <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
                                 </div>
                             <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No tasks available for this board.</p>
                         <?php endif; ?>
                         <button class="add-task" id="addTask" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             <i class="fa-solid fa-plus"></i>

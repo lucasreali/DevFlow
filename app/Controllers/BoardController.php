@@ -7,9 +7,9 @@ use function Core\view;
 
 class BoardController
 {
-    public function store() {
+    public function store($params) {
 
-        $projectId = $_GET['project'];
+        $projectId = $params['projectId'] ?? null;
         $title = $_POST['title'];
         $color = $_POST['color'];
 
@@ -41,7 +41,17 @@ class BoardController
             throw new \RuntimeException('User not logged in');
         }
 
-        $boardId = Board::create($title,$color, $projectId);
+        $boards = Board::getAll($projectId);
+        foreach ($boards as $board) {
+            if ($board['title'] === $title) {
+                throw new \RuntimeException('Board with this title already exists');
+            }
+        }
+
+        $position = count($boards) + 1;
+            
+
+        $boardId = Board::create($title,$color, $projectId, $position);
 
         if ($boardId === false) {
             throw new \RuntimeException('Failed to create board');

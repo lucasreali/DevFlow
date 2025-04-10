@@ -47,6 +47,8 @@ CREATE TABLE boards (
     color ENUM('red', 'green', 'blue', 'yellow', 'purple') NOT NULL,
     project_id INT NOT NULL,
 
+    order INT NOT NULL,
+
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

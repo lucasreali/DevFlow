@@ -50,6 +50,7 @@
         </div>
 
         <?php if (!empty($boards)): ?>
+            <?php var_dump($boards) ?>
             <?php foreach ($boards as $boardData): ?>
                 <div class="board">
                     <h4 class="title-board" style="background-color: var(--<?= htmlspecialchars($boardData['color']) ?>-bg);">
@@ -120,7 +121,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="addBoardForm" action="/board?project=1" method="POST">
+                        <form id="addBoardForm" action="/board/2" method="POST">
                             <div class="mb-3 d-flex align-items-end gap-3">
                                 <div class="flex-grow-1">
                                     <label for="boardName" class="form-label">Board Name</label>

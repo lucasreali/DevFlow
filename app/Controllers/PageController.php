@@ -7,14 +7,15 @@ use function Core\view;
 
 class PageController
 {
+    /**
+     * Exibe a página inicial.
+     *
+     * @param array $params Parâmetros da rota.
+     * @return string Renderização da view.
+     */
     public static function home(array $params)
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $user = $_SESSION['user'] ?? null;
-
         $number = $params['number'] ?? null;
 
         return view('home', [
@@ -31,5 +32,15 @@ class PageController
         return view('dashboard', [
             'boards' => $boards,
         ]);
+    }
+
+    public static function login()
+    {
+        return view('auth/login');
+    }
+    
+    public static function register()
+    {
+        return view('auth/register');
     }
 }

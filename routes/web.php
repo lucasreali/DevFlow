@@ -44,8 +44,16 @@ Router::get('/dashboard', function() {
 
 Router::post('/board', [BoardController::class, 'store']);
 
-Router::POST('/reuniao', [ReuniaoController::class, 'store']);
-
-Router::GET('/reuniao', function() {
-    return view('reunioes');
+Router::get('/reuniao', function() {
+    $reunioes = \App\Models\Reuniao::all();
+    return view('reunioes', ['reunioes' => $reunioes]);
 });
+
+Router::post('/reuniao', [\App\Controllers\ReuniaoController::class, 'store']);
+
+Router::post('/reuniao/update', [\App\Controllers\ReuniaoController::class, 'update']);
+
+Router::get('/reuniao/edit', [\App\Controllers\ReuniaoController::class, 'edit']);
+
+
+

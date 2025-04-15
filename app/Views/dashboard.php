@@ -121,7 +121,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="addBoardForm" action="/board/2" method="POST">
+                        <form id="addBoardForm" action="/board" method="POST">
+                            <?php if(!isset($projectId)) {$projectId = 1;}?>
+                            <input type="hidden" name="projectId" value="<?= htmlspecialchars($projectId) ?>">
                             <div class="mb-3 d-flex align-items-end gap-3">
                                 <div class="flex-grow-1">
                                     <label for="boardName" class="form-label">Board Name</label>

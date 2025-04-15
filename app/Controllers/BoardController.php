@@ -7,9 +7,9 @@ use function Core\view;
 
 class BoardController
 {
-    public function store($params) {
+    public function store() {
 
-        $projectId = $params['projectId'] ?? null;
+        $projectId = $_POST['projectId'] ?? null;
         $title = $_POST['title'];
         $color = $_POST['color'];
 

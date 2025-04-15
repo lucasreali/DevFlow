@@ -37,7 +37,7 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::get('/documentation/delete', [DocsController::class, 'deleteDoc']);
 
     // Board and Task Management
-    Router::post('/board/{projectId}', [BoardController::class, 'store']);
+    Router::post('/board', [BoardController::class, 'store']);
     Router::post('/task', [TaskController::class, 'store']);
 });
 

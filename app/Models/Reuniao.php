@@ -42,4 +42,12 @@ class Reuniao {
         $stmt = $db->query("SELECT * FROM reunioes");
         return $stmt->fetchAll();
     }
+
+    public static function delete($id)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("DELETE FROM reunioes WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+    }
+
 }

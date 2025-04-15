@@ -5,6 +5,7 @@
             <p>
                 <?= $r['title'] ?> - <?= $r['data_reuniao'] ?> - <?= $r['assunto'] ?>
                 <a href="/reuniao/edit?id=<?= $r['id'] ?>">Editar</a>
+                <a href="/reuniao/delete?id=<?= $r['id'] ?>" onclick="return confirm('Tem certeza que deseja excluir esta reunião?')">Excluir</a>
             </p>
         <?php endforeach; ?>
     <?php else: ?>

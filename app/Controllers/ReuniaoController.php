@@ -33,4 +33,13 @@ class ReuniaoController {
         extract(['reuniao' => $reuniao, 'reunioes' => $reunioes]);
         require __DIR__ . '/../Views/reunioes.php';
     }
+
+    public static function delete()
+    {
+        $id = $_GET['id'];
+        Reuniao::delete($id);
+        header('Location: /reuniao');
+        exit;
+    }
+
 }

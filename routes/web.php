@@ -3,14 +3,18 @@
 use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
-use App\Controllers\PageController;
+use App\Controllers\DocsController;
+use App\Controllers\Page\DashboardController;
+use App\Controllers\Page\HomeController;
 use App\Controllers\ProjectController;
 use App\Controllers\TaskController;
 use App\Controllers\UserController;
-use App\Controllers\DocsController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use Core\Router;
+
+
+
 
 Router::get('/callback', [CallbackController::class, 'handle']);
 Router::post('/github', [AuthController::class, 'github']);
@@ -20,15 +24,15 @@ Router::post('/github', [AuthController::class, 'github']);
 Router::group(['middleware' => GuestMiddleware::class], function() {
     Router::post('/register', [UserController::class, 'store']);
     Router::post('/login', [UserController::class, 'login']);
-    Router::get('/register', [PageController::class, 'register']);
-    Router::get('/login', [PageController::class, 'login']);
+    Router::get('/register', [AuthController::class, 'register']);
+    Router::get('/login', [AuthController::class, 'login']);
 });
 
 // Authenticated Routes
 // User Actions
 Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/logout', [AuthController::class, 'logout']);
-    Router::get('/dashboard/{projectId}', [PageController::class, 'dashboard']);
+    Router::get('/dashboard/{projectId}', [DashboardController::class, 'index']);
 
     // Documentation
     Router::post('/documentation', [DocsController::class, 'store']);
@@ -48,8 +52,8 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
 
 // Public Routes
 // Home
-Router::get('/{number}', [PageController::class, 'home']);
-Router::get('/', [PageController::class, 'home']);
+Router::get('/', [HomeController::class, 'index']);
+
 
 
 

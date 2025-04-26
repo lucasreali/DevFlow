@@ -42,11 +42,7 @@ class BoardController
         }
 
         $boards = Board::getAll($projectId);
-        foreach ($boards as $board) {
-            if ($board['title'] === $title) {
-                throw new \RuntimeException('Board with this title already exists');
-            }
-        }
+        
 
         $position = count($boards) + 1;
             

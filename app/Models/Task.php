@@ -6,19 +6,19 @@ use Core\Database;
 class Task 
 {
     // Criando a função para inserir
-    public static function create($title, $description, $boardId, $createdBy, $expiredAt) {
+    public static function create($title, $description, $boardId, $userId, $expiredAt) {
         $db = Database::getInstance();
 
         $stmt = $db->prepare(
-            "INSERT INTO tasks (title, description, board_id, created_by, expired_at, created_at, updated_at) 
-             VALUES (:title, :description, :board_id, :created_by, :expired_at, NOW(), NOW())"
+            "INSERT INTO tasks (title, description, board_id, user_id, expired_at) 
+             VALUES (:title, :description, :board_id, :user_id, :expired_at)"
         );
 
         $stmt->execute([
             'title' => $title,
             'description' => $description,
             'board_id' => $boardId,
-            'created_by' => $createdBy,
+            'user_id' => $userId,
             'expired_at' => $expiredAt
         ]);
 

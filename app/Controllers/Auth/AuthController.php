@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Auth;
 
+use function Core\view;
+
 class AuthController
 {
     public static function github()
@@ -43,5 +45,15 @@ class AuthController
             'avatar_url' => $user['avatar_url'] ?? null,
             'access_token' => $user['access_token'] ?? null,
         ];
+    }
+
+    public static function login()
+    {
+        return view('auth/login');
+    }
+    
+    public static function register()
+    {
+        return view('auth/register');
     }
 }

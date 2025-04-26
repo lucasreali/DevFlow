@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Board;
+use App\Models\Project;
+use App\Models\Task;
 use function Core\view;
 
 class PageController
@@ -24,13 +26,38 @@ class PageController
         ]);
     }
 
-    public static function dashboard()
+    public static function dashboard(array $params)
     {   
+        $projectId = $params['projectId'] ?? null;
 
-        $boards = Board::getAll(1);
+        $boards = Board::getAll($projectId);
+
+        foreach ($boards as &$board) {
+            $board['tasks'] = Task::getAllByBoardId($board['id']);
+        }
+
+        $project = Project::getById($projectId);
+
+        $dataOtherProjects = Project::getAll($_SESSION['user']['id']);
+
+        $otherProjects = [];
+        foreach ($dataOtherProjects as $dataProject) {
+            $otherProjects[] = [
+            'name' => $dataProject['name'] ?? null,
+            'id' => $dataProject['id'] ?? null,
+            ];
+        }
+
+        if (!$project) {
+            return view('dashboard', [
+                'message' => 'Project not found.',
+            ]);
+        }
 
         return view('dashboard', [
+            'project' => $project,
             'boards' => $boards,
+            'otherProjects' => $otherProjects,
         ]);
     }
 

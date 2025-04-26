@@ -56,7 +56,8 @@ class BoardController
         if ($boardId === false) {
             throw new \RuntimeException('Failed to create board');
         }
-        header('Location: /dashboard');
+
+        header('Location: /dashboard/' . $projectId);
         exit;
     }
 

@@ -31,13 +31,12 @@ CREATE TABLE accounts (
 CREATE TABLE projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_by INT NOT NULL,
+    user_id INT NOT NULL,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Tabela de quadros (boards)
@@ -47,7 +46,7 @@ CREATE TABLE boards (
     color ENUM('red', 'green', 'blue', 'yellow', 'purple') NOT NULL,
     project_id INT NOT NULL,
 
-    order INT NOT NULL,
+    position INT NOT NULL,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -61,14 +60,14 @@ CREATE TABLE tasks (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     board_id INT NOT NULL,
-    created_by INT NOT NULL,
+    user_id INT NOT NULL,
     expired_at DATETIME,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Tabela de etiquetas (labels)
@@ -95,12 +94,12 @@ CREATE TABLE task_labels (
 -- Tabela de documentos do projeto
 CREATE TABLE project_docs(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    created_by INT,
+    user_id INT,
 
     title VARCHAR(255),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     content TEXT,
 
-    FOREIGN KEY (created_by) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

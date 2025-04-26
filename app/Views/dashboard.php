@@ -38,19 +38,22 @@
         <!-- Botão de seleção de projeto -->
         <div class="btn-group btn-project">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Project Name
+                <?= htmlspecialchars($project['name'] ?? 'Select a project', ENT_QUOTES, 'UTF-8') ?>
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Project 1</a></li>
-                <li><a class="dropdown-item" href="#">Project 2</a></li>
-                <li><a class="dropdown-item" href="#">Project 3</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-plus"></i> Add new project</a></li>
+                <?php if (!empty($otherProjects)): ?>
+                    <?php foreach ($otherProjects as $otherProject): ?>
+                        <li><a class="dropdown-item" href="<?= $otherProject['id']  ?>"><?= htmlspecialchars($otherProject['name'] ?? 'Untitled Project', ENT_QUOTES, 'UTF-8') ?></a></li>
+                    <?php endforeach; ?>
+                    <li><hr class="dropdown-divider"></li>
+                <?php endif; ?>
+                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#addProjectModal"> 
+                    <i class="fa-solid fa-plus"></i> Add new project
+                </a></li>
             </ul>
         </div>
 
         <?php if (!empty($boards)): ?>
-            <?php var_dump($boards) ?>
             <?php foreach ($boards as $boardData): ?>
                 <div class="board">
                     <h4 class="title-board" style="background-color: var(--<?= htmlspecialchars($boardData['color']) ?>-bg);">
@@ -123,7 +126,7 @@
                     <div class="modal-body">
                         <form id="addBoardForm" action="/board" method="POST">
                             <?php if(!isset($projectId)) {$projectId = 1;}?>
-                            <input type="hidden" name="projectId" value="<?= htmlspecialchars($projectId) ?>">
+                            <input type="hidden" name="projectId" value="<?= htmlspecialchars($project['id']) ?>">
                             <div class="mb-3 d-flex align-items-end gap-3">
                                 <div class="flex-grow-1">
                                     <label for="boardName" class="form-label">Board Name</label>
@@ -148,13 +151,35 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal para adicionar novo projeto -->
+        <div class="modal fade" id="addProjectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addProjectModalLabel">Add New Project</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addProjectForm" action="/project" method="POST">
+                            <div class="mb-3">
+                                <label for="projectName" class="form-label">Project Name</label>
+                                <input type="text" class="form-control" id="projectName" name="name" required placeholder="Enter the project name">
+                            </div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Project</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         
 </main>
 </div>
 
 <script>
     $(document).ready(function () {
-    // Quando o botão com id "addTask" é clicado
+        // Quando o botão com id "addTask" é clicado
         $('#addTask').on('click', function () {
             $('#staticBackdrop').modal('show');
         });
@@ -176,5 +201,25 @@
             }
             $('#addBoardModal').modal('hide');
         });
+
+        // Alterar a cor de fundo do seletor de cores do board
+        const colorMap = {
+            red: '#ffcccc',
+            blue: '#cce5ff',
+            green: '#d4edda',
+            yellow: '#fff3cd',
+            purple: '#e2ccff',
+            orange: '#ffd8b3',
+        };
+
+        $('#boardColor').on('change', function () {
+            const selectedColorHex = colorMap[$(this).val()] || '#ffffff';
+            $(this).css('background-color', selectedColorHex);
+        });
+
+        // Definir a cor inicial do seletor de cores do board
+        const initialColorName = $('#boardColor').val();
+        $('#boardColor').css('background-color', colorMap[initialColorName] || '#ffffff');
     });
+
 </script>

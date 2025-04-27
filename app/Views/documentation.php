@@ -1,4 +1,3 @@
-
 <style>
     .container {
         max-width: 1000px;
@@ -94,9 +93,10 @@
 
     <div style="margin-bottom: 20px;">
         <a href="/" class="btn btn-secondary" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Voltar à Página Inicial</a>
-    </div>
+    </div> 
     
-    <form action="/documentation" method="POST">
+    
+    <form action="/documentation/<?= $projectId ?>" method="POST">
         <div class="form-group">
             <label for="title">Título:</label>
             <input type="text" name="title" id="title" placeholder="Insira o título do documento" required class="form-control">
@@ -124,13 +124,45 @@
                     </p>
                     
                     <div class="doc-actions">
-                        <a href="/documentation/view?id=<?= $doc['id'] ?>" class="view-btn">View</a>
-                        <a href="/documentation/edit?id=<?= $doc['id'] ?>" class="edit-btn">Edit</a>
-                        <a href="/documentation/delete?id=<?= $doc['id'] ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this document?')">Delete</a>
+                        <a href="/documentation/<?= $projectId ?>/<?= $doc['id'] ?>" class="view-btn">View</a>
+                        <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#editModal" data-id="<?= $doc['id'] ?>" data-title="<?= htmlspecialchars($doc['title']) ?>" data-content="<?= htmlspecialchars($doc['content']) ?>">Edit</button>
+
+                        <form action="/documentation/delete/<?= $projectId ?>/<?= $doc['id'] ?>" method="POST">
+                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this document?')">Delete</button>
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editForm" action="/documentation/update/<?= $projectId ?>/<?= $doc['id'] ?>" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Documento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="edit-id">
+                    <div class="form-group">
+                        <label for="edit-title">Título:</label>
+                        <input type="text" name="title" id="edit-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-content">Conteúdo (Markdown):</label>
+                        <textarea name="content" id="edit-content" class="form-control" rows="10" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -151,6 +183,20 @@
         // Live preview
         contentArea.addEventListener('input', function() {
             previewArea.innerHTML = marked.parse(this.value);
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const editModal = document.getElementById('editModal');
+        editModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const title = button.getAttribute('data-title');
+            const content = button.getAttribute('data-content');
+
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-title').value = title;
+            document.getElementById('edit-content').value = content;
         });
     });
 </script>

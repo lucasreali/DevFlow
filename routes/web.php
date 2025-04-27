@@ -38,12 +38,12 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::get('/dashboard/{projectId}', [DashboardController::class, 'index']);
 
     // Documentation
-    Router::post('/documentation', [DocsController::class, 'store']);
-    Router::get('/documentation', [DocsController::class, 'showDocs']);
-    Router::get('/documentation/view', [DocsController::class, 'viewDoc']);
-    Router::get('/documentation/edit', [DocsController::class, 'editForm']);
-    Router::post('/documentation/update', [DocsController::class, 'updateDoc']);
-    Router::get('/documentation/delete', [DocsController::class, 'deleteDoc']);
+    Router::get('/documentation/{projectId}', [DocsController::class, 'index']);
+    Router::post('/documentation/{projectId}', [DocsController::class, 'store']);
+    Router::get('/documentation/{projectId}/{id}', [DocsController::class, 'view']);
+
+    Router::post('/documentation/update/{projectId}/{id}', [DocsController::class, 'update']);
+    Router::post('/documentation/delete/{projectId}/{id}', [DocsController::class, 'delete']);
 
     // Board and Task Management
     Router::post('/board', [BoardController::class, 'store']);

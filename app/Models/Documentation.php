@@ -58,6 +58,21 @@ class Documentation
 
         return $stmt->fetchAll();
     }
+
+    public static function getAllByProjectId($projectId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT * FROM project_docs 
+            WHERE project_id = :projectId;  
+            ");
+            
+        $stmt->bindParam(":projectId", $projectId);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public static function delete(string $id): bool{
         $db = Database::getInstance();
         $stmt = $db->prepare("

@@ -25,6 +25,11 @@
                     <i class="fa-solid fa-user"></i>
                 </button>
             </li>
+            <li>
+                <a href="/documentation/<?= $project["id"]?>" class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Documentation">
+                    <i class="fa-solid fa-book"></i>
+                </a>
+            </li>
         </ul>
     </div>
 

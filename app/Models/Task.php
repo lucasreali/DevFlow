@@ -6,12 +6,12 @@ use Core\Database;
 class Task 
 {
     // Criando a função para inserir
-    public static function create($title, $description, $boardId, $userId, $expiredAt) {
+    public static function create($title, $description, $boardId, $userId, $expiredAt, $position) {
         $db = Database::getInstance();
 
         $stmt = $db->prepare(
-            "INSERT INTO tasks (title, description, board_id, user_id, expired_at) 
-             VALUES (:title, :description, :board_id, :user_id, :expired_at)"
+            "INSERT INTO tasks (title, description, board_id, user_id, expired_at, position) 
+             VALUES (:title, :description, :board_id, :user_id, :expired_at, :position)"
         );
 
         $stmt->execute([
@@ -19,7 +19,8 @@ class Task
             'description' => $description,
             'board_id' => $boardId,
             'user_id' => $userId,
-            'expired_at' => $expiredAt
+            'expired_at' => $expiredAt,
+            'position' => $position
         ]);
 
         return $db->lastInsertId();
@@ -32,7 +33,7 @@ class Task
         $stmt = $db->prepare(
             "SELECT * FROM tasks 
              WHERE board_id = :board_id 
-             ORDER BY created_at DESC"
+             ORDER BY position ASC"
         );
         $stmt->execute(['board_id' => $boardId]);
         return $stmt->fetchAll();
@@ -53,7 +54,7 @@ class Task
 
         $stmt = $db->prepare(
             "UPDATE tasks 
-             SET title = :title, description = :description, board_id = :board_id, expired_at = :expired_at, updated_at = NOW() 
+             SET title = :title, description = :description, board_id = :board_id
              WHERE id = :id"
         );
 

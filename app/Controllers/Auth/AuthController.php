@@ -7,17 +7,17 @@ use function Core\view;
 class AuthController
 {
     public static function github()
-{
-    $clientId = $_ENV['GITHUB_CLIENT_ID'];
-    $redirectUri = $_ENV['GITHUB_REDIRECT_URI'];
+    {
+        $clientId = $_ENV['GITHUB_CLIENT_ID'];
+        $redirectUri = $_ENV['GITHUB_REDIRECT_URI'];
 
-    $scopes = 'user repo';
+        $scopes = 'user repo';
 
-    $githubAuthUrl = "https://github.com/login/oauth/authorize?client_id={$clientId}&redirect_uri={$redirectUri}&scope={$scopes}";
+        $githubAuthUrl = "https://github.com/login/oauth/authorize?client_id={$clientId}&redirect_uri={$redirectUri}&scope={$scopes}";
 
-    header("Location: $githubAuthUrl");
-    exit;
-}
+        header("Location: $githubAuthUrl");
+        exit;
+    }
 
 
     public static function logout()
@@ -30,7 +30,7 @@ class AuthController
         exit;
     }
 
-    public static function setUserSession($user)
+    public static function setUserSession(array $user)
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

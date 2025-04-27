@@ -16,10 +16,11 @@ class TaskController{
         $userId = $_SESSION['user']['id']; // ID do usuário que criou a tarefa (assumindo que está na sessão)
         $expiredAt = null; // Data de expiração (opcional, pode ser nula)
 
-        
+        $boardTasks = Task::getAllByBoardId($boardId);
+        $position = count($boardTasks) + 1; // Posição da tarefa na lista (incrementa a contagem de tarefas existentes)
 
         // Chama o método create da classe Task para inserir a tarefa no banco de dados
-        $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt);
+        $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt, $position);
 
         // Redireciona para a página do dashboard após a inserção
         $message = [];

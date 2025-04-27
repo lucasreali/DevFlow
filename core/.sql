@@ -32,6 +32,7 @@ CREATE TABLE projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
+    description TEXT,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -62,6 +63,8 @@ CREATE TABLE tasks (
     board_id INT NOT NULL,
     user_id INT NOT NULL,
     expired_at DATETIME,
+
+    position INT NOT NULL,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -103,3 +106,4 @@ CREATE TABLE project_docs(
 
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+

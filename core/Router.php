@@ -32,16 +32,16 @@ class Router {
         $uri = '/' . trim(str_replace('//', '/', $uri), '/');
     }
 
-    public static function get(string $route, callable|array $action): Route {
+    public static function get(string $route, array $action): Route {
         return self::registerRoute('GET', $route, $action);
     }
 
-    public static function post(string $route, callable|array $action): Route {
+    public static function post(string $route, array $action): Route {
         return self::registerRoute('POST', $route, $action);
     }
 
 
-    private static function registerRoute(string $method, string $route, callable|array $action): Route {
+    private static function registerRoute(string $method, string $route, array $action): Route {
         $middlewares = [];
         $fullRoute = $route;
         

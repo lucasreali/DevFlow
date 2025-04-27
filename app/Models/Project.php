@@ -6,18 +6,20 @@ use Core\Database;
 
 class Project
 {
-    public static function create($userId, $name) {
+    public static function create($userId, $name, $description) {
 
         $db = Database::getInstance();
         $stmt = $db->prepare('
-            INSERT INTO projects (user_id, name)
-            VALUES (:user_id, :name)
+            INSERT INTO projects (user_id, name, description)
+            VALUES (:user_id, :name, :description)
         ');
 
         $stmt->execute([
             'user_id' => $userId,
             'name' => $name,
+            'description' => $description,
         ]);
+
         return $db->lastInsertId();
     }
 
@@ -45,5 +47,29 @@ class Project
         return $stmt->fetch();
     }
 
+    public static function update($projectId, $name, $description) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            UPDATE projects 
+            SET name = :name, description = :description 
+            WHERE id = :project_id
+        ');
 
+        return $stmt->execute([
+            'project_id' => $projectId,
+            'name' => $name,
+            'description' => $description,
+        ]);
+    }
+
+    public static function delete($projectId) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            DELETE FROM projects WHERE id = :project_id
+        ');
+
+        return $stmt->execute([
+            'project_id' => $projectId,
+        ]);
+    }
 }

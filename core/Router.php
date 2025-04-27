@@ -40,13 +40,6 @@ class Router {
         return self::registerRoute('POST', $route, $action);
     }
 
-    public static function put(string $route, callable|array $action): Route {
-        return self::registerRoute('PUT', $route, $action);
-    }
-
-    public static function delete(string $route, callable|array $action): Route {
-        return self::registerRoute('DELETE', $route, $action);
-    }
 
     private static function registerRoute(string $method, string $route, callable|array $action): Route {
         $middlewares = [];

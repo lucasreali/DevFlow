@@ -2,18 +2,20 @@
 
 namespace App\Controllers\Page;
 
+use App\Models\Project;
 use function Core\view;
 
 class HomeController
 {
-    public static function index(array $params)
+    public static function index(array $data)
     {
         $user = $_SESSION['user'] ?? null;
-        $number = $params['number'] ?? null;
+
+        $projects = Project::getAll($user['id']);
 
         return view('home', [
             'user' => $user,
-            'number' => $number,
+            'projects' => $projects,
         ]);
     }
 }

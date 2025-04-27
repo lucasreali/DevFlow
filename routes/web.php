@@ -31,6 +31,9 @@ Router::group(['middleware' => GuestMiddleware::class], function() {
 // Authenticated Routes
 // User Actions
 Router::group(['middleware' => AuthMiddleware::class], function() {
+    // Home
+    Router::get('/', [HomeController::class, 'index']);
+
     Router::post('/logout', [AuthController::class, 'logout']);
     Router::get('/dashboard/{projectId}', [DashboardController::class, 'index']);
 
@@ -48,11 +51,12 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
 
     // Project Management
     Router::post('/project', [ProjectController::class, 'store']);
+    Router::post('/project/update/{projectId}', [ProjectController::class, 'update']);
+    Router::post('/project/delete/{projectId}', [ProjectController::class, 'delete']);
 });
 
 // Public Routes
-// Home
-Router::get('/', [HomeController::class, 'index']);
+
 
 
 

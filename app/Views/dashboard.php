@@ -60,7 +60,7 @@
             </ul>
         </div>
         -->
-
+        <!--BOARD COM TASKS(ADICIONAR, EDITAR, DELETAR )-->
         <?php if (!empty($boards)): ?>
             <?php foreach ($boards as $board): ?>
                 <div class="board">
@@ -74,10 +74,34 @@
                     <div class="d-flex flex-column gap-2 mt-5">
                         <?php if (!empty($board['tasks']) && is_array($board['tasks'])): ?>
                             <?php foreach ($board['tasks'] as $task): ?>
+
+                                <!-- DIV DA TASK, EDITAR E DELETAR -->
                                 <div class="card-task">
                                     <h5><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
                                     <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+
+                                     <!-- BOTÃO PARA DELETAR A TASK -->
+                                    <form action="/task/delete" method="post">
+                                        <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <button><i class="fa-solid fa-trash"></i></button>
+                                        
+                                    </form>
+
+                                    <!-- BOTÃO PARA EDITAR A TASK -->
+                                    <button 
+                                        class="btn-edit-task" 
+                                        data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
+                                    >
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+
+                                    
                                 </div>
+
+
                             <?php endforeach; ?>
                         <?php endif; ?>
                         <button class="add-task" id="addTask-<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>" 
@@ -117,7 +141,7 @@
             </div>
         </div>
 
-        <!-- Botão para adicionar um novo board -->
+        <!--BOTÃO PARA ADICIONAR UM NOVO BOARD -->
         <div class="board">
             <button class="title-board bg-secondary text-secondary d-flex align-items-center justify-content-center" 
                     style="--bs-bg-opacity: .2; border: none; width: 100%;" 
@@ -126,7 +150,7 @@
             </button>
         </div>
 
-        <!-- Modal para adicionar novo board -->
+        <!-- MODAL PARA ADICIONAR UM NOVO BOARD -->
         <div class="modal fade" id="addBoardModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addBoardModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -161,7 +185,36 @@
             </div>
         </div>
 
-        <!-- Modal para adicionar novo projeto -->
+        <!-- Modal para editar uma tarefa -->
+        <div class="modal fade" id="editTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editTaskModalLabel">Edit Task</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editTaskForm" action="/task/update" method="POST">
+                            <input type="hidden" name="id" id="editTaskId">
+                            <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
+                            <div class="mb-3">
+                                <label for="editTaskTitle" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="editTaskTitle" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTaskDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="editTaskDescription" name="description" rows="3"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Task</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- MODAL PARA ADICIONAR UM NOVO PROJETO -->
         <div class="modal fade" id="addProjectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -187,6 +240,8 @@
     </main>
 </div>
 
+
+<!-- SCRIPT PARA ADICIONAR UMA NOVA TASK  -->
 <script>
     $(document).ready(function () {
         // Quando o botão "Add Task" é clicado
@@ -224,4 +279,21 @@
         const initialColorName = $('#boardColor').val();
         $('#boardColor').css('background-color', colorMap[initialColorName] || '#ffffff');
     });
+
+    //SCRIPT PARA O BOTÃO EDITAR
+    // Quando clicar no botão Editar
+    $('.btn-edit-task').on('click', function () {
+        const taskId = $(this).data('id');
+        const taskTitle = $(this).data('title');
+        const taskDescription = $(this).data('description');
+
+        // Preencher os campos do modal
+        $('#editTaskId').val(taskId);
+        $('#editTaskTitle').val(taskTitle);
+        $('#editTaskDescription').val(taskDescription);
+
+        // Abrir o modal de edição
+        $('#editTaskModal').modal('show');
+    });
+
 </script>

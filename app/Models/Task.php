@@ -49,20 +49,15 @@ class Task
     }
 
     // Criando a função para atualizar uma tarefa
-    public static function update($id, $title, $description, $boardId, $expiredAt) {
+    public static function update($id, $title, $description, $expiredAt) {
         $db = Database::getInstance();
 
-        $stmt = $db->prepare(
-            "UPDATE tasks 
-             SET title = :title, description = :description, board_id = :board_id
-             WHERE id = :id"
-        );
+        $stmt = $db->prepare("UPDATE tasks SET title = :title, description = :description, expired_at = :expired_at WHERE id = :id");
 
         return $stmt->execute([
             'id' => $id,
             'title' => $title,
             'description' => $description,
-            'board_id' => $boardId,
             'expired_at' => $expiredAt
         ]);
     }

@@ -9,7 +9,7 @@ use function Core\view;
 
 
 class TaskController{
-    public function store() {
+    public static function store() {
         $title = $_POST['title'];
         $description = $_POST['description'];
         $boardId = $_POST['board_id'];
@@ -35,4 +35,29 @@ class TaskController{
 
         header('Location: /dashboard/' . $projectId);
     } 
+
+    public static function update(){
+        $id = $_POST['id'];
+        $title = $_POST['title'];
+        $description = $_POST['description'];
+        $projectId = $_POST['project_id'];
+        $expiredAt = null; // Data de expiração (opcional, pode ser nula)
+
+        // Chama o método update da classe Task para atualizar a tarefa no banco de dados
+        Task::update($id, $title, $description, $expiredAt);
+
+        // Redireciona para a página do dashboard após a atualização
+        header('Location: /dashboard/' . $projectId);
+    }
+
+    public static function delete() {
+        $id = $_POST['id'];
+        $projectId = $_POST['project_id'];
+
+        // Chama o método delete da classe Task para excluir a tarefa do banco de dados
+        Task::delete($id);
+
+        // Redireciona para a página do dashboard após a exclusão
+        header('Location: /dashboard/' . $projectId);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\Auth\AuthController;
 use App\Models\Account;
 use App\Models\User;
+use function Core\redirect;
 use function Core\view;
 
 class UserController
@@ -27,7 +28,7 @@ class UserController
         }
 
         if (User::create($name, $email, $password)) {
-            return view('auth/login', ['success' => 'User registered successfully.']);
+            return redirect('/login', ['success' => 'User registered successfully.']);
         } else {
             $errors['error'] = 'Failed to register user.';
             return view('auth/register', ['errors' => $errors]);
@@ -58,7 +59,7 @@ class UserController
         }
 
         AuthController::setUserSession($user);
-        return view('dashboard');
+        header('Location: /');
     }
     private static function validateRegister($name, $email, $password)
     {

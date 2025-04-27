@@ -47,9 +47,10 @@ class AuthController
         ];
     }
 
-    public static function login()
+    public static function login($data)
     {
-        return view('auth/login');
+        $success = $data['success'] ?? null;
+        return view('auth/login', ['success' => $success]);
     }
     
     public static function register()

@@ -53,20 +53,40 @@ class Route {
 
     // Executa a rota, incluindo middlewares e a ação associada.
     public function run() {
-        // Executa middlewares associados.
+        // Recupera e limpa dados de redirecionamento
+        $redirectData = $this->getRedirectData();
+
+        // Executa middlewares
         foreach ($this->middlewares as $middleware) {
-            (new $middleware)->handle(); // Chama o método handle() de cada middleware.
+            (new $middleware)->handle();
         }
 
-        // Injeta os parâmetros extraídos na requisição global.
-        if (!empty($this->parameters)) {
-            $_REQUEST['route_params'] = $this->parameters;
-        }
-        
-        // Executa a ação associada (controlador e método).
+        // Combina parâmetros da rota com dados de redirecionamento
+        $allData = array_merge($this->parameters, $redirectData);
+
+        // Executa o controller
         if (is_array($this->action)) {
-            [$controller, $method] = $this->action; // Divide a ação em controlador e método.
-            return (new $controller)->$method($this->parameters); // Chama o método do controlador.
+            [$controller, $method] = $this->action;
+            return (new $controller)->$method($allData);
         }
+    }
+
+    private function getRedirectData(): array {
+        if (empty($_SESSION['__redirect_data'])) {
+            return [];
+        }
+
+        $data = $_SESSION['__redirect_data'];
+
+        // Verifica expiração
+        if ($data['expires'] < time()) {
+            unset($_SESSION['__redirect_data']);
+            return [];
+        }
+
+        // Remove os dados após consumo
+        unset($_SESSION['__redirect_data']);
+        
+        return $data['data'] ?? [];
     }
 }

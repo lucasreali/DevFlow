@@ -114,16 +114,20 @@ CREATE TABLE documentation(
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (project_id) REFERENCES projects(id)
 );
-CREATE TABLE reunioes (
+
+CREATE TABLE meetings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title TEXT,
     assunto VARCHAR(255) NOT NULL,
-    data_reuniao DATETIME DEFAULT CURRENT_TIMESTAMP
-)
+    data_reuniao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    project_id INT,
+    
+    FOREIGN KEY(project_id) REFERENCES projects(id)
+);
 
-CREATE TABLE participantes_reuniao (
-    id_participantes INT,
-    id_reuniao INT,
-    FOREIGN KEY (id_participantes) REFERENCES users(id),
-    FOREIGN KEY (id_reuniao) REFERENCES users(id)
+CREATE TABLE meeting_participants (
+    participants_id INT,
+    meeting_id INT,
+    FOREIGN KEY (participants_id) REFERENCES users(id),
+    FOREIGN KEY (meeting_id) REFERENCES meetings(id)
 )

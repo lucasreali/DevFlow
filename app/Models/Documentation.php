@@ -9,7 +9,7 @@ class Documentation
     public static function create(string $title, string $content, string $projectId, string $userId): int{
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            INSERT INTO documantation (title, content, project_id, user_id) 
+            INSERT INTO documentation (title, content, project_id, user_id) 
             VALUES (:title, :content, :projectId, :userId);
         ");
         $stmt->bindParam(":title", $title);
@@ -25,7 +25,7 @@ class Documentation
     public static function update(string $id, string $title, string $content): bool {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            UPDATE documantation 
+            UPDATE documentation 
             SET title = :title, content = :content 
             WHERE id = :id;
         ");
@@ -38,7 +38,7 @@ class Documentation
     public static function getAll(string $userId): array{
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT * FROM documantation 
+            SELECT * FROM documentation 
             WHERE user_id = :userId;
         ");
         $stmt->bindParam(":userId", $userId);
@@ -50,7 +50,7 @@ class Documentation
     public static function getById(string $id){
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT * FROM documantation 
+            SELECT * FROM documentation 
             WHERE id = :id;
         ");
         $stmt->bindParam(":id", $id);
@@ -63,7 +63,7 @@ class Documentation
     {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT * FROM documantation 
+            SELECT * FROM documentation 
             WHERE project_id = :projectId;  
             ");
             
@@ -76,7 +76,7 @@ class Documentation
     public static function delete(string $id): bool{
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            DELETE FROM documantation 
+            DELETE FROM documentation 
             WHERE id = :id;
         ");
         $stmt->bindParam(":id", $id);

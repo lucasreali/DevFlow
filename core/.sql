@@ -99,9 +99,11 @@ CREATE TABLE task_labels (
 );
 
 -- Tabela de documentos do projeto
-CREATE TABLE documantation(
+CREATE TABLE documentation(
     id INT AUTO_INCREMENT PRIMARY KEY,
     created_by INT,
+    user_id INT,
+    project_id INT,
 
     title VARCHAR(255),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../core/helpers.php';
 
+use App\Middleware\CsrfMiddleware;
 use Core\Router;
 use Dotenv\Dotenv;
 
@@ -18,6 +19,8 @@ session_start();
 
 // Inicia o buffer de saída para capturar e manipular a saída antes de enviá-la ao navegador
 ob_start();
+
+// CsrfMiddleware::handle();
 
 // Inclui o arquivo de rotas da aplicação
 require_once __DIR__ . '/../routes/web.php';

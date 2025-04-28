@@ -22,10 +22,14 @@ class DocumentationController {
         $projectId = $data["projectId"] ?? null;
         $page = 'documentation';
 
+        if (empty($projectId)) {
+            return redirect('/documentation', ['error' => "Project ID is required", 'page' => $page]);
+        }
+
         $error = self::validateForm($title, $content);
 
         if ($error) {
-            redirect('/documentation/' . $projectId, ['error' => $error, 'page' => $page]);
+            return redirect('/documentation/' . $projectId, ['error' => $error, 'page' => $page]);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -35,7 +39,7 @@ class DocumentationController {
         $userId = $_SESSION['user']['id'] ?? null;
 
         if (!$userId) {
-            redirect('/documentation/' . $projectId, ['error' => "User not authenticated", 'page' => $page]);
+            return redirect('/documentation/' . $projectId, ['error' => "User not authenticated", 'page' => $page]);
         }
 
         $documentationId = Documentation::create($title, $content, $projectId, $userId);

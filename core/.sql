@@ -110,3 +110,16 @@ CREATE TABLE project_docs(
 
     FOREIGN KEY (created_by) REFERENCES users(id)
 );
+CREATE TABLE reunioes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title TEXT,
+    assunto VARCHAR(255) NOT NULL,
+    data_reuniao DATETIME DEFAULT TIMESTAMP
+)
+
+CREATE TABLE participantes_reuniao (
+    id_participantes INT,
+    id_reuniao INT,
+    FOREIGN KEY (id_participantes) REFERENCES users(id)
+    FOREIGN KEY (id_reuniao) REFERENCES users(id)
+)

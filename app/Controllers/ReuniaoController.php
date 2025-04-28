@@ -4,6 +4,14 @@ namespace App\Controllers;
 use App\Models\Reuniao;
 
 class ReuniaoController {
+
+    public static function index()
+    {
+        $reunioes = \App\Models\Reuniao::all();
+        extract(['reunioes' => $reunioes]);
+        require __DIR__ . '/../Views/reunioes.php';
+    }
+
     public static function store()
     {
         $title = $_POST['title'];

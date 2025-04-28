@@ -4,6 +4,33 @@ namespace Core;
 
 class Router {
     public static array $routes = [];
+    private static array $groupStack = [];
+
+    public static function group(array $attributes, \Closure $callback): void {
+        self::$groupStack[] = $attributes;
+        $callback();
+        array_pop(self::$groupStack);
+    }
+
+    private static function applyGroupAttributes(string &$uri, array &$middlewares): void {
+        foreach (self::$groupStack as $group) {
+            // Aplica prefixo
+            if (isset($group['prefix'])) {
+                $uri = trim($group['prefix'], '/') . '/' . trim($uri, '/');
+            }
+
+            // Combina middlewares
+            if (isset($group['middleware'])) {
+                $middlewares = array_merge(
+                    $middlewares,
+                    (array)$group['middleware']
+                );
+            }
+        }
+
+        // Normaliza a URI final
+        $uri = '/' . trim(str_replace('//', '/', $uri), '/');
+    }
 
     public static function get(string $route, callable|array $action): Route {
         return self::registerRoute('GET', $route, $action);
@@ -21,10 +48,21 @@ class Router {
         return self::registerRoute('DELETE', $route, $action);
     }
 
-
     private static function registerRoute(string $method, string $route, callable|array $action): Route {
-        $routeInstance = new Route($action);
-        self::$routes[$method][$route] = $routeInstance;
+        $middlewares = [];
+        $fullRoute = $route;
+        
+        // Aplica atributos dos grupos
+        self::applyGroupAttributes($fullRoute, $middlewares);
+
+        $routeInstance = new Route($fullRoute, $action);
+        
+        // Adiciona middlewares acumulados
+        foreach ($middlewares as $middleware) {
+            $routeInstance->middleware($middleware);
+        }
+
+        self::$routes[$method][$fullRoute] = $routeInstance;
         return $routeInstance;
     }
 
@@ -33,18 +71,13 @@ class Router {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         foreach (self::$routes[$method] ?? [] as $routePattern => $routeInstance) {
-            if (self::uriMatchesRoute($routePattern, $uri)) {
+            if ($routeInstance->matches($uri)) {
+                $routeInstance->bindParameters($uri);
                 return $routeInstance->run();
             }
         }
 
         http_response_code(404);
         return view('404');
-    }
-
-    private static function uriMatchesRoute(string $routePattern, string $uri): bool {
-        // Implementar lógica para tratar parâmetros dinâmicos (ex: /users/{id})
-
-        return $routePattern === $uri;
     }
 }

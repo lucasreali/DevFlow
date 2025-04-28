@@ -47,6 +47,8 @@ CREATE TABLE boards (
     color ENUM('red', 'green', 'blue', 'yellow', 'purple') NOT NULL,
     project_id INT NOT NULL,
 
+    order INT NOT NULL,
+
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -89,17 +91,3 @@ CREATE TABLE task_labels (
     FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
     FOREIGN KEY (label_id) REFERENCES labels(id) ON DELETE CASCADE
 );
-
-CREATE TABLE reunioes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title TEXT,
-    assunto VARCHAR(255) NOT NULL,
-    data_reuniao DATETIME DEFAULT TIMESTAMP
-)
-
-CREATE TABLE participantes_reuniao (
-    id_participantes INT,
-    id_reuniao INT,
-    FOREIGN KEY (id_participantes) REFERENCES users(id)
-    FOREIGN KEY (id_reuniao) REFERENCES users(id)
-)

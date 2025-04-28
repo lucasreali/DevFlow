@@ -77,26 +77,32 @@
 
                                 <!-- DIV DA TASK, EDITAR E DELETAR -->
                                 <div class="card-task">
-                                    <h5><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
+
+                                         <!-- BOTÃO PARA DELETAR A TASK -->
+                                    <div class="d-flex gap-2">
+                                        <form action="/task/delete" method="post">
+                                            <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                        
+                                        </form>
+                                        <!-- BOTÃO PARA EDITAR A TASK -->
+                                        <button
+                                            class="btn-edit-task btn btn-warning"
+                                            data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                            data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
+                                            data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </div>
+
+                                    </div>
                                     <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
 
-                                     <!-- BOTÃO PARA DELETAR A TASK -->
-                                    <form action="/task/delete" method="post">
-                                        <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <button><i class="fa-solid fa-trash"></i></button>
-                                        
-                                    </form>
-
-                                    <!-- BOTÃO PARA EDITAR A TASK -->
-                                    <button 
-                                        class="btn-edit-task" 
-                                        data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
-                                        data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
-                                        data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
-                                    >
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
+                                    
 
                                     
                                 </div>

@@ -36,7 +36,7 @@ class Label {
         }
     }
 
-    public static function updateByUserId($userId, $data)
+    public static function updateByUserId($userId, $title, $color)
     {
         $db = Database::getInstance();
         $stmt = $db->prepare('
@@ -47,8 +47,8 @@ class Label {
             WHERE user_id = :user_id'
         );
         return $stmt->execute([
-            'title' => $data['title'],
-            'color' => $data['color'],
+            'title' => $title,
+            'color' => $color,
             'user_id' => $userId,
         ]);
     }

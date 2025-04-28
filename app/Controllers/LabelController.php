@@ -62,7 +62,7 @@ class LabelController {
             throw new \RuntimeException('User not logged in');
         }
 
-        Label::updateByUserId(userId : $userId, title : $title, color: $color);
+        Label::updateByUserId($userId, $title, $color);
     }
 
 
@@ -81,7 +81,7 @@ class LabelController {
             throw new \RuntimeException('User not logged in');
         }
 
-        Label::findByUserId(userId : $userId);
+        Label::findByUserId($userId);
     }
 }
 

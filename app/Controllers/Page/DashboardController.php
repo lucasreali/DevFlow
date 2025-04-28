@@ -47,6 +47,7 @@ class DashboardController
             'project' => $project,
             'boards' => $boards,
             'otherProjects' => $otherProjects,
+            'page' => 'boards',
         ]);
     }
 }

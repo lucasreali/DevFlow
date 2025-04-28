@@ -13,8 +13,8 @@ class TaskController{
         $title = $_POST['title'];
         $description = $_POST['description'];
         $boardId = $_POST['board_id'];
+        $expiredAt = $_POST['expired_at'];
         $userId = $_SESSION['user']['id']; // ID do usuário que criou a tarefa (assumindo que está na sessão)
-        $expiredAt = null; // Data de expiração (opcional, pode ser nula)
 
         $boardTasks = Task::getAllByBoardId($boardId);
         $position = count($boardTasks) + 1; // Posição da tarefa na lista (incrementa a contagem de tarefas existentes)

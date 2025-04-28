@@ -108,6 +108,10 @@
                                 <label for="taskDescription" class="form-label">Description</label>
                                 <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Describe the task in detail"></textarea>
                             </div>
+                            <div class="mb-3">
+                                <label for="taskExpiredAt" class="form-label">Expiration Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="taskExpiredAt" name="expired_at" required>
+                            </div>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary" id="saveTask">Save Task</button>
                         </form>

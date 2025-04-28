@@ -3,7 +3,7 @@
 use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
-use App\Controllers\DocumantationController;
+use App\Controllers\DocumentationController;
 use App\Controllers\Page\DashboardController;
 use App\Controllers\Page\HomeController;
 use App\Controllers\ProjectController;
@@ -38,12 +38,12 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::get('/dashboard/{projectId}', [DashboardController::class, 'index']);
 
     // Documentation
-    Router::get('/documentation/{projectId}', [DocumantationController::class, 'index']);
-    Router::post('/documentation/{projectId}', [DocumantationController::class, 'store']);
-    Router::get('/documentation/{projectId}/{id}', [DocumantationController::class, 'view']);
+    Router::get('/documentation/{projectId}', [DocumentationController::class, 'index']);
+    Router::post('/documentation/{projectId}', [DocumentationController::class, 'store']);
+    Router::get('/documentation/{projectId}/{id}', [DocumentationController::class, 'view']);
 
-    Router::post('/documentation/update/{projectId}/{id}', [DocumantationController::class, 'update']);
-    Router::post('/documentation/delete/{projectId}/{id}', [DocumantationController::class, 'delete']);
+    Router::post('/documentation/update/{projectId}/{id}', [DocumentationController::class, 'update']);
+    Router::post('/documentation/delete/{projectId}/{id}', [DocumentationController::class, 'delete']);
 
     // Board and Task Management
     Router::post('/board', [BoardController::class, 'store']);

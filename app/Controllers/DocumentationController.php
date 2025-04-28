@@ -6,7 +6,7 @@ use App\Models\Documentation;
 use function Core\view;
 use function Core\redirect;
 
-class DocumantationController {
+class DocumentationController {
     public static function index($data) {
         $projectId = $data['projectId'];
         $page = 'documentation';

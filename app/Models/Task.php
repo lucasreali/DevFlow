@@ -1,32 +1,72 @@
 <?php 
 namespace App\Models;
 
-use Core\Database; // importar a classe Database
+use Core\Database;
 
 class Task 
 {
+    // Criando a função para inserir
+    public static function create($title, $description, $boardId, $userId, $expiredAt, $position) {
+        $db = Database::getInstance();
 
- //criando a function para inserir
-    public static function create($title, $description, $boardId, $createdBy, $expiredAt) {
-        $db = Database::getInstance(); //pega  a instância do banco de dados (tabela) 
-
-        $stmt = $db->prepare( //preparando a query
-         "INSERT INTO tasks (title, description, board_id, created_by, expired_at) VALUES (:title, :description, :board_id, :created_by, :expired_at, NOW(), NOW())"
+        $stmt = $db->prepare(
+            "INSERT INTO tasks (title, description, board_id, user_id, expired_at, position) 
+             VALUES (:title, :description, :board_id, :user_id, :expired_at, :position)"
         );
 
-// Executa a consulta SQL (query) no banco de dados, inserindo os valores fornecidos
-$stmt->execute([
-    'title' => $title,        // Insere o título fornecido
-    'description' => $description,  // Insere a descrição fornecida
-    'board_id' => $boardId,  // Insere o ID do quadro/board fornecido
-    'created_by' => $createdBy,  
-    'expired_at' => $expiredAt // Insere a data de expiração fornecida
-]);
+        $stmt->execute([
+            'title' => $title,
+            'description' => $description,
+            'board_id' => $boardId,
+            'user_id' => $userId,
+            'expired_at' => $expiredAt,
+            'position' => $position
+        ]);
 
-    //Retorna o ID que foi automaticamente gerado pelo banco de dados
-    //para o último registro inserido (normalmente usado quando a tabela tem uma coluna auto-incremento)
-    return $db->lastInsertId();
-    } 
+        return $db->lastInsertId();
+    }
 
+    // Criando a função para buscar todas as tarefas
+    public static function getAllByBoardId($boardId){
+        $db = Database::getInstance();
 
+        $stmt = $db->prepare(
+            "SELECT * FROM tasks 
+             WHERE board_id = :board_id 
+             ORDER BY position ASC"
+        );
+        $stmt->execute(['board_id' => $boardId]);
+        return $stmt->fetchAll();
+    }
+
+    // Criando a função para buscar uma tarefa por ID
+    public static function getById($id) {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("SELECT * FROM tasks WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
+
+    // Criando a função para atualizar uma tarefa
+    public static function update($id, $title, $description, $expiredAt) {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("UPDATE tasks SET title = :title, description = :description, expired_at = :expired_at WHERE id = :id");
+
+        return $stmt->execute([
+            'id' => $id,
+            'title' => $title,
+            'description' => $description,
+            'expired_at' => $expiredAt
+        ]);
+    }
+
+    // Criando a função para excluir uma tarefa
+    public static function delete($id) {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("DELETE FROM tasks WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    }
 }

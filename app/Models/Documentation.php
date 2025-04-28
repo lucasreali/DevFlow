@@ -9,7 +9,7 @@ class Documentation
     public static function create(string $title, string $content, string $projectId, string $userId): int{
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            INSERT INTO project_docs (title, content, project_id, created_by) 
+            INSERT INTO project_docs (title, content, project_id, user_id) 
             VALUES (:title, :content, :projectId, :userId);
         ");
         $stmt->bindParam(":title", $title);
@@ -39,7 +39,7 @@ class Documentation
         $db = Database::getInstance();
         $stmt = $db->prepare("
             SELECT * FROM project_docs 
-            WHERE created_by = :userId;
+            WHERE user_id = :userId;
         ");
         $stmt->bindParam(":userId", $userId);
         $stmt->execute();
@@ -58,6 +58,21 @@ class Documentation
 
         return $stmt->fetchAll();
     }
+
+    public static function getAllByProjectId($projectId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT * FROM project_docs 
+            WHERE project_id = :projectId;  
+            ");
+            
+        $stmt->bindParam(":projectId", $projectId);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public static function delete(string $id): bool{
         $db = Database::getInstance();
         $stmt = $db->prepare("

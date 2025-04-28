@@ -18,7 +18,7 @@ class GuestMiddleware
         }
 
         if (isset($_SESSION['user'])) {
-            header('Location: /dashboard');
+            header('Location: /');
             exit();
         }
     }

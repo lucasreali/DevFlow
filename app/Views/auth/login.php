@@ -36,15 +36,6 @@
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
             </form>
 
-            <div class="d-flex flex-column justify-content-center align-items-center gap-2 w-100 mt-2">
-                <span>or</span>
-                <form action="/github" method="post" class="w-100">
-                    <button class="btn btn-secondary w-100">
-                        <i class="fa-brands fa-github"></i> Sign in with GitHub
-                    </button>
-                </form>
-            </div>
-
             <a href="/register" class="align-self-center mt-2">I don't have an account</a>
         </div>
     </div>

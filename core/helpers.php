@@ -21,3 +21,15 @@ function view(string $viewName, array $data = []) {
     // Isso permite capturar o conteúdo gerado pela view como uma string
     return ob_get_clean();
 }
+
+function redirect(string $route, array $data = []): never {
+    // Armazena os dados na sessão
+    $_SESSION['__redirect_data'] = [
+        'data' => $data,
+        'expires' => time() + 30 // Expira em 30 segundos
+    ];
+    
+    // Redireciona para a rota
+    header("Location: $route");
+    exit();
+}

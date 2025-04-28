@@ -42,11 +42,7 @@ class BoardController
         }
 
         $boards = Board::getAll($projectId);
-        foreach ($boards as $board) {
-            if ($board['title'] === $title) {
-                throw new \RuntimeException('Board with this title already exists');
-            }
-        }
+        
 
         $position = count($boards) + 1;
             
@@ -56,7 +52,8 @@ class BoardController
         if ($boardId === false) {
             throw new \RuntimeException('Failed to create board');
         }
-        header('Location: /dashboard');
+
+        header('Location: /dashboard/' . $projectId);
         exit;
     }
 

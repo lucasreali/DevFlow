@@ -1,53 +1,51 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\Documentation;
 use function Core\view;
+use function Core\redirect;
 
-class DocsController{
-    public static function store(){
+class DocsController {
+    public static function index($data) {
+        $projectId = $data['projectId'];
+
+        $docs = Documentation::getAllByProjectId($projectId);
+
+        return view('documentation', ['projectId' => $projectId, 'docs' => $docs]);
+    }
+
+    public static function store(array $data) {
         $title = $_POST["title"] ?? '';
         $content = $_POST["content"] ?? '';
+        $projectId = $data["projectId"] ?? null;
 
-        $error = self::validateForm($title,$content);
+        $error = self::validateForm($title, $content);
 
-        if($error)
-        {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $userId = $_SESSION['user']['id'] ?? null;
-            $docs = $userId ? Documentation::getAll($userId) : [];
-            return view('documentation', ['error' => $error, 'docs' => $docs]);
+        if ($error) {
+            redirect('/documentation/' . $projectId, ['error' => $error]);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-
         $userId = $_SESSION['user']['id'] ?? null;
 
-        if(!$userId){
-            return view('documentation', ['error' => "User not found: $userId"]);
+        if (!$userId) {
+            redirect('/documentation/' . $projectId, ['error' => "User not authenticated"]);
         }
-            
-        $projectId = 1;
 
+        $documentationId = Documentation::create($title, $content, $projectId, $userId);
 
-        if(Documentation::create($title, $content, $projectId, $userId)) {
-            $docs = Documentation::getAll($userId);
-            return view('documentation', ['success' => 'Document created successfully.', 'docs' => $docs]);
+        if ($documentationId) {
+            return redirect('/documentation/' . $projectId, ['success' => 'Document created successfully.']);
         } else {
-            throw new \Exception('Failed to create document.');
-
+            return redirect('/documentation/' . $projectId, ['error' => 'Failed to create document.']);
         }
-
-
     }
 
-    public static function validateForm($title, $content)
-    {
+    public static function validateForm($title, $content) {
         $error = [];
         if (empty($title)) {
             $error['title'] = "Title is required";
@@ -60,93 +58,45 @@ class DocsController{
         return !empty($error) ? implode(", ", $error) : null;
     }
 
-
-    public static function showDocs()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
+    public static function view($data) {
+        $id = $data['id'];
         $userId = $_SESSION['user']['id'] ?? null;
 
-        if(!$userId){
-            return view('documentation', ['error' => "User not authenticated", 'docs' => []]);
-        }
-
-        $docs = Documentation::getAll($userId);
-
-        return view('documentation', ['docs' => $docs]);
-    }
-
-    public static function viewDoc()
-    {
-        $id = $_GET['id'] ?? null;
         if (!$id) {
-            return view('documentation', ['error' => "Document ID is required"]);
+            return redirect('/documentation/' , ['error' => "Document ID is required"]);
         }
-        
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        $userId = $_SESSION['user']['id'] ?? null;
-        
-        if(!$userId) {
+        if (!$userId) {
             return view('documentation', ['error' => "User not authenticated"]);
         }
-        
+
         $doc = Documentation::getById($id);
-        
+
         if (empty($doc)) {
             return view('documentation', ['error' => "Document not found"]);
         }
-        
-        return view('documentation_view', ['doc' => $doc[0]]);
+
+        return view('documentation_view', ['doc' => $doc]);
     }
 
-    public static function editForm()
-    {
-        $id = $_GET["id"] ?? null;
-
-        if (!$id) {
-            return view('documentation', ['error' => "Document ID is required"]);
-        }
-
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $userId = $_SESSION['user']['id'] ?? null;
-        
-        if(!$userId) {
-            return view('documentation', ['error' => "User not authenticated"]);
-        }
-        
-        $doc = Documentation::getById($id);
-        
-        if (empty($doc)) {
-            return view('documentation', ['error' => "Document not found"]);
-        }
-        
-        return view('documentation_edit', ['doc' => $doc[0]]);
-    }
-
-    public static function updateDoc()
-    {
-
-        $id = $_GET['id'] ?? null;
-
-        if (!$id) {
-            return view('documentation', ['error' => "Document ID is required"]);
-        }
-
+    public static function update($data) {
+        $id = $data['id'];;
+        $projectId = $data['projectid'];
         $title = $_POST["title"] ?? '';
         $content = $_POST["content"] ?? '';
 
+        if (!$id) {
+            return redirect('/documentation/' . $projectId, ['error' => "Document ID is required"]);
+        }
+
         $error = self::validateForm($title, $content);
 
-        if($error) {
-            return view('documentation_edit', ['error' => $error, 'doc' => ['id' => $id, 'title' => $title, 'content' => $content]]);
+        if ($error) {
+            return redirect('/documentation/' . $projectId, ['error' => $error]);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -155,41 +105,42 @@ class DocsController{
 
         $userId = $_SESSION['user']['id'] ?? null;
 
-        if(!$userId) {
-            return view('documentation', ['error' => "User not authenticated"]);
+        if (!$userId) {
+            return redirect('/documentation/' . $projectId, ['error' => "User not authenticated"]);
         }
-            
-        $projectId = 1; // This should be dynamically set based on your app's context
 
         try {
             Documentation::update($id, $title, $content);
-            return self::showDocs();
+            return redirect('/documentation/' . $projectId, ['success' => 'Document updated successfully.']);
         } catch (\Exception $e) {
-            return view('documentation_edit', ['error' => "Failed to update document: " . $e->getMessage()]);
+            return redirect('/documentation/' . $projectId, ['error' => "Failed to update document: " . $e->getMessage()]);
         }
     }
 
-    public static function deleteDoc()
-    {
-        $id = $_GET["id"] ?? null;
+    public static function delete($data) {
+        $projectId  = $data['projectId'];
+        $id = $data['id'];
+
         if (!$id) {
-            return view('documentation', ['error' => "Document ID is required"]);
+            return redirect('/documentation/' . $projectId, ['error' => "Document ID is required"]);
         }
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
         $userId = $_SESSION['user']['id'] ?? null;
-        
-        if(!$userId) {
-            return view('documentation', ['error' => "User not authenticated"]);
+
+        if (!$userId) {
+            return redirect('/documentation/' . $projectId, ['error' => "User not authenticated"]);
         }
-        
+
         try {
             Documentation::delete($id);
-            return self::showDocs();
+            return redirect('/documentation/' . $projectId, ['success' => 'Document deleted successfully.']);
         } catch (\Exception $e) {
-            return view('documentation', ['error' => "Failed to delete document: " . $e->getMessage()]);
+            return redirect('/documentation/' . $projectId, ['error' => "Failed to delete document: " . $e->getMessage()]);
         }
     }
+
 }

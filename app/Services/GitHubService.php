@@ -2,15 +2,23 @@
 
 namespace App\Services;
 
-
 class GitHubService
 {
-    private static function request($endpoint)
+    private static function getUserId()
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (!isset($_SESSION['user']['username'])) {
             throw new \Exception("Error: GitHub user not found in session");
         }
 
+        return $_SESSION['user']['username'];
+    }
+
+    private static function request($endpoint)
+    {
         $access_token = $_SESSION['user']['access_token'] ?? null;
         $url = "https://api.github.com/$endpoint";
 
@@ -42,37 +50,31 @@ class GitHubService
 
     public static function getRepositories()
     {
-        $username = $_SESSION['user']['username'];
-        return self::request("users/$username/repos");
+        return self::request("users/" . self::getUserId() . "/repos");
     }
 
     public static function getRepository($repo)
     {
-        $username = $_SESSION['user']['username'];
-        return self::request("repos/$username/$repo");
+        return self::request("repos/" . self::getUserId() . "/$repo");
     }
 
     public static function getBranches($repo)
     {
-        $username = $_SESSION['user']['username'];
-        return self::request("repos/$username/$repo/branches");
+        return self::request("repos/" . self::getUserId() . "/$repo/branches");
     }
 
     public static function getCommits($repo)
     {
-        $username = $_SESSION['user']['username'];
-        return self::request("repos/$username/$repo/commits");
+        return self::request("repos/" . self::getUserId() . "/$repo/commits");
     }
 
     public static function getContributors($repo)
     {
-        $username = $_SESSION['user']['username'];
-        return self::request("repos/$username/$repo/contributors");
+        return self::request("repos/" . self::getUserId() . "/$repo/contributors");
     }
 
     public static function getPullRequests($repo)
     {
-        $username = $_SESSION['user']['username'];
-        return self::request("repos/$username/$repo/pulls");
+        return self::request("repos/" . self::getUserId() . "/$repo/pulls");
     }
 }

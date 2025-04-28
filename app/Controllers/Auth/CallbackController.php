@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Auth;
 
-use App\Controllers\AccountController;
+use App\Controllers\Auth\AccountController;
 use Dotenv\Dotenv;
 
 class CallbackController

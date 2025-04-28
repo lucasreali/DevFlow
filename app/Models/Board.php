@@ -36,5 +36,17 @@ class Board
 
         return $stmt->fetchAll();
     }
+
+    public static function getById($id)
+    {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('
+            SELECT * FROM boards WHERE id = :id
+        ');
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetch();
+    }
     
 }

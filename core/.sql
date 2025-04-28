@@ -99,7 +99,7 @@ CREATE TABLE task_labels (
 );
 
 -- Tabela de documentos do projeto
-CREATE TABLE project_docs(
+CREATE TABLE documantation(
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     project_id INT,
@@ -111,6 +111,5 @@ CREATE TABLE project_docs(
 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (project_id) REFERENCES projects(id)
-
 );
 

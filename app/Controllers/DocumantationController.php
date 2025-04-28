@@ -6,7 +6,7 @@ use App\Models\Documentation;
 use function Core\view;
 use function Core\redirect;
 
-class DocsController {
+class DocumantationController {
     public static function index($data) {
         $projectId = $data['projectId'];
 
@@ -58,34 +58,8 @@ class DocsController {
         return !empty($error) ? implode(", ", $error) : null;
     }
 
-    public static function view($data) {
-        $id = $data['id'];
-        $projectId = $data['projectId'] ?? null;
-        $userId = $_SESSION['user']['id'] ?? null;
-
-        if (!$id) {
-            return redirect('/documentation/' , ['error' => "Document ID is required"]);
-        }
-
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!$userId) {
-            return view('documentation', ['error' => "User not authenticated"]);
-        }
-
-        $doc = Documentation::getById($id);
-
-        if (empty($doc)) {
-            return view('documentation', ['error' => "Document not found"]);
-        }
-
-        return view('documentation_view', ['doc' => $doc, 'projectId' => $projectId]);
-    }
-
     public static function update($data) {
-        $id = $data['id'];;
+        $id = $data['id'];
         $projectId = $data['projectId'];
         $title = $_POST["title"] ?? '';
         $content = $_POST["content"] ?? '';
@@ -108,6 +82,16 @@ class DocsController {
 
         if (!$userId) {
             return redirect('/documentation/' . $projectId, ['error' => "User not authenticated"]);
+        }
+
+        $doc = Documentation::getById($id);
+
+        if (empty($doc)) {
+            return redirect('/documentation/' . $projectId, ['error' => "Document not found"]);
+        }
+
+        if ($doc['project_id'] != $projectId) {
+            return redirect('/documentation/' . $projectId, ['error' => "Document does not belong to the specified project"]);
         }
 
         try {
@@ -134,6 +118,16 @@ class DocsController {
 
         if (!$userId) {
             return redirect('/documentation/' . $projectId, ['error' => "User not authenticated"]);
+        }
+
+        $doc = Documentation::getById($id);
+
+        if (empty($doc)) {
+            return redirect('/documentation/' . $projectId, ['error' => "Document not found"]);
+        }
+
+        if ($doc['project_id'] != $projectId) {
+            return redirect('/documentation/' . $projectId, ['error' => "Document does not belong to the specified project"]);
         }
 
         try {

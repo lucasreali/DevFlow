@@ -85,7 +85,7 @@ class DocsController {
 
     public static function update($data) {
         $id = $data['id'];;
-        $projectId = $data['projectid'];
+        $projectId = $data['projectId'];
         $title = $_POST["title"] ?? '';
         $content = $_POST["content"] ?? '';
 

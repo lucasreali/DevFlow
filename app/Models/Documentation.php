@@ -47,7 +47,7 @@ class Documentation
         return $stmt->fetchAll();
     }
     
-    public static function getById(string $id): array{
+    public static function getById(string $id){
         $db = Database::getInstance();
         $stmt = $db->prepare("
             SELECT * FROM project_docs 
@@ -56,7 +56,7 @@ class Documentation
         $stmt->bindParam(":id", $id);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetch();
     }
 
     public static function getAllByProjectId($projectId)

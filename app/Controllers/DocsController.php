@@ -60,6 +60,7 @@ class DocsController {
 
     public static function view($data) {
         $id = $data['id'];
+        $projectId = $data['projectId'] ?? null;
         $userId = $_SESSION['user']['id'] ?? null;
 
         if (!$id) {
@@ -80,7 +81,7 @@ class DocsController {
             return view('documentation', ['error' => "Document not found"]);
         }
 
-        return view('documentation_view', ['doc' => $doc]);
+        return view('documentation_view', ['doc' => $doc, 'projectId' => $projectId]);
     }
 
     public static function update($data) {

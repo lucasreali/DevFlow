@@ -79,8 +79,12 @@ CREATE TABLE labels (
     title VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
 
+    project_id INT NOT NULL,
+
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
 -- Tabela de associação entre tarefas e rótulos

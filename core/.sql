@@ -99,7 +99,7 @@ CREATE TABLE task_labels (
 );
 
 -- Tabela de documentos do projeto
-CREATE TABLE project_docs(
+CREATE TABLE documantation(
     id INT AUTO_INCREMENT PRIMARY KEY,
     created_by INT,
 
@@ -108,18 +108,20 @@ CREATE TABLE project_docs(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     content TEXT,
 
-    FOREIGN KEY (created_by) REFERENCES users(id)
+
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (project_id) REFERENCES projects(id)
 );
 CREATE TABLE reunioes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title TEXT,
     assunto VARCHAR(255) NOT NULL,
-    data_reuniao DATETIME DEFAULT TIMESTAMP
+    data_reuniao DATETIME DEFAULT CURRENT_TIMESTAMP
 )
 
 CREATE TABLE participantes_reuniao (
     id_participantes INT,
     id_reuniao INT,
-    FOREIGN KEY (id_participantes) REFERENCES users(id)
+    FOREIGN KEY (id_participantes) REFERENCES users(id),
     FOREIGN KEY (id_reuniao) REFERENCES users(id)
 )

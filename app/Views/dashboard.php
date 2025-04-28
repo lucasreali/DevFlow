@@ -6,6 +6,11 @@
         </a>
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
             <li>
+                <button class="btn btn-secondary menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Boards">
+                    <i class="fa-brands fa-trello"></i>
+                </button>
+            </li>
+            <li>
                 <button class="btn menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Collaborators">
                     <i class="fa-solid fa-users"></i>
                 </button>

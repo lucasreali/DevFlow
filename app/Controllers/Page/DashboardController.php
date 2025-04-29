@@ -15,6 +15,12 @@ class DashboardController
         $projectId = $params['projectId'] ?? null;
     
         $project = Project::getById($projectId);
+
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if ($project['user_id'] !== $userId) {
+            header('Location: /');
+        }
         
         $labels = Label::getByProjectId($projectId);
         $availableLabels = Label::getAllByProjectId($projectId);

@@ -5,17 +5,16 @@ use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
 use App\Controllers\DocumentationController;
 use App\Controllers\LabelController;
+use App\Controllers\MeetingController;
 use App\Controllers\Page\DashboardController;
 use App\Controllers\Page\HomeController;
 use App\Controllers\ProjectController;
 use App\Controllers\TaskController;
+use App\Controllers\TaskLabelsController;
 use App\Controllers\UserController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use Core\Router;
-
-
-
 
 Router::get('/callback', [CallbackController::class, 'handle']);
 Router::post('/github', [AuthController::class, 'github']);
@@ -34,7 +33,6 @@ Router::group(['middleware' => GuestMiddleware::class], function() {
 Router::group(['middleware' => AuthMiddleware::class], function() {
     // Home
     Router::get('/', [HomeController::class, 'index']);
-
     Router::post('/logout', [AuthController::class, 'logout']);
     Router::get('/dashboard/{projectId}', [DashboardController::class, 'index']);
 
@@ -42,15 +40,15 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::get('/documentation/{projectId}', [DocumentationController::class, 'index']);
     Router::post('/documentation/{projectId}', [DocumentationController::class, 'store']);
     Router::get('/documentation/{projectId}/{id}', [DocumentationController::class, 'view']);
-
-    Router::post('/documentation/update/{projectId}/{id}', [DocumentationController::class, 'update']);
-    Router::post('/documentation/delete/{projectId}/{id}', [DocumentationController::class, 'delete']);
+    Router::post('/documentation/update/{projectId}/{id}',[DocumentationController::class, 'update']);
+    Router::post('/documentation/delete/{projectId}/{id}',[DocumentationController::class, 'delete']);
 
     // Board and Task Management
     Router::post('/board', [BoardController::class, 'store']);
     Router::post('/task', [TaskController::class, 'store']);
-    Router:: post('/task/update', [TaskController::class, 'update']);
+    Router::post('/task/update', [TaskController::class, 'update']);
     Router::post('/task/delete', [TaskController::class, 'delete']);
+    Router::post('/task-labels/delete', [TaskLabelsController::class, 'delete']);
 
     // Project Management
     Router::post('/project', [ProjectController::class, 'store']);
@@ -59,17 +57,15 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
 
     // Label
     Router::post("/label/{projectId}", [LabelController::class, 'store']);
+    Router::post("/label/update/{projectId}", [LabelController::class, 'update']);
+    Router::post("/label/delete/{projectId}", [LabelController::class, 'delete']);
+
+    // Meeting routes
+    Router::get('/meetings', [MeetingController::class, 'index']);
+    Router::post('/meetings', [MeetingController::class, 'store']);
+    Router::post('/meetings/update', [MeetingController::class, 'update']);
+    Router::post('/meetings/delete', [MeetingController::class, 'delete']);
 });
 
-Router::get('/reuniao', [\App\Controllers\ReuniaoController::class, 'index']);
-
-Router::post('/reuniao', [\App\Controllers\ReuniaoController::class, 'store']);
-
-Router::post('/reuniao/update', [\App\Controllers\ReuniaoController::class, 'update']);
-
-Router::get('/reuniao/edit', [\App\Controllers\ReuniaoController::class, 'edit']);
-
-Router::get('/reuniao/delete', [\App\Controllers\ReuniaoController::class, 'delete']);
-
-
 // Public Routes
+Router::get('/reuniao/delete', [\App\Controllers\ReuniaoController::class, 'delete']);

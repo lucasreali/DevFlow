@@ -1,29 +1,60 @@
 <?php
 
-namespace App\Models;
+namespace App\Controllers;
 
+use App\Models\TaskLabels;
 
 class TaskLabelsController
 {
-    public static function create()
+    public function create()
     {
-        $labelId = $_POST['label_id'];
-        $taskId = $_POST['task_id'];
+        $labelId = $_POST['label_id'] ?? null;
+        $taskId = $_POST['task_id'] ?? null;
+        $projectId = $_POST['project_id'] ?? null;
+        
+        if (!$labelId || !$taskId) {
+            throw new \InvalidArgumentException('Label ID and Task ID are required');
+        }
 
-        TaskLabels::create($labelId, $taskId);
-
-        header('Location: /dashboard/' . $taskId);
+        if (TaskLabels::create($labelId, $taskId)) {
+            header('Location: /dashboard/' . $projectId);
+            exit;
+        } else {
+            throw new \RuntimeException('Failed to assign label to task');
+        }
     }
 
-    public static function delete()
+    public function delete()
     {
-        $taskId = $_POST['task_id'];
-        $labelId = $_POST['label_id'];
+        $labelId = $_POST['label_id'] ?? null;
+        $taskId = $_POST['task_id'] ?? null;
+        $projectId = $_POST['project_id'] ?? null;
+        
+        if (!$labelId || !$taskId) {
+            throw new \InvalidArgumentException('Label ID and Task ID are required');
+        }
 
-        TaskLabels::deleteByTaskId($taskId, $labelId);
-
-        header('Location: /dashboard/' . $taskId);
+        if (TaskLabels::deleteByTaskId($taskId, $labelId)) {
+            header('Location: /dashboard/' . $projectId);
+            exit;
+        } else {
+            throw new \RuntimeException('Failed to remove label from task');
+        }
     }
-
-
+    
+    public function getByTaskId($data)
+    {
+        $taskId = $data['taskId'] ?? null;
+        
+        if (!$taskId) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Task ID is required']);
+            return;
+        }
+        
+        $labels = TaskLabels::getByTaskId($taskId);
+        
+        header('Content-Type: application/json');
+        echo json_encode(['labels' => $labels]);
+    }
 }

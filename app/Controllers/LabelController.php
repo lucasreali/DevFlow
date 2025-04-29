@@ -38,12 +38,17 @@ class LabelController {
         header('Location: /dashboard/' . $projectId);
     } 
 
-    public function update() {
-        $userId = $_GET['user_id'];
-        $title = $_POST['title'];
-        $color = $_POST['color'];
+    public function update($data) {
+        $projectId = $data['projectId'];
+        $labelId = $_POST['label_id'] ?? null;
+        $title = $_POST['title'] ?? '';
+        $color = $_POST['color'] ?? '';
 
-        $allowedColors = ['red', 'green', 'blue', 'yellow', 'purple'];
+        if (!$labelId) {
+            throw new \InvalidArgumentException('Label ID is required');
+        }
+
+        $allowedColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
         if (!in_array($color, $allowedColors)) {
             throw new \InvalidArgumentException('Invalid color');
         }
@@ -56,32 +61,44 @@ class LabelController {
             session_start();
         }
 
-        $userId = $_SESSION['user']['id'];
+        $userId = $_SESSION['user']['id'] ?? null;
 
-        if ($userId === null) {
+        if (!$userId) {
             throw new \RuntimeException('User not logged in');
         }
 
-        Label::updateByUserId($userId, $title, $color);
+        if (Label::update($labelId, $title, $color)) {
+            header('Location: /dashboard/' . $projectId);
+            exit;
+        } else {
+            throw new \RuntimeException('Failed to update label');
+        }
     }
 
+    public function delete($data) {
+        $projectId = $data['projectId'];
+        $labelId = $_POST['label_id'] ?? null;
 
-    public function findByUserId() {
-        $userId = $_GET['user_id'];
+        if (!$labelId) {
+            throw new \InvalidArgumentException('Label ID is required');
+        }
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        $userId = $_SESSION['user']['id'];
+        $userId = $_SESSION['user']['id'] ?? null;
 
-        echo $userId;
-
-        if ($userId === null) {
+        if (!$userId) {
             throw new \RuntimeException('User not logged in');
         }
 
-        Label::findByUserId($userId);
+        if (Label::delete($labelId)) {
+            header('Location: /dashboard/' . $projectId);
+            exit;
+        } else {
+            throw new \RuntimeException('Failed to delete label');
+        }
     }
 }
 

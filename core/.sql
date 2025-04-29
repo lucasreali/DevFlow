@@ -111,8 +111,8 @@ CREATE TABLE documentation(
     content TEXT,
 
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (project_id) REFERENCES projects(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
 CREATE TABLE meetings (
@@ -121,7 +121,7 @@ CREATE TABLE meetings (
     assunto VARCHAR(255) NOT NULL,
     data_reuniao DATETIME DEFAULT CURRENT_TIMESTAMP,
     project_id INT,
-    
+
     FOREIGN KEY(project_id) REFERENCES projects(id)
 );
 

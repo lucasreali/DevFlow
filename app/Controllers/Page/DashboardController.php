@@ -17,6 +17,7 @@ class DashboardController
         $project = Project::getById($projectId);
         
         $labels = Label::getByProjectId($projectId);
+        $availableLabels = Label::getAllByProjectId($projectId);
         
         $boards = Board::getAll($projectId);
         
@@ -46,6 +47,7 @@ class DashboardController
             'otherProjects' => $otherProjects,
             'page' => 'boards',
             'labels' => $labels,
+            'availableLabels' => $availableLabels,
         ]);
     }
 }

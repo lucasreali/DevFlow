@@ -69,6 +69,108 @@ class Label {
             'user_id' => $userId,
         ]);
     }
-
+    
+    /**
+     * Get all available labels for a project
+     */
+    public static function getAllByProjectId($projectId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            SELECT id, title, color 
+            FROM labels 
+            WHERE project_id = :project_id
+        ');
+        $stmt->execute(['project_id' => $projectId]);
+        return $stmt->fetchAll();
+    }
+    
+    /**
+     * Get labels assigned to a specific task
+     */
+    public static function getByTaskId($taskId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            SELECT labels.id, labels.title, labels.color
+            FROM labels
+            INNER JOIN task_labels ON labels.id = task_labels.label_id
+            WHERE task_labels.task_id = :task_id
+        ');
+        $stmt->execute(['task_id' => $taskId]);
+        return $stmt->fetchAll();
+    }
+    
+    /**
+     * Get IDs of labels assigned to a task
+     */
+    public static function getLabelIdsByTaskId($taskId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            SELECT label_id
+            FROM task_labels
+            WHERE task_id = :task_id
+        ');
+        $stmt->execute(['task_id' => $taskId]);
+        return array_column($stmt->fetchAll(), 'label_id');
+    }
+    
+    /**
+     * Assign a label to a task
+     */
+    public static function assignToTask($taskId, $labelId)
+    {
+        $db = Database::getInstance();
+        
+        // Check if relation already exists
+        $checkStmt = $db->prepare('
+            SELECT COUNT(*) FROM task_labels 
+            WHERE task_id = :task_id AND label_id = :label_id
+        ');
+        $checkStmt->execute([
+            'task_id' => $taskId,
+            'label_id' => $labelId
+        ]);
+        
+        if ($checkStmt->fetchColumn() > 0) {
+            return true; // Label already assigned
+        }
+        
+        $stmt = $db->prepare('
+            INSERT INTO task_labels (task_id, label_id) 
+            VALUES (:task_id, :label_id)
+        ');
+        return $stmt->execute([
+            'task_id' => $taskId,
+            'label_id' => $labelId
+        ]);
+    }
+    
+    /**
+     * Remove a label from a task
+     */
+    public static function removeFromTask($taskId, $labelId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            DELETE FROM task_labels 
+            WHERE task_id = :task_id AND label_id = :label_id
+        ');
+        return $stmt->execute([
+            'task_id' => $taskId,
+            'label_id' => $labelId
+        ]);
+    }
+    
+    /**
+     * Remove all labels from a task
+     */
+    public static function removeAllFromTask($taskId)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('DELETE FROM task_labels WHERE task_id = :task_id');
+        return $stmt->execute(['task_id' => $taskId]);
+    }
 }
 

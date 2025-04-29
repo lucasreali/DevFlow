@@ -1,14 +1,13 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
 use App\Models\Board;
+use App\Models\Label;
 use App\Models\Task;
-use function Core\view;
 
-
-
-class TaskController{
+class TaskController
+{
     public static function store() {
         $title = $_POST['title'];
         $description = $_POST['description'];
@@ -36,18 +35,24 @@ class TaskController{
         header('Location: /dashboard/' . $projectId);
     } 
 
-    public static function update(){
+    public function update()
+    {
         $id = $_POST['id'];
         $title = $_POST['title'];
         $description = $_POST['description'];
-        $projectId = $_POST['project_id'];
-        $expiredAt = null; // Data de expiração (opcional, pode ser nula)
+        $expired_at = $_POST['expired_at'];
+        $project_id = $_POST['project_id'];
+        $labelIds = $_POST['labels'] ?? [];
 
-        // Chama o método update da classe Task para atualizar a tarefa no banco de dados
-        Task::update($id, $title, $description, $expiredAt);
+        Task::update($id, $title, $description, $expired_at);
+        
+        // Update task labels
+        Label::removeAllFromTask($id);
+        foreach ($labelIds as $labelId) {
+            Label::assignToTask($id, $labelId);
+        }
 
-        // Redireciona para a página do dashboard após a atualização
-        header('Location: /dashboard/' . $projectId);
+        header('Location: /dashboard/' . $project_id);
     }
 
     public static function delete() {

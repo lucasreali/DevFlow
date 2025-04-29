@@ -45,44 +45,47 @@
                             <?php foreach ($board['tasks'] as $task): ?>
 
                                 <!-- DIV DA TASK, EDITAR E DELETAR -->
-                                <div class="card-task">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h5><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
-
-                                        <!-- BOTÃO PARA DELETAR A TASK -->
+                                <div class="card-task card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="m-0"><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
                                         <div class="d-flex gap-2">
                                             <form action="/task/delete" method="post">
                                                 <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
                                                 <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
                                                 <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                                             </form>
-                                            <!-- BOTÃO PARA EDITAR A TASK -->
                                             <button
                                                 class="btn-edit-task btn btn-warning"
                                                 data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
                                                 data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
                                                 data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
+                                                data-expired-at="<?= htmlspecialchars($task['expired_at'], ENT_QUOTES, 'UTF-8') ?>"
                                             >
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-                                    <div class="mt-2">
-                                        <?php foreach ($labels as $label): ?>
-                                            <?php if ($label['task_id'] === $task['id']): ?>
-                                                <?php 
-                                                    $labelColor = $label['color'] ?? ''; 
-                                                    $labelTitle = $label['title'] ?? 'Untitled Label';
-                                                ?>
-                                                <span class="badge" 
-                                                      style="background-color: var(--<?= htmlspecialchars($labelColor, ENT_QUOTES, 'UTF-8') ?>-bg); 
-                                                             color: var(--<?= htmlspecialchars($labelColor, ENT_QUOTES, 'UTF-8') ?>-text);">
-                                                    <?= htmlspecialchars($labelTitle, ENT_QUOTES, 'UTF-8') ?>
-                                                </span>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                    <div class="card-body">
+                                        <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                                        <div class="mt-2">
+                                            <?php foreach ($labels as $label): ?>
+                                                <?php if ($label['task_id'] === $task['id']): ?>
+                                                    <?php 
+                                                        $labelColor = $label['color'] ?? ''; 
+                                                        $labelTitle = $label['title'] ?? 'Untitled Label';
+                                                    ?>
+                                                    <span class="badge" 
+                                                          style="background-color: var(--<?= htmlspecialchars($labelColor, ENT_QUOTES, 'UTF-8') ?>-bg); 
+                                                                   color: var(--<?= htmlspecialchars($labelColor, ENT_QUOTES, 'UTF-8') ?>-text);">
+                                                        <?= htmlspecialchars($labelTitle, ENT_QUOTES, 'UTF-8') ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         </div>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        Expiration: <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
                                 </div> <!-- Fechando a div card-task -->
 
 
@@ -187,12 +190,45 @@
                             <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
                             <div class="mb-3">
                                 <label for="editTaskTitle" class="form-label">Task Title</label>
-                                <input type="text" class="form-control" id="editTaskTitle" name="title" required>
+                                <input type="text" class="form-control" id="editTaskTitle" name="title" required placeholder="Enter the task title">
                             </div>
                             <div class="mb-3">
                                 <label for="editTaskDescription" class="form-label">Description</label>
-                                <textarea class="form-control" id="editTaskDescription" name="description" rows="3"></textarea>
+                                <textarea class="form-control" id="editTaskDescription" name="description" rows="3" placeholder="Describe the task in detail"></textarea>
                             </div>
+                            <div class="mb-3">
+                                <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="editTaskExpiredAt" name="expired_at" required>
+                            </div>
+                            
+                            <!-- Add labels selection field -->
+                            <div class="mb-3">
+                                <label class="form-label">Task Labels</label>
+                                <div class="d-flex flex-wrap gap-2" id="editTaskLabelsContainer">
+                                    <?php foreach ($availableLabels ?? [] as $label): ?>
+                                        <div class="form-check">
+                                            <input 
+                                                class="form-check-input task-label-checkbox" 
+                                                type="checkbox" 
+                                                name="labels[]" 
+                                                value="<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>" 
+                                                id="label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                            >
+                                            <label 
+                                                class="form-check-label" 
+                                                for="label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                                style="background-color: var(--<?= htmlspecialchars($label['color'], ENT_QUOTES, 'UTF-8') ?>-bg); 
+                                                       color: var(--<?= htmlspecialchars($label['color'], ENT_QUOTES, 'UTF-8') ?>-text);
+                                                       padding: 0.25rem 0.5rem;
+                                                       border-radius: 0.25rem;"
+                                            >
+                                                <?= htmlspecialchars($label['title'], ENT_QUOTES, 'UTF-8') ?>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Update Task</button>
                         </form>
@@ -245,6 +281,8 @@
 </div>
 
 
+
+
 <!-- SCRIPT PARA ADICIONAR UMA NOVA TASK  -->
 <script>
     $(document).ready(function () {
@@ -290,14 +328,48 @@
         const taskId = $(this).data('id');
         const taskTitle = $(this).data('title');
         const taskDescription = $(this).data('description');
+        const taskExpiredAt = $(this).data('expired-at');
 
         // Preencher os campos do modal
         $('#editTaskId').val(taskId);
         $('#editTaskTitle').val(taskTitle);
         $('#editTaskDescription').val(taskDescription);
+        $('#editTaskExpiredAt').val(taskExpiredAt);
 
         // Abrir o modal de edição
         $('#editTaskModal').modal('show');
     });
 
+</script>
+
+<!-- Add script to handle task labels -->
+<script>
+    // Update edit task modal to include labels
+    $('.btn-edit-task').on('click', function() {
+        // ...existing code...
+        
+        // Get task labels
+        const taskId = $(this).data('id');
+        
+        // Reset all checkboxes
+        $('.task-label-checkbox').prop('checked', false);
+        
+        // Fetch task labels via AJAX
+        $.ajax({
+            url: '/task-labels/' + taskId,
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.labels) {
+                    // Check the boxes for labels assigned to this task
+                    response.labels.forEach(function(labelId) {
+                        $('#label-' + labelId).prop('checked', true);
+                    });
+                }
+            },
+            error: function() {
+                console.error('Failed to load task labels');
+            }
+        });
+    });
 </script>

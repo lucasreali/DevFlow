@@ -70,8 +70,6 @@ Router::post('/reuniao/update', [\App\Controllers\ReuniaoController::class, 'upd
 Router::get('/reuniao/edit', [\App\Controllers\ReuniaoController::class, 'edit']);
 
 Router::get('/reuniao/delete', [\App\Controllers\ReuniaoController::class, 'delete']);
+
+
 // Public Routes
-
-
-
-

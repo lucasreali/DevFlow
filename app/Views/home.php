@@ -1,7 +1,10 @@
+
 <div class="d-flex vh-100 justify-content-center align-items-center vh-100">
+    
 
     <!-- Sidebar -->
     <div class="card" style="width: 18rem;">
+
         <div class="card-body">
             <h5 class="card-title">Menu</h5>
             <form class="mb-3">
@@ -25,10 +28,11 @@
     <!-- Main Content -->
     <div class="flex-grow-1 p-4" style="max-width: 1000px;">
         <div class="container py-5">
-            <h1 class="mb-4">DevFlow</h1>
 
+            
+            
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Your Projects</h2>
+                <img src="/images/logo-completa.svg" alt="DevFlow Logo" style="height: 60px;"/>
                 <?php if (isset($user)) : ?>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createProjectModal">Create New Project</button>
                 <?php endif; ?>

@@ -3,6 +3,7 @@
 namespace App\Controllers\Page;
 
 use App\Models\Board;
+use App\Models\Label;
 use App\Models\Project;
 use App\Models\Task;
 use function Core\view;
@@ -12,14 +13,10 @@ class DashboardController
     public static function index(array $params)
     {   
         $projectId = $params['projectId'] ?? null;
-
+    
         $project = Project::getById($projectId);
-
-        if ($project['user_id'] !== $_SESSION['user']['id']) {
-            return view('dashboard', [
-                'message' => 'You do not have permission to access this project.',
-            ]);
-        }
+        
+        $labels = Label::getByProjectId($projectId);
         
         $boards = Board::getAll($projectId);
         
@@ -48,6 +45,7 @@ class DashboardController
             'boards' => $boards,
             'otherProjects' => $otherProjects,
             'page' => 'boards',
+            'labels' => $labels,
         ]);
     }
 }

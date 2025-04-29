@@ -67,10 +67,17 @@
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                     </div>
+                                        <?php foreach ($labels as $label): ?>
+                                            <span class="badge" style="background-color: var(--<?= htmlspecialchars($label['color']) ?>-bg); color: var(--<?= htmlspecialchars($label['color']) ?>-text);">
+                                                <?= htmlspecialchars($label['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                                            </span>
+                                        <?php endforeach; ?>
 
                                     </div>
                                     <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                                    <div>
 
+                                    </div>
                                     
 
                                     
@@ -216,6 +223,45 @@
                 </div>
             </div>
         </div>
+
+        <!-- Botão para adicionar um novo label -->
+<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addLabelModal" 
+        style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
+    <i class="fa-solid fa-plus"></i> Add New Label
+</button>
+
+<!-- Modal para adicionar um novo label -->
+<div class="modal fade" id="addLabelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addLabelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addLabelModalLabel">Add New Label</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addLabelForm" action="/label" method="POST">
+                    <div class="mb-3">
+                        <label for="labelTitle" class="form-label">Label Title</label>
+                        <input type="text" class="form-control" id="labelTitle" name="title" required placeholder="Enter the label title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="labelColor" class="form-label">Label Color</label>
+                        <select class="form-select" id="labelColor" name="color" required>
+                            <option value="red" style="background-color: #ffcccc;">Red</option>
+                            <option value="blue" style="background-color: #cce5ff;">Blue</option>
+                            <option value="green" style="background-color: #d4edda;">Green</option>
+                            <option value="yellow" style="background-color: #fff3cd;">Yellow</option>
+                            <option value="purple" style="background-color: #e2ccff;">Purple</option>
+                            <option value="orange" style="background-color: #ffd8b3;">Orange</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Label</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
     </main>
 </div>
 

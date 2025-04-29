@@ -122,7 +122,7 @@ CREATE TABLE meetings (
     data_reuniao DATETIME DEFAULT CURRENT_TIMESTAMP,
     project_id INT,
 
-    FOREIGN KEY(project_id) REFERENCES projects(id)
+    FOREIGN KEY(project_id) REFERENCES projects(id) ON DELETE CASCADE,
 );
 
 CREATE TABLE meeting_participants (

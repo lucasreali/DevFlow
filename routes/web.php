@@ -4,6 +4,7 @@ use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
 use App\Controllers\DocumentationController;
+use App\Controllers\LabelController;
 use App\Controllers\Page\DashboardController;
 use App\Controllers\Page\HomeController;
 use App\Controllers\ProjectController;
@@ -55,6 +56,9 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/project', [ProjectController::class, 'store']);
     Router::post('/project/update/{projectId}', [ProjectController::class, 'update']);
     Router::post('/project/delete/{projectId}', [ProjectController::class, 'delete']);
+
+    // Label
+    Router::post("/label/{projectId}", [LabelController::class, 'store']);
 });
 
 Router::get('/reuniao', [\App\Controllers\ReuniaoController::class, 'index']);

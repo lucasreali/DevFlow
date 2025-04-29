@@ -6,11 +6,13 @@ use App\Models\Label;
 
 class LabelController {
 
-    public function store() {
+    public function store($data) {
 
         $userId = $_GET['user_id'];
         $title = $_POST['title'];
         $color = $_POST['color'];
+
+        $projectId = $data['projectId'];
 
         $allowedColors = ['red', 'green', 'blue', 'yellow', 'purple'];
         if (!in_array($color, $allowedColors)) {
@@ -33,7 +35,9 @@ class LabelController {
             throw new \RuntimeException('User not logged in');
         }
 
-        Label::create(userId : $userId, title : $title, color: $color);
+        Label::create($userId,$title,$color, $projectId);
+
+        header('Location: /dashboard/' . $projectId);
     } 
 
     public function update() {
@@ -55,8 +59,6 @@ class LabelController {
         }
 
         $userId = $_SESSION['user']['id'];
-
-        echo $userId;
 
         if ($userId === null) {
             throw new \RuntimeException('User not logged in');

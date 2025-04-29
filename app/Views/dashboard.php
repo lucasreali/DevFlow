@@ -49,39 +49,41 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
 
-                                         <!-- BOTÃO PARA DELETAR A TASK -->
-                                    <div class="d-flex gap-2">
-                                        <form action="/task/delete" method="post">
-                                            <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                                        
-                                        </form>
-                                        <!-- BOTÃO PARA EDITAR A TASK -->
-                                        <button
-                                            class="btn-edit-task btn btn-warning"
-                                            data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
-                                            data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
-                                            data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
-                                        >
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                    </div>
-                                        <?php foreach ($labels as $label): ?>
-                                            <span class="badge" style="background-color: var(--<?= htmlspecialchars($label['color']) ?>-bg); color: var(--<?= htmlspecialchars($label['color']) ?>-text);">
-                                                <?= htmlspecialchars($label['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-                                            </span>
-                                        <?php endforeach; ?>
-
+                                        <!-- BOTÃO PARA DELETAR A TASK -->
+                                        <div class="d-flex gap-2">
+                                            <form action="/task/delete" method="post">
+                                                <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                            </form>
+                                            <!-- BOTÃO PARA EDITAR A TASK -->
+                                            <button
+                                                class="btn-edit-task btn btn-warning"
+                                                data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                                data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
+                                                data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
+                                            >
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <p><?= htmlspecialchars($task['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-                                    <div>
-
-                                    </div>
-                                    
-
-                                    
-                                </div>
+                                    <div class="mt-2">
+                                        <?php foreach ($labels as $label): ?>
+                                            <?php if ($label['task_id'] === $task['id']): ?>
+                                                <?php 
+                                                    $labelColor = $label['color'] ?? ''; 
+                                                    $labelTitle = $label['title'] ?? 'Untitled Label';
+                                                ?>
+                                                <span class="badge" 
+                                                      style="background-color: var(--<?= htmlspecialchars($labelColor, ENT_QUOTES, 'UTF-8') ?>-bg); 
+                                                             color: var(--<?= htmlspecialchars($labelColor, ENT_QUOTES, 'UTF-8') ?>-text);">
+                                                    <?= htmlspecialchars($labelTitle, ENT_QUOTES, 'UTF-8') ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        </div>
+                                </div> <!-- Fechando a div card-task -->
 
 
                             <?php endforeach; ?>
@@ -216,7 +218,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="addLabelForm" action="/label/<?= $projectId ?>" method="POST">
+                        <form id="addLabelForm" action="/label/<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>" method="POST">
                             <div class="mb-3">
                                 <label for="labelTitle" class="form-label">Label Title</label>
                                 <input type="text" class="form-control" id="labelTitle" name="title" required placeholder="Enter the label title">

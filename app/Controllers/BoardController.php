@@ -56,22 +56,4 @@ class BoardController
         header('Location: /dashboard/' . $projectId);
         exit;
     }
-
-    public function show() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $userId = $_SESSION['user']['id'];
-
-        if ($userId === null) {
-            throw new \RuntimeException('User not logged in');
-        }
-
-        $projectId = $_GET['project'];
-
-        $boards = Board::getAll($projectId);
-
-        return view('dashboard', ['boards' => $boards]);
-    }
 }

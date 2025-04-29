@@ -16,4 +16,4 @@
 </div>
 
 <!-- Scripts -->
-<?php include __DIR__ . '/components/dashboard/scripts.php'; ?>
+<script src="../../public/dashboard.js"></script>

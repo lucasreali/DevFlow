@@ -7,7 +7,7 @@ class Reuniao {
     public static function create($assunto, $data_reuniao, $title)
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("INSERT INTO reunioes (assunto, title, data_reuniao) VALUES (:assunto, :title, :data_reuniao)");
+        $stmt = $db->prepare("INSERT INTO meetings (assunto, title, data_reuniao) VALUES (:assunto, :title, :data_reuniao)");
         $stmt->execute([
             'title' => $title,
             'assunto' => $assunto,
@@ -19,7 +19,7 @@ class Reuniao {
     public static function update($id, $assunto, $data_reuniao, $title): bool
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("UPDATE reunioes SET assunto = :assunto, title = :title, data_reuniao = :data_reuniao WHERE id = :id");
+        $stmt = $db->prepare("UPDATE meetings SET assunto = :assunto, title = :title, data_reuniao = :data_reuniao WHERE id = :id");
         return $stmt->execute([
             'id' => $id,
             'assunto' => $assunto,
@@ -31,7 +31,7 @@ class Reuniao {
     public static function find($id)
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM reunioes WHERE id = :id");
+        $stmt = $db->prepare("SELECT * FROM meetings WHERE id = :id");
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
@@ -39,14 +39,14 @@ class Reuniao {
     public static function all()
     {
         $db = Database::getInstance();
-        $stmt = $db->query("SELECT * FROM reunioes");
+        $stmt = $db->query("SELECT * FROM meetings");
         return $stmt->fetchAll();
     }
 
     public static function delete($id)
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("DELETE FROM reunioes WHERE id = :id");
+        $stmt = $db->prepare("DELETE FROM meetings WHERE id = :id");
         $stmt->execute(['id' => $id]);
     }
 

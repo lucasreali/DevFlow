@@ -5,7 +5,7 @@ use Core\Database;
 
 class Task 
 {
-    // Criando a função para inserir
+    // Criando a função para inserir uma nova tarefa no banco de dados. QUe recebe os parâmetros necessários.
     public static function create($title, $description, $boardId, $userId, $expiredAt, $position) {
         $db = Database::getInstance();
 
@@ -26,7 +26,7 @@ class Task
         return $db->lastInsertId();
     }
 
-    // Criando a função para buscar todas as tarefas
+    // Criando a função para buscar todas as tarefas, por meio do board ID
     public static function getAllByBoardId($boardId){
         $db = Database::getInstance();
 

@@ -59,12 +59,4 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post("/label/update/{projectId}", [LabelController::class, 'update']);
     Router::post("/label/delete/{projectId}", [LabelController::class, 'delete']);
 
-    // Meeting routes
-    Router::get('/meetings', [MeetingController::class, 'index']);
-    Router::post('/meetings', [MeetingController::class, 'store']);
-    Router::post('/meetings/update', [MeetingController::class, 'update']);
-    Router::post('/meetings/delete', [MeetingController::class, 'delete']);
 });
-
-// Public Routes
-Router::get('/reuniao/delete', [\App\Controllers\ReuniaoController::class, 'delete']);

@@ -46,6 +46,16 @@ class Router {
         return self::registerRoute('POST', $route, $action);
     }
 
+    // Registra uma rota do tipo PUT
+    public static function put(string $route, array $action): Route {
+        return self::registerRoute('PUT', $route, $action);
+    }
+
+    // Registra uma rota do tipo DELETE
+    public static function delete(string $route, array $action): Route {
+        return self::registerRoute('DELETE', $route, $action);
+    }
+
     // Registra uma rota com o método HTTP especificado
     private static function registerRoute(string $method, string $route, array $action): Route {
         $middlewares = []; // Inicializa os middlewares

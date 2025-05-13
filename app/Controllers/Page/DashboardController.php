@@ -13,13 +13,44 @@ class DashboardController
     public static function index(array $params)
     {   
         $projectId = $params['projectId'] ?? null;
+        
+        // Validate all required parameters
+        if (empty($projectId)) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['errors'] = ['Project ID is required'];
+            header('Location: /');
+            exit;
+        }
     
         $project = Project::getById($projectId);
+        
+        if (!$project) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['errors'] = ['Project not found'];
+            header('Location: /');
+            exit;
+        }
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
         $userId = $_SESSION['user']['id'] ?? null;
+        
+        if (!$userId) {
+            $_SESSION['errors'] = ['User not logged in'];
+            header('Location: /login');
+            exit;
+        }
 
         if ($project['user_id'] !== $userId) {
+            $_SESSION['errors'] = ['You do not have access to this project'];
             header('Location: /');
+            exit;
         }
         
         $labels = Label::getByProjectId($projectId);

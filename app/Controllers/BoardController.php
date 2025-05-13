@@ -7,27 +7,37 @@ use function Core\view;
 
 class BoardController
 {
-    public function store() {
+    public function store($data) {
 
-        $projectId = $_POST['projectId'] ?? null;
-        $title = $_POST['title'];
-        $color = $_POST['color'];
+        $projectId = $data['projectId'] ?? null;
+        $title = $data['title'] ?? null;
+        $color = $data['color'] ?? null;
 
+        // Validate all required parameters
+        $errors = [];
         if (empty($projectId)) {
-            throw new \InvalidArgumentException('Project ID cannot be empty');
+            $errors[] = 'Project ID cannot be empty';
+        }
+        if (empty($title)) {
+            $errors[] = 'Board title cannot be empty';
         }
         if (empty($color)) {
-            throw new \InvalidArgumentException('Color cannot be empty');
+            $errors[] = 'Board color cannot be empty';
         }
 
-        if (empty($title)) {
-            throw new \InvalidArgumentException('Title cannot be empty');
+        if (!empty($errors)) {
+            // Return with errors if validation fails
+            $_SESSION['errors'] = $errors;
+            header('Location: /dashboard/' . $projectId);
+            exit;
         }
 
         $possibleColors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
 
         if (!in_array($color, $possibleColors)) {
-            throw new \InvalidArgumentException('Invalid color');
+            $_SESSION['errors'] = ['Invalid color selected'];
+            header('Location: /dashboard/' . $projectId);
+            exit;
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -36,14 +46,13 @@ class BoardController
 
         $userId = $_SESSION['user']['id'];
 
-
         if ($userId === null) {
-            throw new \RuntimeException('User not logged in');
+            $_SESSION['errors'] = ['User not logged in'];
+            header('Location: /login');
+            exit;
         }
 
         $boards = Board::getAll($projectId);
-        
-
         $position = count($boards) + 1;
             
 
@@ -65,10 +74,18 @@ class BoardController
         $userId = $_SESSION['user']['id'];
 
         if ($userId === null) {
-            throw new \RuntimeException('User not logged in');
+            $_SESSION['errors'] = ['User not logged in'];
+            header('Location: /login');
+            exit;
         }
 
-        $projectId = $_GET['project'];
+        $projectId = $_GET['project'] ?? null;
+        
+        if (empty($projectId)) {
+            $_SESSION['errors'] = ['Project ID is required'];
+            header('Location: /');
+            exit;
+        }
 
         $boards = Board::getAll($projectId);
 

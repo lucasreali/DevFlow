@@ -43,4 +43,17 @@ class User
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function findByUsername($username)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            SELECT users.*, accounts.username
+            FROM users
+            INNER JOIN accounts ON accounts.user_id = users.id
+            WHERE accounts.username = :username
+        ');
+        $stmt->execute(['username' => $username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

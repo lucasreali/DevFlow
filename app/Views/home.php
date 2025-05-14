@@ -40,5 +40,8 @@
         <?php endif; ?>
 
         <?php include __DIR__ . "/components/home/login-with-github-modal.php"?> 
+        <?php include __DIR__ . "/components/error-modal.php"?>
     </div>
 </div>
+
+

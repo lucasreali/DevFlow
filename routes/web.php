@@ -4,6 +4,7 @@ use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
 use App\Controllers\DocumentationController;
+use App\Controllers\FriendshipController;
 use App\Controllers\LabelController;
 use App\Controllers\MeetingController;
 use App\Controllers\Page\DashboardController;
@@ -58,5 +59,8 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post("/label/{projectId}", [LabelController::class, 'store']);
     Router::post("/label/update/{projectId}", [LabelController::class, 'update']);
     Router::post("/label/delete/{projectId}", [LabelController::class, 'delete']);
+
+    // Friendship
+    Router::post('/friends', [FriendshipController::class, 'store']);
 
 });

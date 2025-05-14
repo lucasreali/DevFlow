@@ -13,6 +13,16 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela de amizades
+CREATE TABLE friendships (
+    user_id INT NOT NULL,
+    friend_id INT NOT NULL,
+    status ENUM('pending', 'accepted', 'rejected') NOT NULL DEFAULT 'pending',
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Tabela de contas vinculadas ao GitHub
 CREATE TABLE accounts (
     github_id INT PRIMARY KEY,
@@ -115,19 +125,4 @@ CREATE TABLE documentation(
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
-CREATE TABLE meetings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title TEXT,
-    subject VARCHAR(255) NOT NULL,
-    meeting_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    project_id INT,
 
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
-);
-
-CREATE TABLE meeting_participants (
-    participant_id INT,
-    meeting_id INT,
-    FOREIGN KEY (participant_id) REFERENCES users(id),
-    FOREIGN KEY (meeting_id) REFERENCES meetings(id)
-);

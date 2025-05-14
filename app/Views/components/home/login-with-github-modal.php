@@ -6,11 +6,12 @@
       <button id="closeGithubModal" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
       <h2>Sign in with GitHub</h2>
       <p>To continue, please sign in with your GitHub account.</p>
-      <a href="/auth/github" style="display:inline-block; background:#24292e; color:#fff; padding:10px 20px; border-radius:4px; text-decoration:none; font-weight:bold;">
-        <!-- Font Awesome GitHub Icon -->
-        <i class="fab fa-github" style="vertical-align:middle; margin-right:8px; font-size:20px;"></i>
-        Sign in with GitHub
-      </a>
+      <form action="/github" method="POST" style="margin:0;">
+        <button type="submit" style="display:inline-block; background:#24292e; color:#fff; padding:10px 20px; border-radius:4px; text-decoration:none; font-weight:bold; border:none; cursor:pointer;">
+          <i class="fab fa-github" style="vertical-align:middle; margin-right:8px; font-size:20px;"></i>
+          Sign in with GitHub
+        </button>
+      </form>
     </div>
   </div>
   <script>

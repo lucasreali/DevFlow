@@ -1,4 +1,4 @@
-<div class="p-3 rounded" style="height: 500px; background-color: #f2f2f2;">
+<div class="p-3 rounded" style="height: 100%; background-color: #f2f2f2; width: 100%;">
     <?php if (isset($projects) && count($projects) > 0) : ?>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php foreach ($projects as $project) : ?>

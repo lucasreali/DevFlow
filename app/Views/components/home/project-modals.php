@@ -65,20 +65,47 @@
 </div>
 
 <script>
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Script para o modal de edição de projeto
-    $('#editProjectModal-<?= $project['id'] ?> form').submit(function(e) {
-        const nameInput = $(this).find('input[name="name"]');
-        
-        if (nameInput.val().trim() === '') {
-            e.preventDefault();
-            alert('Project name cannot be empty');
-            return false;
-        }
-    });
+    const editForm = document.querySelector('#editProjectModal-<?= $project['id'] ?> form');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            const nameInput = this.querySelector('input[name="name"]');
+            
+            if (nameInput.value.trim() === '') {
+                e.preventDefault();
+                alert('Project name cannot be empty');
+                return false;
+            }
+        });
+    }
     
     // Script para o modal de exclusão de projeto
-    // The delete form reference is kept but not used in the original code
-    const deleteForm = $('#deleteProjectModal-<?= $project['id'] ?> form');
+    const deleteForm = document.querySelector('#deleteProjectModal-<?= $project['id'] ?> form');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(e) {
+            if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+    
+    // Garantir que os botões que abrem os modais de edição e exclusão estão funcionando
+    const editButton = document.querySelector('[data-bs-target="#editProjectModal-<?= $project['id'] ?>"]');
+    if (editButton) {
+        editButton.addEventListener('click', function() {
+            const editModal = new bootstrap.Modal(document.getElementById('editProjectModal-<?= $project['id'] ?>'));
+            editModal.show();
+        });
+    }
+    
+    const deleteButton = document.querySelector('[data-bs-target="#deleteProjectModal-<?= $project['id'] ?>"]');
+    if (deleteButton) {
+        deleteButton.addEventListener('click', function() {
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteProjectModal-<?= $project['id'] ?>'));
+            deleteModal.show();
+        });
+    }
 });
 </script>

@@ -26,17 +26,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Garantir que o modal esteja inicializado
-    if (typeof bootstrap !== 'undefined') {
-        const createModal = document.getElementById('createProjectModal');
-        if (createModal) new bootstrap.Modal(createModal);
-        
-        // Adicionar um botão de depuração temporário para testar o modal
-        console.log('Modal de criação de projeto inicializado');
-    }
+    // Remover inicialização redundante do modal - Bootstrap já faz isso automaticamente
     
     // Script para o modal de criação de projeto
-    const createForm = document.querySelector('#createProjectModal form');
+    const createForm = document.querySelector('#createProjectForm');
     if (createForm) {
         createForm.addEventListener('submit', function(e) {
             const nameInput = this.querySelector('input[name="name"]');
@@ -55,5 +48,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Garantir que o botão que abre o modal esteja funcionando corretamente
+    const createProjectButtons = document.querySelectorAll('[data-bs-target="#createProjectModal"]');
+    createProjectButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const createProjectModal = new bootstrap.Modal(document.getElementById('createProjectModal'));
+            createProjectModal.show();
+        });
+    });
 });
 </script>

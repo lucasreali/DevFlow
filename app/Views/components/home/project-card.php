@@ -7,8 +7,8 @@
         <div class="card-footer d-flex justify-content-between">
             <a href="/dashboard/<?= $project['id'] ?>" class="btn btn-primary btn-sm">Dashboard</a>
             <div>
-                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editProjectModal-<?= $project['id'] ?>">Edit</button>
-                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProjectModal-<?= $project['id'] ?>">Delete</button>
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editProjectModal-<?= $project['id'] ?>">Edit</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProjectModal-<?= $project['id'] ?>">Delete</button>
             </div>
         </div>
     </div>

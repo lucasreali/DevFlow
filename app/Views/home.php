@@ -15,9 +15,8 @@
                             <button class="btn btn-secondary w-100" type="submit">Logout</button>
                         </form>
                     </div>
-
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createProjectModal">Create New Project</button>
-
+                    <!-- Corrigido: Adicione type="button" ao botão para evitar submit de formulário -->
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createProjectModal">Create New Project</button>
                 </div>
             </div>
             
@@ -43,5 +42,26 @@
         <?php include __DIR__ . "/components/error-modal.php"?>
     </div>
 </div>
+
+<!-- Assegurando que o Bootstrap JS está disponível para os modais -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script para garantir que todos os modais estão inicializados corretamente -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se o Bootstrap está disponível
+    if (typeof bootstrap !== 'undefined') {
+        // Inicializar todos os modais para garantir
+        document.querySelectorAll('.modal').forEach(function(modalEl) {
+            new bootstrap.Modal(modalEl);
+        });
+        
+        // Log para debug
+        console.log('Bootstrap inicializado com sucesso. Modais disponíveis.');
+    } else {
+        console.error('Bootstrap não está definido. Modais podem não funcionar corretamente.');
+    }
+});
+</script>
 
 

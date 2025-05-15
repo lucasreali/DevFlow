@@ -49,7 +49,7 @@ class UserController
         }
 
         $user = User::findByEmail($email);
-        $accont = Account::findByGithubId($email);
+        $accont = Account::findByEmail($email);
 
         if (!$user || !password_verify($password, $user['password'])) {
             $errors['error'] = 'Wrong credentials.';

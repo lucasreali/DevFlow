@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Board;
 use App\Models\Label;
 use App\Models\Task;
+use function Core\redirect;
 
 class TaskController
 {
@@ -25,24 +26,15 @@ class TaskController
         
         // Handle validation errors
         if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            
-            // Determine where to redirect
+            $errorMsg = $errors[0];
             if (!empty($boardId)) {
                 $board = Board::getById($boardId);
                 $projectId = $board ? $board['project_id'] : null;
                 if ($projectId) {
-                    header('Location: /dashboard/' . $projectId);
-                    exit;
+                    return redirect('/dashboard/' . $projectId, ['error' => $errorMsg]);
                 }
             }
-            
-            // Fallback redirect
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => $errorMsg]);
         }
         
         if (session_status() === PHP_SESSION_NONE) {
@@ -52,9 +44,7 @@ class TaskController
         $userId = $_SESSION['user']['id'] ?? null;
         
         if (!$userId) {
-            $_SESSION['errors'] = ['User not logged in'];
-            header('Location: /login');
-            exit;
+            return redirect('/login', ['error' => 'User not logged in']);
         }
 
         $boardTasks = Task::getAllByBoardId($boardId);
@@ -63,18 +53,14 @@ class TaskController
         // Chama o método create da classe Task para inserir a tarefa no banco de dados
         $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt, $position);
 
-        // Redireciona para a página do dashboard após a inserção
-        $message = [];
-        if ($taskId) {
-            $message['message'] = 'Task created successfully!';
-        } else {
-            $message['message'] = 'Error creating the task.';
-        }
-
         $board = Board::getById($boardId);
         $projectId = $board['project_id'];
 
-        header('Location: /dashboard/' . $projectId);
+        if ($taskId) {
+            return redirect('/dashboard/' . $projectId, ['success' => 'Task created successfully!']);
+        } else {
+            return redirect('/dashboard/' . $projectId, ['error' => 'Error creating the task.']);
+        }
     } 
 
     public function update($data)
@@ -100,17 +86,11 @@ class TaskController
         
         // Handle validation errors
         if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            
+            $errorMsg = $errors[0];
             if (!empty($project_id)) {
-                header('Location: /dashboard/' . $project_id);
-                exit;
+                return redirect('/dashboard/' . $project_id, ['error' => $errorMsg]);
             } else {
-                header('Location: /');
-                exit;
+                return redirect('/', ['error' => $errorMsg]);
             }
         }
 
@@ -122,7 +102,7 @@ class TaskController
             Label::assignToTask($id, $labelId);
         }
 
-        header('Location: /dashboard/' . $project_id);
+        return redirect('/dashboard/' . $project_id, ['success' => 'Task updated successfully!']);
     }
 
     public static function delete($data) {
@@ -140,22 +120,16 @@ class TaskController
         
         // Handle validation errors
         if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            
+            $errorMsg = $errors[0];
             if (!empty($projectId)) {
-                header('Location: /dashboard/' . $projectId);
-                exit;
+                return redirect('/dashboard/' . $projectId, ['error' => $errorMsg]);
             } else {
-                header('Location: /');
-                exit;
+                return redirect('/', ['error' => $errorMsg]);
             }
         }
         
         Task::delete($id);
         
-        header('Location: /dashboard/' . $projectId);
+        return redirect('/dashboard/' . $projectId, ['success' => 'Task deleted successfully!']);
     }
 }

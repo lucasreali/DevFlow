@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Label;
 use App\Models\Project;
 use App\Models\Task;
+use function Core\redirect;
 use function Core\view;
 
 class DashboardController
@@ -16,23 +17,13 @@ class DashboardController
         
         // Validate all required parameters
         if (empty($projectId)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Project ID is required'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project ID is required']);
         }
     
         $project = Project::getById($projectId);
         
         if (!$project) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Project not found'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project not found']);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -42,15 +33,11 @@ class DashboardController
         $userId = $_SESSION['user']['id'] ?? null;
         
         if (!$userId) {
-            $_SESSION['errors'] = ['User not logged in'];
-            header('Location: /login');
-            exit;
+            return redirect('/login', ['error' => 'User not logged in']);
         }
 
         if ($project['user_id'] !== $userId) {
-            $_SESSION['errors'] = ['You do not have access to this project'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'You do not have access to this project']);
         }
         
         $labels = Label::getByProjectId($projectId);

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Label;
+use function Core\redirect;
 
 class LabelController {
 
@@ -12,42 +13,20 @@ class LabelController {
         $projectId = $data['projectId'] ?? null;
 
         // Validate all required parameters
-        $errors = [];
         if (empty($title)) {
-            $errors[] = 'Label title cannot be empty';
+            return redirect('/dashboard/' . $projectId, ['error' => 'Label title cannot be empty']);
         }
         if (empty($color)) {
-            $errors[] = 'Label color cannot be empty';
+            return redirect('/dashboard/' . $projectId, ['error' => 'Label color cannot be empty']);
         }
         if (empty($projectId)) {
-            $errors[] = 'Project ID cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            
-            if (!empty($projectId)) {
-                header('Location: /dashboard/' . $projectId);
-                exit;
-            } else {
-                header('Location: /');
-                exit;
-            }
+            return redirect('/', ['error' => 'Project ID cannot be empty']);
         }
 
         $allowedColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
 
         if (!in_array($color, $allowedColors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Invalid color'];
-            header('Location: /dashboard/' . $projectId);
-            exit;
+            return redirect('/dashboard/' . $projectId, ['error' => 'Invalid color']);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -57,14 +36,13 @@ class LabelController {
         $userId = $_SESSION['user']['id'] ?? null;
 
         if (!$userId) {
-            $_SESSION['errors'] = ['User not logged in'];
-            header('Location: /login');
-            exit;
+            return redirect('/login', ['error' => 'User not logged in']);
         }
 
         Label::create($title, $color, $projectId);
 
         header('Location: /dashboard/' . $projectId);
+        exit;
     } 
 
     public function update($data) {
@@ -74,44 +52,22 @@ class LabelController {
         $color = $_POST['color'] ?? null;
 
         // Validate all required parameters
-        $errors = [];
         if (empty($labelId)) {
-            $errors[] = 'Label ID cannot be empty';
+            return redirect('/dashboard/' . $projectId, ['error' => 'Label ID cannot be empty']);
         }
         if (empty($title)) {
-            $errors[] = 'Label title cannot be empty';
+            return redirect('/dashboard/' . $projectId, ['error' => 'Label title cannot be empty']);
         }
         if (empty($color)) {
-            $errors[] = 'Label color cannot be empty';
+            return redirect('/dashboard/' . $projectId, ['error' => 'Label color cannot be empty']);
         }
         if (empty($projectId)) {
-            $errors[] = 'Project ID cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            
-            if (!empty($projectId)) {
-                header('Location: /dashboard/' . $projectId);
-                exit;
-            } else {
-                header('Location: /');
-                exit;
-            }
+            return redirect('/', ['error' => 'Project ID cannot be empty']);
         }
 
         $allowedColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
         if (!in_array($color, $allowedColors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Invalid color'];
-            header('Location: /dashboard/' . $projectId);
-            exit;
+            return redirect('/dashboard/' . $projectId, ['error' => 'Invalid color']);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -121,21 +77,14 @@ class LabelController {
         $userId = $_SESSION['user']['id'] ?? null;
 
         if (!$userId) {
-            $_SESSION['errors'] = ['User not logged in'];
-            header('Location: /login');
-            exit;
+            return redirect('/login', ['error' => 'User not logged in']);
         }
 
         if (Label::update($labelId, $title, $color)) {
             header('Location: /dashboard/' . $projectId);
             exit;
         } else {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Failed to update label'];
-            header('Location: /dashboard/' . $projectId);
-            exit;
+            return redirect('/dashboard/' . $projectId, ['error' => 'Failed to update label']);
         }
     }
 
@@ -144,28 +93,11 @@ class LabelController {
         $labelId = $_POST['label_id'] ?? null;
         
         // Validate all required parameters
-        $errors = [];
         if (empty($labelId)) {
-            $errors[] = 'Label ID cannot be empty';
+            return redirect('/dashboard/' . $projectId, ['error' => 'Label ID cannot be empty']);
         }
         if (empty($projectId)) {
-            $errors[] = 'Project ID cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            
-            if (!empty($projectId)) {
-                header('Location: /dashboard/' . $projectId);
-                exit;
-            } else {
-                header('Location: /');
-                exit;
-            }
+            return redirect('/', ['error' => 'Project ID cannot be empty']);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -175,18 +107,14 @@ class LabelController {
         $userId = $_SESSION['user']['id'] ?? null;
 
         if (!$userId) {
-            $_SESSION['errors'] = ['User not logged in'];
-            header('Location: /login');
-            exit;
+            return redirect('/login', ['error' => 'User not logged in']);
         }
 
         if (Label::delete($labelId)) {
             header('Location: /dashboard/' . $projectId);
             exit;
         } else {
-            $_SESSION['errors'] = ['Failed to delete label'];
-            header('Location: /dashboard/' . $projectId);
-            exit;
+            return redirect('/dashboard/' . $projectId, ['error' => 'Failed to delete label']);
         }
     }
 }

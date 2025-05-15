@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Project;
+use function Core\redirect;
 
 class ProjectController
 {
@@ -17,117 +18,73 @@ class ProjectController
         $description = $data['description'] ?? null;
 
         // Validate all required parameters
-        $errors = [];
         if (empty($userId)) {
-            $errors[] = 'User not logged in';
+            return redirect('/', ['error' => 'User not logged in']);
         }
         if (empty($name)) {
-            $errors[] = 'Project name cannot be empty';
+            return redirect('/', ['error' => 'Project name cannot be empty']);
         }
         if (empty($description)) {
-            $errors[] = 'Project description cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project description cannot be empty']);
         }
 
         $projectId = Project::create($userId, $name, $description);
 
         if ($projectId === false) {
-            $_SESSION['errors'] = ['Failed to create project'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Failed to create project']);
         }
 
         header('Location: /');
+        exit;
     }
 
     public static function update($data) {
         $projectId = $data['projectId'] ?? null;
-        $name = $_POST['name'] ?? null;
-        $description = $_POST['description'] ?? null;
+        $name = $data['name'] ?? null;
+        $description = $data['description'] ?? null;
 
         // Validate all required parameters
-        $errors = [];
         if (empty($projectId)) {
-            $errors[] = 'Project ID cannot be empty';
+            return redirect('/', ['error' => 'Project ID cannot be empty']);
         }
         if (empty($name)) {
-            $errors[] = 'Project name cannot be empty';
+            return redirect('/', ['error' => 'Project name cannot be empty']);
         }
         if (empty($description)) {
-            $errors[] = 'Project description cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project description cannot be empty']);
         }
 
         $project = Project::getById($projectId);
         if (!$project) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Project not found'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project not found']);
         }
 
         $project = Project::update($projectId, $name, $description);
 
         if ($project === false) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Failed to update project'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Failed to update project']);
         }
 
         header('Location: /');
+        exit;
     }
 
     public static function delete($data) {
         $projectId = $data['projectId'] ?? null;
 
         // Validate all required parameters
-        $errors = [];
         if (empty($projectId)) {
-            $errors[] = 'Project ID cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = $errors;
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project ID cannot be empty']);
         }
 
         $project = Project::getById($projectId);
         if (!$project) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['errors'] = ['Project not found'];
-            header('Location: /');
-            exit;
+            return redirect('/', ['error' => 'Project not found']);
         }
 
         Project::delete($projectId);
 
         header('Location: /');
+        exit;
     }
 }

@@ -52,8 +52,8 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
 
     // Project Management
     Router::post('/project', [ProjectController::class, 'store']);
-    Router::post('/project/update/{projectId}', [ProjectController::class, 'update']);
-    Router::post('/project/delete/{projectId}', [ProjectController::class, 'delete']);
+    Router::post('/project/update', [ProjectController::class, 'update']);
+    Router::post('/project/delete', [ProjectController::class, 'delete']);
 
     // Label
     Router::post("/label/{projectId}", [LabelController::class, 'store']);

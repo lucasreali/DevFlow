@@ -36,6 +36,37 @@ class Account
         }
     }
 
+    public static function findByUsername($username)
+    {
+        try {
+            $db = Database::getInstance();
+            $stmt = $db->prepare('SELECT * FROM accounts WHERE username = :username');
+            $stmt->execute(['username' => $username]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function findByEmail($email)
+    {
+        try {
+            $db = Database::getInstance();
+            $stmt = $db->prepare('
+                SELECT a.*
+                FROM accounts a
+                INNER JOIN users u ON a.user_id = u.id
+                WHERE u.email = :email
+            ');
+            $stmt->execute(['email' => $email]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     // Atualiza conta pelo github_id
     public static function updateByGithubId($githubId, $data)
     {
@@ -91,5 +122,22 @@ class Account
             'access_token' => $data['access_token'],
             'github_id' => $data['github_id'],
         ]);
+    }
+
+    public static function getByUserEmail($email) {
+        try {
+            $db = Database::getInstance();
+            $stmt = $db->prepare('
+                SELECT a.*
+                FROM accounts a
+                INNER JOIN users u ON a.user_id = u.id
+                WHERE u.email = :email
+            ');
+            $stmt->execute(['email' => $email]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return false;
+        }
     }
 }

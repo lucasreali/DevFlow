@@ -2,6 +2,23 @@
     <!-- Menu -->
     <?php include __DIR__ . '/components/menu-bar.php'; ?>
 
+    <!-- Display validation errors if any -->
+    <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert" style="z-index: 9999;">
+        <strong>Error!</strong>
+        <ul class="mb-0">
+            <?php foreach ($_SESSION['errors'] as $error): ?>
+                <li><?= htmlspecialchars($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php 
+        // Clear the errors after displaying
+        unset($_SESSION['errors']);
+    endif; 
+    ?>
+
     <!-- Conteúdo -->
     <main class="main-dashboard">
         <!-- Boards -->
@@ -15,11 +32,14 @@
     </main>
 </div>
 
+<<<<<<< HEAD
 <!-- Scripts -->
 <<<<<<< HEAD
 <script src="../../public/dashboard.js"></script>
 =======
 <?php include __DIR__ . '/components/dashboard/scripts.php'; ?>
+=======
+>>>>>>> a256d1a47bfa1725bcd7465016c7cc7ae224b842
 
 <script>
     $(document).ready(function () {

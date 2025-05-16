@@ -4,6 +4,7 @@ use App\Controllers\Auth\AuthController;
 use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
 use App\Controllers\DocumentationController;
+use App\Controllers\FriendshipController;
 use App\Controllers\LabelController;
 use App\Controllers\MeetingController;
 use App\Controllers\Page\DashboardController;
@@ -51,20 +52,15 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
 
     // Project Management
     Router::post('/project', [ProjectController::class, 'store']);
-    Router::post('/project/update/{projectId}', [ProjectController::class, 'update']);
-    Router::post('/project/delete/{projectId}', [ProjectController::class, 'delete']);
+    Router::post('/project/update', [ProjectController::class, 'update']);
+    Router::post('/project/delete', [ProjectController::class, 'delete']);
 
     // Label
     Router::post("/label/{projectId}", [LabelController::class, 'store']);
     Router::post("/label/update/{projectId}", [LabelController::class, 'update']);
     Router::post("/label/delete/{projectId}", [LabelController::class, 'delete']);
 
-    // Meeting routes
-    Router::get('/meetings', [MeetingController::class, 'index']);
-    Router::post('/meetings', [MeetingController::class, 'store']);
-    Router::post('/meetings/update', [MeetingController::class, 'update']);
-    Router::post('/meetings/delete', [MeetingController::class, 'delete']);
-});
+    // Friendship
+    Router::post('/friends', [FriendshipController::class, 'store']);
 
-// Public Routes
-Router::get('/reuniao/delete', [\App\Controllers\ReuniaoController::class, 'delete']);
+});

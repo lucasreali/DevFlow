@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Label;
 use App\Models\Project;
 use App\Models\Task;
+use function Core\redirect;
 use function Core\view;
 
 class DashboardController
@@ -13,13 +14,30 @@ class DashboardController
     public static function index(array $params)
     {   
         $projectId = $params['projectId'] ?? null;
+        
+        // Validate all required parameters
+        if (empty($projectId)) {
+            return redirect('/', ['error' => 'Project ID is required']);
+        }
     
         $project = Project::getById($projectId);
+        
+        if (!$project) {
+            return redirect('/', ['error' => 'Project not found']);
+        }
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
         $userId = $_SESSION['user']['id'] ?? null;
+        
+        if (!$userId) {
+            return redirect('/login', ['error' => 'User not logged in']);
+        }
 
         if ($project['user_id'] !== $userId) {
-            header('Location: /');
+            return redirect('/', ['error' => 'You do not have access to this project']);
         }
         
         $labels = Label::getByProjectId($projectId);

@@ -10,12 +10,13 @@ use function Core\view;
 
 class UserController
 {
-    public static function store()
+    public static function store($data)
     {
-        $name = $_POST['name'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $name = $data['name'] ?? null;
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
 
+        // Validate all required parameters
         $errors = self::validateRegister($name, $email, $password);
 
         if (!empty($errors)) {
@@ -35,11 +36,12 @@ class UserController
         }
     }
 
-    public static function login()
+    public static function login($data)
     {
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
 
+        // Validate all required parameters
         $errors = self::validateLogin($email, $password);
 
         if (!empty($errors)) {
@@ -47,7 +49,7 @@ class UserController
         }
 
         $user = User::findByEmail($email);
-        $accont = Account::findByGithubId($email);
+        $accont = Account::findByEmail($email);
 
         if (!$user || !password_verify($password, $user['password'])) {
             $errors['error'] = 'Wrong credentials.';

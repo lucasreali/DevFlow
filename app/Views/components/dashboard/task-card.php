@@ -39,6 +39,7 @@
         </div>
     </div>
     <div class="card-footer text-muted">
+
         <?php
         // Calculate if the task is about to expire (less than 1 day)
         $expiryDate = new DateTime($task['expired_at'] ?? 'now');
@@ -59,5 +60,6 @@
         Expiration: <span class="<?= $expiryClass ?>">
             <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>
         </span>
+
     </div>
 </div>

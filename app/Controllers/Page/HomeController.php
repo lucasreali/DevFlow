@@ -13,6 +13,7 @@ class HomeController
     {
         $user = $_SESSION['user'] ?? null;
         $error = $data['error'] ?? null;
+        $success = $data['success'] ?? null;
 
         if (!$user) {
             return redirect('/login', ['error' => 'User not logged in']);
@@ -20,7 +21,29 @@ class HomeController
 
         $projects = Project::getAll($user['id']);
 
-        $friends = Friendship::getFriends($user['id']);
+        $friendsRelenshionship = Friendship::getFriends($user['id']);
+
+        $friends = [];
+
+        foreach ($friendsRelenshionship as &$friend) {
+            if ($friend['user_id'] == $user['id']) {
+                $friends[] = [
+                    'id' => $friend['friend_id'],
+                    'name' => $friend['friend_name'],
+                    'username' => $friend['friend_username'],
+                    'avatar_url' => $friend['friend_avatar'],
+                    'status' => $friend['status'],
+                ];
+            } else {
+                $friends[] = [
+                    'id' => $friend['user_id'],
+                    'name' => $friend['user_name'],
+                    'username' => $friend['user_username'],
+                    'avatar_url' => $friend['user_avatar'],
+                    'status' => $friend['status'],
+                ];
+            }
+        }
 
 
         return view('home', [
@@ -28,6 +51,7 @@ class HomeController
             'projects' => $projects,
             'friends' => $friends,
             'error' => $error,
+            'success' => $success,
         ]);
     }
 }

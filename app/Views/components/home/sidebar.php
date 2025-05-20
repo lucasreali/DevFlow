@@ -23,8 +23,8 @@
                     include __DIR__ . '/../user-avatar.php';
                     ?>
                     <div class="d-flex flex-column text-start">
-                        <span><?= htmlspecialchars($user['name'] ?? 'Error') ?></span>
-                        <span class="text-muted" style="font-size: 0.8rem;">@<?= htmlspecialchars($user['username'] ?? 'Error') ?></span>
+                        <span><?= htmlspecialchars($user['name']) ?></span>
+                        <span class="text-muted" style="font-size: 0.8rem;">@<?= htmlspecialchars($user['username']) ?></span>
                     </div>
                 </button>
                 <ul class="dropdown-menu w-100">

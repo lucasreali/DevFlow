@@ -12,12 +12,13 @@
                         <tr>
                           <th>Name</th>
                           <th>Option</th>
+                          <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($friends)): ?>
                           <?php foreach ($friends as $friend): ?>
-                              <?php include __DIR__ . '/friend-list-item.php'; ?>
+                                <?php include __DIR__ . '/friend-list-item.php'; ?>
                           <?php endforeach ?>
                       <?php else: ?>
                         <tr><td colspan="2">No friends found.</td></tr>

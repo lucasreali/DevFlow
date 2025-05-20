@@ -23,9 +23,9 @@
                     </div>
                     
                     <!-- Add labels selection field only if labels are available -->
-                    <?php if (!empty($availableLabels)): ?>
                     <div class="mb-3">
                         <label class="form-label">Task Labels</label>
+                        <?php if (!empty($availableLabels)): ?>
                         <div class="d-flex flex-wrap gap-2" id="taskLabelsContainer">
                             <?php foreach ($availableLabels as $label): ?>
                                 <div class="form-check">
@@ -49,8 +49,15 @@
                                 </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php endif; ?>
+                        
+                        <div class="mt-2">
+                            <!-- Button to add a new label - with improved visibility -->
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addLabelModal" style="padding: 0.375rem 0.75rem; font-size: 1rem;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                    <?php endif; ?>
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="saveTask">Save Task</button>

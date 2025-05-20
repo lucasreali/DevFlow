@@ -35,6 +35,7 @@
                     </span>
                 <?php endif; ?>
             <?php endforeach; ?>
+            
         </div>
     </div>
     <div class="card-footer text-muted">

@@ -18,7 +18,6 @@ if (!$avatarUrl) {
     }
 }
 
-// Common styles for both variants
 $commonStyles = "width: {$size}px; height: {$size}px;";
 ?>
 

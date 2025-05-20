@@ -34,7 +34,7 @@
 <!-- Botão para adicionar um novo label -->
 <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addLabelModal" 
         style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
-    Labels
+    <i class="fa-solid fa-plus"></i>
 </button>
 
 <!-- Modal para adicionar um novo label -->

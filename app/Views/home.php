@@ -36,6 +36,7 @@
 
         <?php include __DIR__ . "/components/home/login-with-github-modal.php"?> 
         <?php include __DIR__ . "/components/error-modal.php"?>
+        <?php include __DIR__ . "/components/success-modal.php"?>
     </div>
 </div>
 

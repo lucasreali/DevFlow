@@ -40,4 +40,25 @@ class FriendshipController
             return redirect('/', ['error' => 'An error occurred while sending the friend request.']);
         }
     }
+
+    public static function delete($data) {
+        $friendId = $data['friend_id'] ?? null;
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if (empty($friendId) || empty($userId)) {
+            return redirect('/', ['error' => 'Friend ID is required.']);
+        }
+        try {
+            $friendship = Friendship::checkFriendship($userId, $friendId);
+            if (!$friendship) {
+                return redirect('/', ['error' => 'Friendship not found.']);
+            }
+
+            Friendship::delete($userId, $friendId);
+            return redirect('/', ['success' => 'Friend removed successfully.']);
+
+        } catch (\Exception $e) {
+            return redirect('/', ['error' => 'An error occurred while removing the friend.']);
+        }        
+    }
 }

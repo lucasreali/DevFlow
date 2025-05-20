@@ -49,6 +49,13 @@
                                 </div>
                             <?php endforeach; ?>
                         </div>
+                        
+                        <!-- Add the "Add New Label" button -->
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addLabelModal" style="padding: 0.375rem 0.75rem; font-size: 1rem;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

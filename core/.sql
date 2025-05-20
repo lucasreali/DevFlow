@@ -126,3 +126,25 @@ CREATE TABLE documentation(
 );
 
 
+CREATE OR REPLACE VIEW friends_view AS
+SELECT
+    f.user_id,
+    u.name            AS user_name,
+    a1.username       AS user_username,
+    a1.avatar_url     AS user_avatar,
+    f.friend_id,
+    uf.name           AS friend_name,
+    a2.username       AS friend_username,
+    a2.avatar_url     AS friend_avatar
+FROM friendships f
+JOIN users u
+  ON f.user_id = u.id
+LEFT JOIN accounts a1
+  ON u.id = a1.user_id
+JOIN users uf
+  ON f.friend_id = uf.id
+LEFT JOIN accounts a2
+  ON uf.id = a2.user_id;
+
+
+

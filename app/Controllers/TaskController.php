@@ -132,4 +132,5 @@ class TaskController
         
         return redirect('/dashboard/' . $projectId, ['success' => 'Task deleted successfully!']);
     }
+
 }

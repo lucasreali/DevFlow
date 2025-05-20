@@ -69,4 +69,5 @@ class Task
         $stmt = $db->prepare("DELETE FROM tasks WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
+
 }

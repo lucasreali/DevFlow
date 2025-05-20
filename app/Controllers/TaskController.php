@@ -64,47 +64,21 @@ class TaskController
         }
     } 
 
-    public function update($data)
+    public static function update($data)
     {
         $id = $data['id'] ?? null;
         $title = $data['title'] ?? null;
         $description = $data['description'] ?? null;
-        $expired_at = $data['expired_at'] ?? null;
-        $project_id = $data['project_id'] ?? null;
-        $labelIds = $data['labels'] ?? [];
+        $expiredAt = $data['expired_at'] ?? null;
         $priority = $data['priority'] ?? 'Normal';
-        
-        // Validate all required parameters
-        $errors = [];
-        if (empty($id)) {
-            $errors[] = 'Task ID cannot be empty';
-        }
-        if (empty($title)) {
-            $errors[] = 'Task title cannot be empty';
-        }
-        if (empty($project_id)) {
-            $errors[] = 'Project ID cannot be empty';
-        }
-        
-        // Handle validation errors
-        if (!empty($errors)) {
-            $errorMsg = $errors[0];
-            if (!empty($project_id)) {
-                return redirect('/dashboard/' . $project_id, ['error' => $errorMsg]);
-            } else {
-                return redirect('/', ['error' => $errorMsg]);
-            }
-        }
+        $projectId = $data['project_id'] ?? null;
 
-        Task::update($id, $title, $description, $expired_at, $priority);
-        
-        // Update task labels
-        Label::removeAllFromTask($id);
-        foreach ($labelIds as $labelId) {
-            Label::assignToTask($id, $labelId);
-        }
+        // ...validações...
 
-        return redirect('/dashboard/' . $project_id, ['success' => 'Task updated successfully!']);
+        Task::update($id, $title, $description, $expiredAt, $priority);
+
+        // Redireciona para o board do projeto após atualizar
+        return redirect('/dashboard/' . $projectId, ['success' => 'Tarefa atualizada com sucesso!']);
     }
 
     public static function delete($data) {
@@ -135,4 +109,13 @@ class TaskController
         return redirect('/dashboard/' . $projectId, ['success' => 'Task deleted successfully!']);
     }
 
+    public static function updatePriority($data) {
+        $id = $data['id'] ?? null;
+        $priority = $data['priority'] ?? 'Normal';
+        if ($id) {
+            Task::updatePriority($id, $priority);
+            return redirect('/dashboard/' . $data['project_id'], ['success' => 'Prioridade atualizada!']);
+        }
+        return redirect('/dashboard', ['error' => 'ID da tarefa não informado']);
+    }
 }

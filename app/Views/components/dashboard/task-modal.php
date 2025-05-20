@@ -76,3 +76,15 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+// Exemplo de JS para preencher o campo ao abrir o modal
+document.querySelectorAll('.btn-edit-task').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.getElementById('editTaskPriority').value = this.dataset.priority;
+        // Preencha os outros campos normalmente...
+    });
+});
+</script>

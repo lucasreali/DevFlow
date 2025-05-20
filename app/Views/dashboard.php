@@ -176,4 +176,17 @@
     function resetLabelForm() {
         $('#addLabelForm')[0].reset();
     }
+
+    // Update edit task modal to include priority
+    document.querySelectorAll('.btn-edit-task').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('editTaskId').value = this.dataset.id;
+            document.getElementById('editTaskTitle').value = this.dataset.title;
+            document.getElementById('editTaskDescription').value = this.dataset.description;
+            document.getElementById('editTaskExpiredAt').value = this.dataset.expiredAt;
+            document.getElementById('editTaskPriority').value = this.dataset.priority;
+            var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+            modal.show();
+        });
+    });
 </script>

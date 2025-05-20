@@ -64,6 +64,16 @@ class Task
         ]);
     }
 
+    // Criando a função para atualizar a prioridade de uma tarefa
+    public static function updatePriority($id, $priority) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("UPDATE tasks SET priority = :priority WHERE id = :id");
+        return $stmt->execute([
+            'id' => $id,
+            'priority' => $priority
+        ]);
+    }
+
     // Criando a função para excluir uma tarefa
     public static function delete($id) {
         $db = Database::getInstance();

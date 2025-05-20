@@ -33,6 +33,7 @@ class HomeController
                     'username' => $friend['friend_username'],
                     'avatar_url' => $friend['friend_avatar'],
                     'status' => $friend['status'],
+                    'invited' => false
                 ];
             } else {
                 $friends[] = [
@@ -41,6 +42,7 @@ class HomeController
                     'username' => $friend['user_username'],
                     'avatar_url' => $friend['user_avatar'],
                     'status' => $friend['status'],
+                    'invited' => true
                 ];
             }
         }

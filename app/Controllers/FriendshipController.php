@@ -30,8 +30,16 @@ class FriendshipController
             $friendId = $friendAccount['user_id'];
 
             $friendship = Friendship::checkFriendship($userId, $friendId);
-            if ($friendship) {
+            if ($friendship && $friendship['status'] === 'pending') {
+                return redirect('/', ['error' => 'Friend request already sent.']);
+            }
+
+            if ($friendship && $friendship['status'] === 'accepted') {
                 return redirect('/', ['error' => 'You are already friends with this user.']);
+            }
+
+            if ($friendship && $friendship['status'] === 'rejected') {
+                return redirect('/', ['error' => 'Friend request was rejected.']);
             }
             Friendship::create($userId, $friendId);
             return redirect('/', ['success' => 'Friend request sent successfully.']);
@@ -60,5 +68,49 @@ class FriendshipController
         } catch (\Exception $e) {
             return redirect('/', ['error' => 'An error occurred while removing the friend.']);
         }        
+    }
+
+    public static function accept($data) {
+        $friendId = $data['friend_id'] ?? null;
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if (empty($friendId) || empty($userId)) {
+            return redirect('/', ['error' => 'Friend ID is required.']);
+        }
+
+        try {
+            $friendship = Friendship::checkFriendship($userId, $friendId);
+            if (!$friendship) {
+                return redirect('/', ['error' => 'Friendship not found.']);
+            }
+
+            Friendship::changeStatus($userId, $friendId, 'accepted');
+            return redirect('/', ['success' => 'Friend request accepted successfully.']);
+
+        } catch (\Exception $e) {
+            return redirect('/', ['error' => 'An error occurred while accepting the friend request.']);
+        }
+    }
+
+    public static function reject($data) {
+        $friendId = $data['friend_id'] ?? null;
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if (empty($friendId) || empty($userId)) {
+            return redirect('/', ['error' => 'Friend ID is required.']);
+        }
+
+        try {
+            $friendship = Friendship::checkFriendship($userId, $friendId);
+            if (!$friendship) {
+                return redirect('/', ['error' => 'Friendship not found.']);
+            }
+
+            Friendship::changeStatus($userId, $friendId, 'rejected');
+            return redirect('/', ['success' => 'Friend request rejected successfully.']);
+
+        } catch (\Exception $e) {
+            return redirect('/', ['error' => 'An error occurred while rejecting the friend request.']);
+        }
     }
 }

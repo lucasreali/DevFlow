@@ -21,7 +21,7 @@
                                 <?php include __DIR__ . '/friend-list-item.php'; ?>
                           <?php endforeach ?>
                       <?php else: ?>
-                        <tr><td colspan="2">No friends found.</td></tr>
+                        <tr><td colspan="3">No friends found.</td></tr>
                       <?php endif ?>
                     </tbody>
                 </table>

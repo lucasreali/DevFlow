@@ -40,20 +40,23 @@
     </div>
     <div class="card-footer text-muted">
         <?php
-            $expiredAt = !empty($task['expired_at']) ? new DateTime($task['expired_at']) : null;
-            $now = new DateTime();
-            $isExpiring = false;
-            if ($expiredAt && $expiredAt > $now) {
-                $secondsLeft = $expiredAt->getTimestamp() - $now->getTimestamp();
-                // Remova o comentário abaixo para depurar:
-                echo "<!-- now: {$now->format('Y-m-d H:i:s')} | expiredAt: {$expiredAt->format('Y-m-d H:i:s')} | secondsLeft: $secondsLeft -->";
-                if ($secondsLeft <= 86400) { // 86400 segundos = 24 horas
-                    $isExpiring = true;
-                }
-            }
+        // Calculate if the task is about to expire (less than 1 day)
+        $expiryDate = new DateTime($task['expired_at'] ?? 'now');
+        $currentDate = new DateTime();
+        $interval = $currentDate->diff($expiryDate);
+        $daysRemaining = $interval->days;
+        $isAboutToExpire = ($expiryDate > $currentDate && $daysRemaining < 1);
+        $hasExpired = ($currentDate > $expiryDate);
+        
+        // Apply the appropriate style based on expiration status
+        $expiryClass = '';
+        if ($hasExpired) {
+            $expiryClass = 'text-danger fw-bold';
+        } elseif ($isAboutToExpire) {
+            $expiryClass = 'text-danger';
+        }
         ?>
-        Expiration: 
-        <span <?= $isExpiring ? 'style="color: #dc3545; font-weight: bold;"' : '' ?>>
+        Expiration: <span class="<?= $expiryClass ?>">
             <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>
         </span>
     </div>

@@ -12,14 +12,29 @@
         </form>
     </td>
     <td>
-        <?php if ($friend['status'] === 'pending'): ?>
-            <span class="badge text-bg-warning"><?= $friend['status'] ?></span>
-        <?php elseif ($friend['status'] === "accepted") : ?>
+        <?php if ($friend['status'] === "accepted") : ?>
             <span class="badge text-bg-success"><?= $friend['status'] ?></span>
-        <?php endif; ?>
+        <?php elseif ($friend['status'] === "pending" && $friend['invited'] === true): ?>
+            <div class="d-flex gap-2">
 
-        
-        
+                <form action="/friends/accept" method="POST">
+                    <input type="hidden" name="friend_id" value="<?= $friend['id'] ?>">
+                    <button class="btn btn-success">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </form>
+                <form action="/friends/reject" method="POST">
+                    <input type="hidden" name="friend_id" value="<?= $friend['id'] ?>">
+                    <button class="btn btn-danger">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </form>
+            </div>
+        <?php elseif ($friend['status'] === 'pending'): ?>
+            <span class="badge text-bg-warning"><?= $friend['status'] ?></span>
+        <?php elseif ($friend['status'] === "rejected") : ?>
+            <span class="badge text-bg-danger"><?= $friend['status'] ?></span>
+        <?php endif; ?>        
     </td>
 </tr>
 

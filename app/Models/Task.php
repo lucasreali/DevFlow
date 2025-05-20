@@ -5,13 +5,13 @@ use Core\Database;
 
 class Task 
 {
-    // Criando a função para inserir uma nova tarefa no banco de dados. QUe recebe os parâmetros necessários.
-    public static function create($title, $description, $boardId, $userId, $expiredAt, $position) {
+    // Criando a função para inserir uma nova tarefa no banco de dados. Que recebe os parâmetros necessários.
+    public static function create($title, $description, $boardId, $userId, $expiredAt, $position, $priority = 'Normal') {
         $db = Database::getInstance();
 
         $stmt = $db->prepare(
-            "INSERT INTO tasks (title, description, board_id, user_id, expired_at, position) 
-             VALUES (:title, :description, :board_id, :user_id, :expired_at, :position)"
+            "INSERT INTO tasks (title, description, board_id, user_id, expired_at, position, priority) 
+             VALUES (:title, :description, :board_id, :user_id, :expired_at, :position, :priority)"
         );
 
         $stmt->execute([
@@ -20,7 +20,8 @@ class Task
             'board_id' => $boardId,
             'user_id' => $userId,
             'expired_at' => $expiredAt,
-            'position' => $position
+            'position' => $position,
+            'priority' => $priority
         ]);
 
         return $db->lastInsertId();
@@ -49,16 +50,17 @@ class Task
     }
 
     // Criando a função para atualizar uma tarefa
-    public static function update($id, $title, $description, $expiredAt) {
+    public static function update($id, $title, $description, $expiredAt, $priority = 'Normal') {
         $db = Database::getInstance();
 
-        $stmt = $db->prepare("UPDATE tasks SET title = :title, description = :description, expired_at = :expired_at WHERE id = :id");
+        $stmt = $db->prepare("UPDATE tasks SET title = :title, description = :description, expired_at = :expired_at, priority = :priority WHERE id = :id");
 
         return $stmt->execute([
             'id' => $id,
             'title' => $title,
             'description' => $description,
-            'expired_at' => $expiredAt
+            'expired_at' => $expiredAt,
+            'priority' => $priority
         ]);
     }
 
@@ -69,5 +71,4 @@ class Task
         $stmt = $db->prepare("DELETE FROM tasks WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
-
 }

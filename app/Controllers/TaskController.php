@@ -14,6 +14,7 @@ class TaskController
         $description = $data['description'] ?? null;
         $boardId = $data['board_id'] ?? null;
         $expiredAt = $data['expired_at'] ?? null;
+        $priority = $data['priority'] ?? 'Normal';
         
         // Validate all required parameters
         $errors = [];
@@ -51,7 +52,7 @@ class TaskController
         $position = count($boardTasks) + 1; // Posição da tarefa na lista (incrementa a contagem de tarefas existentes)
 
         // Chama o método create da classe Task para inserir a tarefa no banco de dados
-        $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt, $position);
+        $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt, $position, $priority);
 
         $board = Board::getById($boardId);
         $projectId = $board['project_id'];
@@ -71,6 +72,7 @@ class TaskController
         $expired_at = $data['expired_at'] ?? null;
         $project_id = $data['project_id'] ?? null;
         $labelIds = $data['labels'] ?? [];
+        $priority = $data['priority'] ?? 'Normal';
         
         // Validate all required parameters
         $errors = [];
@@ -94,7 +96,7 @@ class TaskController
             }
         }
 
-        Task::update($id, $title, $description, $expired_at);
+        Task::update($id, $title, $description, $expired_at, $priority);
         
         // Update task labels
         Label::removeAllFromTask($id);

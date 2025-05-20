@@ -1,7 +1,12 @@
 <!-- DIV DA TASK, EDITAR E DELETAR -->
 <div class="card-task card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="m-0"><?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h5>
+        <h5 class="m-0">
+            <?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+            <span class="badge bg-info ms-2">
+                <?= htmlspecialchars($task['priority'] ?? 'Normal', ENT_QUOTES, 'UTF-8') ?>
+            </span>
+        </h5>
         <div class="d-flex gap-2">
             <form action="/task/delete" method="post">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">

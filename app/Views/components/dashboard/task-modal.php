@@ -22,6 +22,16 @@
                         <input type="datetime-local" class="form-control" id="taskExpiredAt" name="expired_at" required>
                     </div>
                     
+                    <div class="mb-3">
+                        <label for="taskPriority" class="form-label">Priority</label>
+                        <select class="form-control" id="taskPriority" name="priority" required>
+                            <option value="Baixa">Baixa</option>
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Urgente">Urgente</option>
+                        </select>
+                    </div>
+                    
                     <!-- Add labels selection field only if labels are available -->
                     <div class="mb-3">
                         <label class="form-label">Task Labels</label>

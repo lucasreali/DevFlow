@@ -2,14 +2,24 @@
 <div class="card-task card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <?php
-        // Defina a cor do badge conforme a prioridade
+        // Define the badge colors based on priority
         $priorityColors = [
-            'Baixa'   => 'background-color: #ffe066; color: #856404;',   // Amarelo
-            'Normal'  => 'background-color: #ffa94d; color: #fff;',      // Laranja
-            'Alta'    => 'background-color: #ff8787; color: #fff;',      // Vermelho claro
-            'Urgente' => 'background-color: #d90429; color: #fff;',      // Vermelho forte
+            'Low'      => 'background-color: #ffe066; color: #856404;',   // Yellow
+            'Normal'   => 'background-color: #ffa94d; color: #fff;',      // Orange
+            'High'     => 'background-color: #ff8787; color: #fff;',      // Light Red
+            'Urgent'   => 'background-color: #d90429; color: #fff;',      // Strong Red
         ];
-        $priority = $task['priority'] ?? 'Normal';
+        
+        // Map Portuguese priority terms to English if needed
+        $priorityMapping = [
+            'Baixa'   => 'Low',
+            'Normal'  => 'Normal',
+            'Alta'    => 'High',
+            'Urgente' => 'Urgent'
+        ];
+        
+        $originalPriority = $task['priority'] ?? 'Normal';
+        $priority = $priorityMapping[$originalPriority] ?? $originalPriority;
         $priorityStyle = $priorityColors[$priority] ?? $priorityColors['Normal'];
         ?>
         <h5 class="m-0">
@@ -56,45 +66,34 @@
         </div>
     </div>
     <div class="card-footer text-muted">
-
         <?php
-<<<<<<< HEAD
-            $expiredAt = null;
-            if (!empty($task['expired_at'])) {
-                // Aceita tanto "Y-m-d H:i:s" quanto "Y-m-d\TH:i"
-                $expiredAt = DateTime::createFromFormat('Y-m-d H:i:s', $task['expired_at']) ?: 
-                             DateTime::createFromFormat('Y-m-d\TH:i', $task['expired_at']) ?: 
-                             new DateTime($task['expired_at']);
-            }
-            $now = new DateTime();
-            $isExpiring = false;
-            if ($expiredAt && $expiredAt > $now) {
-                $secondsLeft = $expiredAt->getTimestamp() - $now->getTimestamp();
-                if ($secondsLeft <= 86400) { // 86400 segundos = 24 horas
-                    $isExpiring = true;
-                }
-            }
-=======
-        // Calculate if the task is about to expire (less than 1 day)
-        $expiryDate = new DateTime($task['expired_at'] ?? 'now');
+        // Initialize the expiry date with robust format handling
+        $expiredAt = null;
+        if (!empty($task['expired_at'])) {
+            // Handle multiple possible date formats
+            $expiredAt = DateTime::createFromFormat('Y-m-d H:i:s', $task['expired_at']) ?: 
+                         DateTime::createFromFormat('Y-m-d\TH:i', $task['expired_at']) ?: 
+                         new DateTime($task['expired_at']);
+        } else {
+            $expiredAt = new DateTime('now');
+        }
+        
         $currentDate = new DateTime();
-        $interval = $currentDate->diff($expiryDate);
+        $interval = $currentDate->diff($expiredAt);
         $daysRemaining = $interval->days;
-        $isAboutToExpire = ($expiryDate > $currentDate && $daysRemaining < 1);
-        $hasExpired = ($currentDate > $expiryDate);
+        $isAboutToExpire = ($expiredAt > $currentDate && $daysRemaining < 1);
+        $hasExpired = ($currentDate > $expiredAt);
         
         // Apply the appropriate style based on expiration status
         $expiryClass = '';
         if ($hasExpired) {
             $expiryClass = 'text-danger fw-bold';
         } elseif ($isAboutToExpire) {
-            $expiryClass = 'text-danger';
+            $expiryClass = 'text-warning bold';
         }
->>>>>>> 3521a88dbdc9b0ec171955f98bf204171e2d8021
         ?>
         Expiration: <span class="<?= $expiryClass ?>">
             <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>
         </span>
-
     </div>
 </div>

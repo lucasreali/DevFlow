@@ -4,28 +4,20 @@
         <?php
         // Define the badge colors based on priority
         $priorityColors = [
-            'Low'      => 'background-color: #ffe066; color: #856404;',   // Yellow
-            'Normal'   => 'background-color: #ffa94d; color: #fff;',      // Orange
-            'High'     => 'background-color: #ff8787; color: #fff;',      // Light Red
-            'Urgent'   => 'background-color: #d90429; color: #fff;',      // Strong Red
+            'low'      => 'background-color: #ffe066; color: #856404;',   // Yellow
+            'medium'   => 'background-color: #ffa94d; color: #fff;',      // Orange
+            'high'     => 'background-color: #ff8787; color: #fff;',      // Light Red
+            'urgent'   => 'background-color: #d90429; color: #fff;',      // Strong Red
         ];
         
-        // Map Portuguese priority terms to English if needed
-        $priorityMapping = [
-            'Baixa'   => 'Low',
-            'Normal'  => 'Normal',
-            'Alta'    => 'High',
-            'Urgente' => 'Urgent'
-        ];
-        
-        $originalPriority = $task['priority'] ?? 'Normal';
-        $priority = $priorityMapping[$originalPriority] ?? $originalPriority;
-        $priorityStyle = $priorityColors[$priority] ?? $priorityColors['Normal'];
+        // Simplify by directly using the lowercase priority value
+        $originalPriority = strtolower($task['priority'] ?? 'medium');
+        $priorityStyle = $priorityColors[$originalPriority] ?? $priorityColors['medium'];
         ?>
         <h5 class="m-0">
             <?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-            <span class="badge ms-2" style="<?= $priorityStyle ?>">
-                <?= htmlspecialchars($priority, ENT_QUOTES, 'UTF-8') ?>
+            <span class="badge ms-2" style="<?= $priorityStyle ?> font-size: 0.75rem; padding: 0.25em 0.5em;">
+                <?= htmlspecialchars($originalPriority, ENT_QUOTES, 'UTF-8') ?>
             </span>
         </h5>
         <div class="d-flex gap-2">
@@ -40,7 +32,7 @@
                 data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
                 data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
                 data-expired-at="<?= htmlspecialchars($task['expired_at'], ENT_QUOTES, 'UTF-8') ?>"
-                data-priority="<?= htmlspecialchars($task['priority'] ?? 'Normal', ENT_QUOTES, 'UTF-8') ?>"
+                data-priority="<?= htmlspecialchars(($task['priority'] ?? 'medium'), ENT_QUOTES, 'UTF-8') ?>"
             >
                 <i class="fa-solid fa-pen"></i>
             </button>
@@ -89,7 +81,7 @@
         if ($hasExpired) {
             $expiryClass = 'text-danger fw-bold';
         } elseif ($isAboutToExpire) {
-            $expiryClass = 'text-warning bold';
+            $expiryClass = 'text-warning fw-bold';
         }
         ?>
         Expiration: <span class="<?= $expiryClass ?>">

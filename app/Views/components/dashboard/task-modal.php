@@ -17,19 +17,21 @@
                         <label for="taskDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Describe the task in detail"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="taskExpiredAt" class="form-label">Expiration Date & Time</label>
-                        <input type="datetime-local" class="form-control" id="taskExpiredAt" name="expired_at" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="taskPriority" class="form-label">Priority</label>
-                        <select class="form-control" id="taskPriority" name="priority" required>
-                            <option value="Baixa">Baixa</option>
-                            <option value="Normal" selected>Normal</option>
-                            <option value="Alta">Alta</option>
-                            <option value="Urgente">Urgente</option>
-                        </select>
+                    <div class="d-flex gap-2 w-100">
+                        <div class="mb-3 w-100">
+                            <label for="taskExpiredAt" class="form-label">Expiration Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="taskExpiredAt" name="expired_at" required>
+                        </div>
+                        
+                        <div class="mb-3 w-100">
+                            <label for="taskPriority" class="form-label">Priority</label>
+                            <select class="form-control" id="taskPriority" name="priority" required>
+                                <option value="low">low</option>
+                                <option value="medium" selected>medium</option>
+                                <option value="high">high</option>
+                                <option value="urgent">urgent</option>
+                            </select>
+                        </div>
                     </div>
                     
                     <!-- Add labels selection field only if labels are available -->
@@ -80,10 +82,12 @@
 
 
 <script>
-// Exemplo de JS para preencher o campo ao abrir o modal
+// Update to populate edit task modal fields
 document.querySelectorAll('.btn-edit-task').forEach(btn => {
     btn.addEventListener('click', function() {
-        document.getElementById('editTaskPriority').value = this.dataset.priority;
+        // Make sure priority is lowercase
+        const priority = this.dataset.priority.toLowerCase();
+        document.getElementById('editTaskPriority').value = priority;
         // Preencha os outros campos normalmente...
     });
 });

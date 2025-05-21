@@ -58,7 +58,7 @@
     <div class="card-footer text-muted">
 
         <?php
-<<<<<<< HEAD
+
             $expiredAt = null;
             if (!empty($task['expired_at'])) {
                 // Aceita tanto "Y-m-d H:i:s" quanto "Y-m-d\TH:i"
@@ -74,7 +74,7 @@
                     $isExpiring = true;
                 }
             }
-=======
+
         // Calculate if the task is about to expire (less than 1 day)
         $expiryDate = new DateTime($task['expired_at'] ?? 'now');
         $currentDate = new DateTime();
@@ -90,7 +90,7 @@
         } elseif ($isAboutToExpire) {
             $expiryClass = 'text-danger';
         }
->>>>>>> 3521a88dbdc9b0ec171955f98bf204171e2d8021
+
         ?>
         Expiration: <span class="<?= $expiryClass ?>">
             <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>

@@ -57,13 +57,17 @@
     </div>
     <div class="card-footer text-muted">
         <?php
-            $expiredAt = !empty($task['expired_at']) ? new DateTime($task['expired_at']) : null;
+            $expiredAt = null;
+            if (!empty($task['expired_at'])) {
+                // Aceita tanto "Y-m-d H:i:s" quanto "Y-m-d\TH:i"
+                $expiredAt = DateTime::createFromFormat('Y-m-d H:i:s', $task['expired_at']) ?: 
+                             DateTime::createFromFormat('Y-m-d\TH:i', $task['expired_at']) ?: 
+                             new DateTime($task['expired_at']);
+            }
             $now = new DateTime();
             $isExpiring = false;
             if ($expiredAt && $expiredAt > $now) {
                 $secondsLeft = $expiredAt->getTimestamp() - $now->getTimestamp();
-                // Remova o comentário abaixo para depurar:
-                echo "<!-- now: {$now->format('Y-m-d H:i:s')} | expiredAt: {$expiredAt->format('Y-m-d H:i:s')} | secondsLeft: $secondsLeft -->";
                 if ($secondsLeft <= 86400) { // 86400 segundos = 24 horas
                     $isExpiring = true;
                 }

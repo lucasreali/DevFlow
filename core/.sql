@@ -75,7 +75,7 @@ CREATE TABLE tasks (
     expired_at DATETIME,
 
     position INT NOT NULL,
-    priority VARCHAR(20) DEFAULT 'Normal',
+    priority ENUM ('low', 'medium', 'high', 'urgent') NOT NULL DEFAULT 'low',
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

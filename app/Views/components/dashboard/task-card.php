@@ -2,20 +2,22 @@
 <div class="card-task card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <?php
-        // Defina a cor do badge conforme a prioridade
+        // Define the badge colors based on priority
         $priorityColors = [
-            'Baixa'   => 'background-color: #ffe066; color: #856404;',   // Amarelo
-            'Normal'  => 'background-color: #ffa94d; color: #fff;',      // Laranja
-            'Alta'    => 'background-color: #ff8787; color: #fff;',      // Vermelho claro
-            'Urgente' => 'background-color: #d90429; color: #fff;',      // Vermelho forte
+            'low'      => 'background-color: #ffe066; color: #856404;',   // Yellow
+            'medium'   => 'background-color: #ffa94d; color: #fff;',      // Orange
+            'high'     => 'background-color: #ff8787; color: #fff;',      // Light Red
+            'urgent'   => 'background-color: #d90429; color: #fff;',      // Strong Red
         ];
-        $priority = $task['priority'] ?? 'Normal';
-        $priorityStyle = $priorityColors[$priority] ?? $priorityColors['Normal'];
+        
+        // Simplify by directly using the lowercase priority value
+        $originalPriority = strtolower($task['priority'] ?? 'medium');
+        $priorityStyle = $priorityColors[$originalPriority] ?? $priorityColors['medium'];
         ?>
         <h5 class="m-0">
             <?= htmlspecialchars($task['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-            <span class="badge ms-2" style="<?= $priorityStyle ?>">
-                <?= htmlspecialchars($priority, ENT_QUOTES, 'UTF-8') ?>
+            <span class="badge ms-2" style="<?= $priorityStyle ?> font-size: 0.75rem; padding: 0.25em 0.5em;">
+                <?= htmlspecialchars($originalPriority, ENT_QUOTES, 'UTF-8') ?>
             </span>
         </h5>
         <div class="d-flex gap-2">
@@ -30,7 +32,7 @@
                 data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
                 data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
                 data-expired-at="<?= htmlspecialchars($task['expired_at'], ENT_QUOTES, 'UTF-8') ?>"
-                data-priority="<?= htmlspecialchars($task['priority'] ?? 'Normal', ENT_QUOTES, 'UTF-8') ?>"
+                data-priority="<?= htmlspecialchars(($task['priority'] ?? 'medium'), ENT_QUOTES, 'UTF-8') ?>"
             >
                 <i class="fa-solid fa-pen"></i>
             </button>
@@ -56,9 +58,7 @@
         </div>
     </div>
     <div class="card-footer text-muted">
-
         <?php
-
             $expiredAt = null;
             if (!empty($task['expired_at'])) {
                 // Aceita tanto "Y-m-d H:i:s" quanto "Y-m-d\TH:i"
@@ -77,24 +77,36 @@
 
         // Calculate if the task is about to expire (less than 1 day)
         $expiryDate = new DateTime($task['expired_at'] ?? 'now');
+
+        // Initialize the expiry date with robust format handling
+        $expiredAt = null;
+        if (!empty($task['expired_at'])) {
+            // Handle multiple possible date formats
+            $expiredAt = DateTime::createFromFormat('Y-m-d H:i:s', $task['expired_at']) ?: 
+                         DateTime::createFromFormat('Y-m-d\TH:i', $task['expired_at']) ?: 
+                         new DateTime($task['expired_at']);
+        } else {
+            $expiredAt = new DateTime('now');
+        }
+        
+
         $currentDate = new DateTime();
-        $interval = $currentDate->diff($expiryDate);
+        $interval = $currentDate->diff($expiredAt);
         $daysRemaining = $interval->days;
-        $isAboutToExpire = ($expiryDate > $currentDate && $daysRemaining < 1);
-        $hasExpired = ($currentDate > $expiryDate);
+        $isAboutToExpire = ($expiredAt > $currentDate && $daysRemaining < 1);
+        $hasExpired = ($currentDate > $expiredAt);
         
         // Apply the appropriate style based on expiration status
         $expiryClass = '';
         if ($hasExpired) {
             $expiryClass = 'text-danger fw-bold';
         } elseif ($isAboutToExpire) {
-            $expiryClass = 'text-danger';
+            $expiryClass = 'text-warning fw-bold';
         }
 
         ?>
         Expiration: <span class="<?= $expiryClass ?>">
             <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>
         </span>
-
     </div>
 </div>

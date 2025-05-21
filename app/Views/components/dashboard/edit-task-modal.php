@@ -18,20 +18,22 @@
                         <label for="editTaskDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="editTaskDescription" name="description" rows="3" placeholder="Describe the task in detail"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time</label>
-                        <input type="datetime-local" class="form-control" id="editTaskExpiredAt" name="expired_at" required>
-                    </div>
-                    
-                    <!-- Add priority selection field -->
-                    <div class="mb-3">
-                        <label for="editTaskPriority" class="form-label">Priority</label>
-                        <select class="form-control" id="editTaskPriority" name="priority" required>
-                            <option value="Baixa">Baixa</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Alta">Alta</option>
-                            <option value="Urgente">Urgente</option>
-                        </select>
+                    <div class="d-flex gap-2 w-100">
+                        <div class="mb-3 w-100">
+                            <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="editTaskExpiredAt" name="expired_at" required>
+                        </div>
+                        
+                        <!-- Add priority selection field -->
+                        <div class="mb-3 w-100">
+                            <label for="editTaskPriority" class="form-label">Priority</label>
+                            <select class="form-control" id="editTaskPriority" name="priority" required>
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Normal</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
                     </div>
                     
                     <!-- Add labels selection field -->

@@ -26,6 +26,10 @@ class HomeController
         $friends = [];
 
         foreach ($friendsRelenshionship as &$friend) {
+            if ($friend['status'] === "rejected") {
+                continue;
+            }
+
             if ($friend['user_id'] == $user['id']) {
                 $friends[] = [
                     'id' => $friend['friend_id'],

@@ -56,7 +56,9 @@
         </div>
     </div>
     <div class="card-footer text-muted">
+
         <?php
+<<<<<<< HEAD
             $expiredAt = null;
             if (!empty($task['expired_at'])) {
                 // Aceita tanto "Y-m-d H:i:s" quanto "Y-m-d\TH:i"
@@ -72,10 +74,27 @@
                     $isExpiring = true;
                 }
             }
+=======
+        // Calculate if the task is about to expire (less than 1 day)
+        $expiryDate = new DateTime($task['expired_at'] ?? 'now');
+        $currentDate = new DateTime();
+        $interval = $currentDate->diff($expiryDate);
+        $daysRemaining = $interval->days;
+        $isAboutToExpire = ($expiryDate > $currentDate && $daysRemaining < 1);
+        $hasExpired = ($currentDate > $expiryDate);
+        
+        // Apply the appropriate style based on expiration status
+        $expiryClass = '';
+        if ($hasExpired) {
+            $expiryClass = 'text-danger fw-bold';
+        } elseif ($isAboutToExpire) {
+            $expiryClass = 'text-danger';
+        }
+>>>>>>> 3521a88dbdc9b0ec171955f98bf204171e2d8021
         ?>
-        Expiration: 
-        <span <?= $isExpiring ? 'style="color: #dc3545; font-weight: bold;"' : '' ?>>
+        Expiration: <span class="<?= $expiryClass ?>">
             <?= htmlspecialchars($task['expired_at'] ?? 'No deadline', ENT_QUOTES, 'UTF-8') ?>
         </span>
+
     </div>
 </div>

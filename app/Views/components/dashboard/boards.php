@@ -1,4 +1,10 @@
 <?php if (!empty($boards)): ?>
+    <!-- CSS para drag and drop -->
+    <style>
+        .dragging { opacity: 0.5; }
+        .drop-hover { background: #f0f0f0; border: 2px dashed #007bff; }
+    </style>
+    
     <?php foreach ($boards as $board): ?>
         <div class="board">
             <h4 class="title-board" style="background-color: var(--<?= htmlspecialchars($board['color']) ?>-bg);">
@@ -8,7 +14,9 @@
                 </span>
             </h4>
 
-            <div class="d-flex flex-column gap-2 mt-5">
+            <div class="d-flex flex-column gap-2 mt-5 tasks-dropzone"
+                 id="tasks-dropzone-<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>"
+                 data-board-id="<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>">
                 <?php if (!empty($board['tasks']) && is_array($board['tasks'])): ?>
                     <?php foreach ($board['tasks'] as $task): ?>
                         <?php include __DIR__ . '/task-card.php'; ?>
@@ -32,3 +40,6 @@
         <i class="fa-solid fa-plus"></i> <span class="ms-2 m-0">Add New Board</span>
     </button>
 </div>
+
+<!-- Incluindo o script de drag and drop -->
+<script src="/js/task-drag-drop.js"></script>

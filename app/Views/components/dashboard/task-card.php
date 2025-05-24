@@ -1,5 +1,7 @@
 <!-- DIV DA TASK, EDITAR E DELETAR -->
-<div class="card-task card">
+<div class="card-task card"
+     data-task-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
+     data-board-id="<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>">
     <div class="card-header d-flex justify-content-between align-items-center">
         <?php
         // Define the badge colors based on priority
@@ -20,22 +22,36 @@
                 <?= htmlspecialchars($originalPriority, ENT_QUOTES, 'UTF-8') ?>
             </span>
         </h5>
-        <div class="d-flex gap-2">
-            <form action="/task/delete" method="post">
-                <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
-                <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
-                <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-            </form>
-            <button
-                class="btn-edit-task btn btn-warning"
-                data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
-                data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
-                data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
-                data-expired-at="<?= htmlspecialchars($task['expired_at'], ENT_QUOTES, 'UTF-8') ?>"
-                data-priority="<?= htmlspecialchars(($task['priority'] ?? 'medium'), ENT_QUOTES, 'UTF-8') ?>"
-            >
-                <i class="fa-solid fa-pen"></i>
-            </button>
+        <div class="d-flex gap-1">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a 
+                            class="dropdown-item btn-edit-task"
+                            href="#"
+                            data-id="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-title="<?= htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-description="<?= htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-expired-at="<?= htmlspecialchars($task['expired_at'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-priority="<?= htmlspecialchars(($task['priority'] ?? 'medium'), ENT_QUOTES, 'UTF-8') ?>"
+                        >
+                            <i class="fa-solid fa-pen me-2"></i> Editar
+                        </a>
+                    </li>
+                    <li>
+                        <form action="/task/delete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($task['id'], ENT_QUOTES, 'UTF-8') ?>">
+                            <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
+                            <button class="dropdown-item" type="submit" onclick="return confirm('Tem certeza que deseja deletar esta tarefa?');">
+                                <i class="fa-solid fa-trash me-2"></i> Deletar
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="card-body">

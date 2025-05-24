@@ -22,7 +22,8 @@
     --orange-bg: #fff5e5;
 }
 
-.dropdown-toggle-no-caret::after {
+/* Remove caret from all Bootstrap dropdown toggles */
+.dropdown-toggle::after {
     display: none !important;
 }
 

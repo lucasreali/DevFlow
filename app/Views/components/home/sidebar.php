@@ -16,7 +16,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="dropup-center dropup">
+            <div class="dropup">
                 <button class="btn btn-light d-flex align-items-center gap-2 p-2 rounded dropdown-toggle dropdown-toggle-no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; background-color: #f2f2f2;">
                     <?php 
                     $size = 30;

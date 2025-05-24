@@ -33,8 +33,7 @@ class Task
 
         $stmt = $db->prepare(
             "SELECT * FROM tasks 
-             WHERE board_id = :board_id 
-             ORDER BY position ASC"
+             WHERE board_id = :board_id"
         );
         $stmt->execute(['board_id' => $boardId]);
         return $stmt->fetchAll();
@@ -71,6 +70,16 @@ class Task
         return $stmt->execute([
             'id' => $id,
             'priority' => $priority
+        ]);
+    }
+
+    // Atualiza o board_id de uma tarefa
+    public static function updateBoard($taskId, $boardId) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("UPDATE tasks SET board_id = :board_id WHERE id = :id");
+        return $stmt->execute([
+            'board_id' => $boardId,
+            'id' => $taskId
         ]);
     }
 

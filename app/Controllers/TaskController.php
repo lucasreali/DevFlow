@@ -140,4 +140,23 @@ class TaskController
         }
         return redirect('/dashboard', ['error' => 'ID da tarefa não informado']);
     }
+
+    public static function moveBoard()
+    {
+        $rawInput = file_get_contents('php://input');
+        $input = json_decode($rawInput, true);
+        
+        $taskId = $input['task_id'] ?? null;
+        $boardId = $input['board_id'] ?? null;
+        
+
+        if ($taskId && $boardId) {
+            Task::updateBoard($taskId, $boardId);
+            http_response_code(200);
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Dados inválidos']);
+        }
+    }
 }

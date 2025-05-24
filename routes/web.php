@@ -48,6 +48,7 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/task/update', [TaskController::class, 'update']);
     Router::post('/task/delete', [TaskController::class, 'delete']);
     Router::post('/task/update-priority', [TaskController::class, 'updatePriority']);
+    Router::post('/task/move-board', [TaskController::class, 'moveBoard']);
 
     // Project Management
     Router::post('/project', [ProjectController::class, 'store']);

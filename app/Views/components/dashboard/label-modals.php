@@ -31,11 +31,6 @@
     </div>
 </div>
 
-<!-- Botão para adicionar um novo label -->
-<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addLabelModal" 
-        style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
-    <i class="fa-solid fa-plus"></i>
-</button>
 
 <!-- Modal para adicionar um novo label -->
 <div class="modal fade" id="addLabelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addLabelModalLabel" aria-hidden="true">

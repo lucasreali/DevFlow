@@ -34,37 +34,43 @@
                         </div>
                     </div>
                     
-                    <!-- Add labels selection field only if labels are available -->
+                    <!-- Add labels selection field with clickable tags instead of checkboxes -->
                     <div class="mb-3">
                         <label class="form-label">Task Labels</label>
                         <?php if (!empty($availableLabels)): ?>
                         <div class="d-flex flex-wrap gap-2" id="taskLabelsContainer">
                             <?php foreach ($availableLabels as $label): ?>
-                                <div class="form-check">
+                                <div class="label-selector">
+                                    <!-- Hidden checkbox -->
                                     <input 
-                                        class="form-check-input task-label-checkbox" 
+                                        class="form-check-input task-label-checkbox visually-hidden" 
                                         type="checkbox" 
                                         name="labels[]" 
                                         value="<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>" 
                                         id="new-label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
                                     >
-                                    <label 
-                                        class="form-check-label" 
-                                        for="new-label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                    <!-- Clickable label tag -->
+                                    <span 
+                                        class="badge selectable-label"
+                                        data-label-id="<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-checkbox-id="new-label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
                                         style="background-color: var(--<?= htmlspecialchars($label['color'], ENT_QUOTES, 'UTF-8') ?>-bg); 
                                                color: var(--<?= htmlspecialchars($label['color'], ENT_QUOTES, 'UTF-8') ?>-text);
-                                               padding: 0.25rem 0.5rem;
-                                               border-radius: 0.25rem;"
+                                               padding: 0.5rem 0.75rem;
+                                               border-radius: 0.25rem;
+                                               cursor: pointer;
+                                               border: 2px solid transparent;
+                                               transition: all 0.2s ease;"
                                     >
                                         <?= htmlspecialchars($label['title'], ENT_QUOTES, 'UTF-8') ?>
-                                    </label>
+                                    </span>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                         <?php endif; ?>
                         
                         <div class="mt-2">
-                            <!-- Button to add a new label - with improved visibility -->
+                            <!-- Button to add a new label -->
                             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addLabelModal" style="padding: 0.375rem 0.75rem; font-size: 1rem;">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
@@ -78,17 +84,3 @@
         </div>
     </div>
 </div>
-
-
-
-<script>
-// Update to populate edit task modal fields
-document.querySelectorAll('.btn-edit-task').forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Make sure priority is lowercase
-        const priority = this.dataset.priority.toLowerCase();
-        document.getElementById('editTaskPriority').value = priority;
-        // Preencha os outros campos normalmente...
-    });
-});
-</script>

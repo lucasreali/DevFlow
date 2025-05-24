@@ -15,6 +15,7 @@ class TaskController
         $boardId = $data['board_id'] ?? null;
         $expiredAt = $data['expired_at'] ?? null;
         $priority = $data['priority'] ?? 'Normal';
+        $labels = $data['labels'] ?? [];
         
         // Validate all required parameters
         $errors = [];
@@ -58,6 +59,13 @@ class TaskController
         $projectId = $board['project_id'];
 
         if ($taskId) {
+            // Assign labels to the newly created task
+            if (!empty($labels) && is_array($labels)) {
+                foreach ($labels as $labelId) {
+                    Label::assignToTask($taskId, $labelId);
+                }
+            }
+            
             return redirect('/dashboard/' . $projectId, ['success' => 'Task created successfully!']);
         } else {
             return redirect('/dashboard/' . $projectId, ['error' => 'Error creating the task.']);
@@ -72,10 +80,24 @@ class TaskController
         $expiredAt = $data['expired_at'] ?? null;
         $priority = $data['priority'] ?? 'Normal';
         $projectId = $data['project_id'] ?? null;
+        $labels = $data['labels'] ?? [];
 
         // ...validações...
 
         Task::update($id, $title, $description, $expiredAt, $priority);
+        
+        // Update task labels
+        if ($id) {
+            // First remove all existing labels from this task
+            Label::removeAllFromTask($id);
+            
+            // Then add the selected labels
+            if (!empty($labels) && is_array($labels)) {
+                foreach ($labels as $labelId) {
+                    Label::assignToTask($id, $labelId);
+                }
+            }
+        }
 
         // Redireciona para o board do projeto após atualizar
         return redirect('/dashboard/' . $projectId, ['success' => 'Tarefa atualizada com sucesso!']);

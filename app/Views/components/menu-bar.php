@@ -2,7 +2,7 @@
     <div>
         
         <a href="/">
-            <img src="/images/logo.svg" alt="DevFlow Logo" style="width: 50px; height: 40px;" />
+            <img src="/../images/logo.svg" alt="DevFlow Logo" style="width: 50px; height: 40px;" />
         </a>
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
             <li>

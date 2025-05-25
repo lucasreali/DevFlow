@@ -91,23 +91,27 @@ class Route {
             $requestData = array_merge($requestData, $_POST);
         }
         
-        // Para PUT, DELETE ou outros métodos não processados automaticamente pelo PHP
-        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        // Verifica se há conteúdo JSON em qualquer tipo de requisição
+        $contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
         $requestMethod = $_SERVER['REQUEST_METHOD'] ?? '';
         
-        if (in_array($requestMethod, ['PUT', 'DELETE', 'PATCH']) || 
-            (!empty($_POST) && ($requestMethod !== 'POST'))) {
+        // Processar JSON em qualquer tipo de requisição
+        if (!empty($contentType) && strpos($contentType, 'application/json') !== false) {
             $input = file_get_contents('php://input');
-            
-            // Processa dados JSON
-            if (strpos($contentType, 'application/json') !== false) {
+            if (!empty($input)) {
                 $inputData = json_decode($input, true);
                 if ($inputData && is_array($inputData)) {
                     $requestData = array_merge($requestData, $inputData);
                 }
-            } 
+            }
+        } 
+        // Para PUT, DELETE ou outros métodos não processados automaticamente pelo PHP
+        elseif (in_array($requestMethod, ['PUT', 'DELETE', 'PATCH']) || 
+            (!empty($_POST) && ($requestMethod !== 'POST'))) {
+            $input = file_get_contents('php://input');
+            
             // Processa dados de formulário
-            elseif (strpos($contentType, 'application/x-www-form-urlencoded') !== false) {
+            if (strpos($contentType, 'application/x-www-form-urlencoded') !== false) {
                 parse_str($input, $formData);
                 if ($formData && is_array($formData)) {
                     $requestData = array_merge($requestData, $formData);

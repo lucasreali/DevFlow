@@ -3,7 +3,12 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewModalLabel-<?= $doc['id'] ?>"><?= htmlspecialchars($doc['title']) ?></h5>
+                <h5 class="modal-title" id="viewModalLabel-<?= $doc['id'] ?>">
+                    <?= htmlspecialchars($doc['title']) ?>
+                    <span class="badge <?= $doc['doc_type'] === 'project' ? 'bg-primary' : 'bg-success' ?> ms-2">
+                        <?= $doc['doc_type'] === 'project' ? 'Project' : 'Meeting' ?>
+                    </span>
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -30,6 +35,13 @@
                     <div class="form-group mb-3">
                         <label for="edit-title-<?= $doc['id'] ?>">Title:</label>
                         <input type="text" name="title" id="edit-title-<?= $doc['id'] ?>" class="form-control" value="<?= htmlspecialchars($doc['title']) ?>" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="edit-type-<?= $doc['id'] ?>">Type:</label>
+                        <select name="type" id="edit-type-<?= $doc['id'] ?>" class="form-select">
+                            <option value="project" <?= $doc['doc_type'] === 'project' ? 'selected' : '' ?>>Project</option>
+                            <option value="meeting" <?= $doc['doc_type'] === 'meeting' ? 'selected' : '' ?>>Meeting</option>
+                        </select>
                     </div>
                     <ul class="nav nav-tabs" id="editMarkdownTabs-<?= $doc['id'] ?>" role="tablist">
                         <li class="nav-item" role="presentation">

@@ -10,9 +10,21 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2>Documentation</h2>
-                        <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#newDocumentModal">
-                            New Document
-                        </button>
+                        <div class="d-flex gap-2">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Filter: <?= isset($selectedType) ? ($selectedType === 'project' ? 'Project' : ($selectedType === 'meeting' ? 'Meeting' : 'All')) : 'All' ?>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/documentation/<?= $projectId ?>">All</a></li>
+                                    <li><a class="dropdown-item" href="/documentation/<?= $projectId ?>?type=project">Project</a></li>
+                                    <li><a class="dropdown-item" href="/documentation/<?= $projectId ?>?type=meeting">Meeting</a></li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newDocumentModal">
+                                New Document
+                            </button>
+                        </div>
                     </div>
                     <?php if (empty($docs)): ?>
                         <p class="text-muted">No documents found! Please add your first document above!</p>

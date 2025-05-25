@@ -1,7 +1,12 @@
 <div class="col-md-4 mb-4">
     <div class="card h-100">
         <div class="card-body" style="max-height: 100px; overflow-y: hidden;">
-            <h5 class="card-title"><?= htmlspecialchars($doc['title']) ?></h5>
+            <h5 class="card-title">
+                <?= htmlspecialchars($doc['title']) ?>
+                <span class="badge <?= $doc['doc_type'] === 'project' ? 'bg-primary' : 'bg-success' ?> ms-1" style="font-size: 0.7rem;">
+                    <?= $doc['doc_type'] === 'project' ? 'Project' : 'Meeting' ?>
+                </span>
+            </h5>
             <p class="card-text"><?= nl2br(htmlspecialchars(substr($doc['content'], 0, 150))) ?>
                 <?= (strlen($doc['content']) > 150) ? '...' : '' ?>
             </p>

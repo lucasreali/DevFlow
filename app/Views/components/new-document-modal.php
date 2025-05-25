@@ -11,6 +11,13 @@
                         <label for="title" class="form-label">Title:</label>
                         <input type="text" name="title" id="title" placeholder="Enter the document title" required class="form-control">
                     </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Type:</label>
+                        <select name="type" id="type" class="form-select">
+                            <option value="project">Project</option>
+                            <option value="meeting">Meeting</option>
+                        </select>
+                    </div>
                     <ul class="nav nav-tabs" id="markdownTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit-tab-pane" type="button" role="tab" aria-controls="edit-tab-pane" aria-selected="true">Edit</button>
@@ -57,6 +64,9 @@
 
         // Update preview in real-time as the user types
         contentEditable.addEventListener('input', updatePreview);
+
+        // Ensure preview is updated when clicking on preview tab
+        document.getElementById('preview-tab').addEventListener('click', updatePreview);
 
         // Ensure hidden input is updated on form submit
         document.getElementById('newDocumentForm').addEventListener('submit', updatePreview);

@@ -19,19 +19,24 @@
     endif; 
     ?>
 
-    <!-- Conteúdo -->
-    <main class="main-dashboard">
-        <!-- Boards -->
-        <?php include __DIR__ . '/components/dashboard/boards.php'; ?>
+    <!-- Main Content -->
+    <div class="flex-grow-1 d-flex overflow-hidden">
+        <!-- Boards Content -->
+        <main class="main-dashboard flex-grow-1 overflow-auto">
+            <!-- Boards -->
+            <?php include __DIR__ . '/components/dashboard/boards.php'; ?>
+        </main>
 
-        <!-- Modals -->
-        <?php include __DIR__ . '/components/dashboard/task-modal.php'; ?>
-        <?php include __DIR__ . '/components/dashboard/board-modal.php'; ?>
-        <?php include __DIR__ . '/components/dashboard/edit-task-modal.php'; ?>
-        <?php include __DIR__ . '/components/dashboard/label-modals.php'; ?>
-    </main>
+        <!-- Git logs -->
+        <?php include __DIR__ . '/components/dashboard/git-logs.php'; ?>
+    </div>
+
+    <!-- Modals -->
+    <?php include __DIR__ . '/components/dashboard/task-modal.php'; ?>
+    <?php include __DIR__ . '/components/dashboard/board-modal.php'; ?>
+    <?php include __DIR__ . '/components/dashboard/edit-task-modal.php'; ?>
+    <?php include __DIR__ . '/components/dashboard/label-modals.php'; ?>
 </div>
-
 
 <!-- Include the modal handler script -->
 <script src="/js/modal-handler.js"></script>

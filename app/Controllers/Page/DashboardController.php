@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Label;
 use App\Models\Project;
 use App\Models\Task;
+use App\Services\GitHubService;
 use function Core\redirect;
 use function Core\view;
 
@@ -65,6 +66,8 @@ class DashboardController
             ]);
         }
 
+        $commits = GitHubService::getCommits("DevFlow");
+
         return view('dashboard', [
             'project' => $project,
             'boards' => $boards,
@@ -72,6 +75,7 @@ class DashboardController
             'page' => 'boards',
             'labels' => $labels,
             'availableLabels' => $availableLabels,
+            'commits' => $commits,
         ]);
     }
 }

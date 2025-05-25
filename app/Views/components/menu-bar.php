@@ -1,6 +1,5 @@
-<div class="w-auto vh-100 menu-bar shadow d-flex flex-column align-items-center px-2 pt-4" style="background-color: var(--light-gray)">
+<div class="w-auto vh-100 shadow d-flex flex-column align-items-center px-2 pt-4" style="background-color: var(--light-gray)">
     <div>
-        
         <a href="/">
             <img src="/../images/logo.svg" alt="DevFlow Logo" style="width: 50px; height: 40px;" />
         </a>

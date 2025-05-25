@@ -8,7 +8,7 @@
           <span style="color: #2ecc71;"><i class="fas fa-check-circle"></i></span>
           <h5 class="modal-title text-success" id="successModalLabel" style="margin: 0; font-weight: 600;">Success</h5>
         </div>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="font-size:2rem; background:none; border:none; color:#888; margin-left:auto;">&times;</button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" style="padding: 2rem; background: #f0fff0; border-radius: 0 0 18px 18px;">
         <p style="color: #27ae60;">

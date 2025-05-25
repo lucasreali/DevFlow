@@ -24,13 +24,28 @@
                     ?>
                     <div class="d-flex flex-column text-start">
                         <span><?= htmlspecialchars($user['name']) ?></span>
-                        <span class="text-muted" style="font-size: 0.8rem;">@<?= htmlspecialchars($user['username']) ?></span>
+                        <?php if (!empty($user['username'])): ?>
+                            <span class="text-muted" style="font-size: 0.8rem;">@<?= htmlspecialchars($user['username']) ?></span>
+                        <?php endif; ?>
                     </div>
                 </button>
                 <ul class="dropdown-menu w-100">
                     <li><a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
                     <li><a class="dropdown-item" href="/settings"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
+
+                    <?php if (empty($user['github_id'])): ?>
+                        <li>
+                            <form action="/github" method="post" class="m-0">
+                                <button class="dropdown-item" type="submit">
+                                    <i class="fab fa-github me-2"></i>
+                                    Entry with GitHub
+                                </button>
+                            </form>
+                        </li>
+                    <?php endif; ?>
+
                     <li><hr class="dropdown-divider"></li>
+                    
                     <li>
                         <form action="/logout" method="POST" class="m-0">
                             <button class="dropdown-item" type="submit"><i class="fa-solid fa-sign-out-alt me-2"></i>Logout</button>

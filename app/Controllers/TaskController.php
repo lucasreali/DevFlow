@@ -141,13 +141,13 @@ class TaskController
         return redirect('/dashboard', ['error' => 'ID da tarefa não informado']);
     }
 
-    public static function moveBoard()
+    public static function moveBoard($data)
     {
-        $rawInput = file_get_contents('php://input');
-        $input = json_decode($rawInput, true);
+        // $rawInput = file_get_contents('php://input');
+        // $input = json_decode($rawInput, true);
         
-        $taskId = $input['task_id'] ?? null;
-        $boardId = $input['board_id'] ?? null;
+        $taskId = $data['task_id'] ?? null;
+        $boardId = $data['board_id'] ?? null;
         
 
         if ($taskId && $boardId) {

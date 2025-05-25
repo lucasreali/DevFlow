@@ -17,10 +17,15 @@ class GitHubService
         return $_SESSION['user']['username'];
     }
 
-    private static function request($endpoint)
+    private static function request($endpoint, $params = [])
     {
         $access_token = $_SESSION['user']['access_token'] ?? null;
         $url = "https://api.github.com/$endpoint";
+        
+        // Add query parameters if provided
+        if (!empty($params)) {
+            $url .= '?' . http_build_query($params);
+        }
 
         $ch = curl_init($url);
 
@@ -65,7 +70,31 @@ class GitHubService
 
     public static function getCommits($repo)
     {
-        return self::request("repos/" . self::getUserId() . "/$repo/commits");
+        $allCommits = [];
+        $page = 1;
+        $perPage = 100; // Maximum allowed by GitHub API
+        
+        while (true) {
+            $commits = self::request(
+                "repos/" . self::getUserId() . "/$repo/commits", 
+                ['page' => $page, 'per_page' => $perPage]
+            );
+            
+            if (empty($commits) || !is_array($commits)) {
+                break;
+            }
+            
+            $allCommits = array_merge($allCommits, $commits);
+            
+            // If we received fewer commits than requested per page, we've reached the end
+            if (count($commits) < $perPage) {
+                break;
+            }
+            
+            $page++;
+        }
+        
+        return $allCommits;
     }
 
     public static function getContributors($repo)

@@ -5,6 +5,7 @@ use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
 use App\Controllers\DocumentationController;
 use App\Controllers\FriendshipController;
+use App\Controllers\GitHubController;
 use App\Controllers\LabelController;
 use App\Controllers\Page\DashboardController;
 use App\Controllers\Page\HomeController;
@@ -54,6 +55,7 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/project', [ProjectController::class, 'store']);
     Router::post('/project/update', [ProjectController::class, 'update']);
     Router::post('/project/delete', [ProjectController::class, 'delete']);
+    Router::post('project/set-github-project', [ProjectController::class, 'setGitHubProject']);
 
     // Label
     Router::post("/label/{projectId}", [LabelController::class, 'store']);

@@ -22,7 +22,11 @@
     <!-- Main Content -->
     <div class="flex-grow-1 d-flex overflow-hidden">
         <!-- Boards Content -->
-        <main class="main-dashboard flex-grow-1 overflow-auto">
+        <main class="main-dashboard flex-grow-1 overflow-auto" style="<?php if (isset($project['github_project']) || !empty($project['github_project'])) {echo "margin-top: 80px;";}?>">
+
+            <!-- Project Selection -->
+            <?php include __DIR__ . '/components/dashboard/select-github-project.php'; ?>
+
             <!-- Boards -->
             <?php include __DIR__ . '/components/dashboard/boards.php'; ?>
         </main>
@@ -36,7 +40,13 @@
     <?php include __DIR__ . '/components/dashboard/board-modal.php'; ?>
     <?php include __DIR__ . '/components/dashboard/edit-task-modal.php'; ?>
     <?php include __DIR__ . '/components/dashboard/label-modals.php'; ?>
+
+    <?php include __DIR__ . "/components/error-modal.php"?>
+    <?php include __DIR__ . "/components/success-modal.php"?>
+
+
 </div>
 
 <!-- Include the modal handler script -->
 <script src="/js/modal-handler.js"></script>
+

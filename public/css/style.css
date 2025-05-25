@@ -87,9 +87,11 @@ button.menu-nav-item > i {
 
 .main-dashboard {
     display: flex;
+    flex-direction: column;
+
     gap: 30px;
 
-    padding: 100px 50px 0 50px;
+    padding: 60px 50px 0 50px;
 
     width: 100%;
 

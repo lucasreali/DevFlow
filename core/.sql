@@ -43,6 +43,7 @@ CREATE TABLE projects (
     name VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
     description TEXT,
+    github_project VARCHAR(255),
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

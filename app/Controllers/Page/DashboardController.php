@@ -66,7 +66,11 @@ class DashboardController
             ]);
         }
 
-        $commits = GitHubService::getCommits("DevFlow");
+        if (!$project['github_project']) {
+            $github_projects = GitHubService::getRepositories();
+        } else {
+            $commits = GitHubService::getCommits($project['github_project']);
+        }
 
         return view('dashboard', [
             'project' => $project,
@@ -75,7 +79,11 @@ class DashboardController
             'page' => 'boards',
             'labels' => $labels,
             'availableLabels' => $availableLabels,
-            'commits' => $commits,
+            'github_projects' => $github_projects ?? null,
+            'commits' => $commits ?? null,
+
+            'error' => $params['error'] ?? null,
+            'success' => $params['success'] ?? null,
         ]);
     }
 }

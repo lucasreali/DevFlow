@@ -70,6 +70,7 @@ class DashboardController
             $github_projects = GitHubService::getRepositories();
         } else {
             $commits = GitHubService::getCommits($project['github_project']);
+            $contributors = GitHubService::getContributors($project['github_project']);
         }
 
         return view('dashboard', [
@@ -81,6 +82,8 @@ class DashboardController
             'availableLabels' => $availableLabels,
             'github_projects' => $github_projects ?? null,
             'commits' => $commits ?? null,
+
+            'contributors' => $contributors ?? null,
 
             'error' => $params['error'] ?? null,
             'success' => $params['success'] ?? null,

@@ -4,6 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Auth\AccountController;
 use Dotenv\Dotenv;
+use function Core\redirect;
 
 class CallbackController
 {
@@ -17,26 +18,25 @@ class CallbackController
         $redirectUri = $_ENV['GITHUB_REDIRECT_URI'];
 
         if (!isset($_GET['code'])) {
-            die("Error: Authorization code not found.");
+            return redirect('/', ['error' => 'Authorization code not found']);
         }
 
         $code = $_GET['code'];
         $accessToken = self::getAccessToken($clientId, $clientSecret, $code, $redirectUri);
 
         if (!$accessToken) {
-            die("Error: Failed to get access token.");
+            return redirect('/', ['error' => 'Failed to get access token']);
         }
 
         $user = self::getUser($accessToken);
 
         if (!$user) {
-            die("Error: Failed to retrieve user information.");
+            return redirect('/', ['error' => 'Failed to retrieve user information']);
         }
 
         AccountController::store($user, $accessToken);
 
-        header('Location: /');
-        exit;
+        return redirect('/', ['success' => 'Successfully logged in']);
     }
 
     private static function getAccessToken($clientId, $clientSecret, $code, $redirectUri)

@@ -2,6 +2,8 @@
 
 namespace App\Middleware;
 
+use function Core\redirect;
+
 class AuthMiddleware
 {
     /**
@@ -15,8 +17,7 @@ class AuthMiddleware
     {
 
         if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit;
+            return redirect('/login', ['error' => 'Please login to access this page.']);
         }
     }
 }

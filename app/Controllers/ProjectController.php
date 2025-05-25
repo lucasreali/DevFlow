@@ -35,8 +35,7 @@ class ProjectController
             return redirect('/', ['error' => 'Failed to create project']);
         }
 
-        header('Location: /');
-        exit;
+        return redirect('/', ['success' => 'Project created successfully']);
     }
 
     public static function update($data) {
@@ -66,8 +65,7 @@ class ProjectController
             return redirect('/', ['error' => 'Failed to update project']);
         }
 
-        header('Location: /');
-        exit;
+        return redirect('/', ['success' => 'Project updated successfully']);
     }
 
     public static function delete($data) {
@@ -85,8 +83,7 @@ class ProjectController
 
         Project::delete($projectId);
 
-        header('Location: /');
-        exit;
+        return redirect('/', ['success' => 'Project deleted successfully']);
     }
 
     public static function setGitHubProject($data) {

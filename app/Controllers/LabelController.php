@@ -41,8 +41,7 @@ class LabelController {
 
         Label::create($title, $color, $projectId);
 
-        header('Location: /dashboard/' . $projectId);
-        exit;
+        return redirect('/dashboard/' . $projectId, ['success' => 'Label created successfully']);
     } 
 
     public function update($data) {
@@ -81,8 +80,7 @@ class LabelController {
         }
 
         if (Label::update($labelId, $title, $color)) {
-            header('Location: /dashboard/' . $projectId);
-            exit;
+            return redirect('/dashboard/' . $projectId, ['success' => 'Label updated successfully']);
         } else {
             return redirect('/dashboard/' . $projectId, ['error' => 'Failed to update label']);
         }
@@ -111,8 +109,7 @@ class LabelController {
         }
 
         if (Label::delete($labelId)) {
-            header('Location: /dashboard/' . $projectId);
-            exit;
+            return redirect('/dashboard/' . $projectId, ['success' => 'Label deleted successfully']);
         } else {
             return redirect('/dashboard/' . $projectId, ['error' => 'Failed to delete label']);
         }

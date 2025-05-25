@@ -31,13 +31,13 @@ class DashboardController
             session_start();
         }
         
-        $userId = $_SESSION['user']['id'] ?? null;
+        $user = $_SESSION['user'] ?? null;
         
-        if (!$userId) {
+        if (!$user['id']) {
             return redirect('/login', ['error' => 'User not logged in']);
         }
 
-        if ($project['user_id'] !== $userId) {
+        if ($project['user_id'] !== $user['id']) {
             return redirect('/', ['error' => 'You do not have access to this project']);
         }
         
@@ -50,7 +50,7 @@ class DashboardController
             $board['tasks'] = Task::getAllByBoardId($board['id']);
         }
 
-        $dataOtherProjects = Project::getAll($_SESSION['user']['id']);
+        $dataOtherProjects = Project::getAll($user['id']);
 
         $otherProjects = [];
         foreach ($dataOtherProjects as $dataProject) {
@@ -67,13 +67,13 @@ class DashboardController
         }
 
         if (!$project['github_project']) {
-            $github_projects_create = GitHubService::getRepositories();
-            $github_projects_participating = GitHubService::getParticipatingRepositories();
+            // $github_projects_create = GitHubService::getRepositories();
+            $github_projects = GitHubService::getParticipatingRepositories();
 
-            $github_projects = array_merge($github_projects_create, $github_projects_participating);
+            //$github_projects = array_merge($github_projects_create, $github_projects_participating);
         } else {
-            $commits = GitHubService::getCommits($project['github_project']);
-            $contributors = GitHubService::getContributors($project['github_project']);
+            $commits = GitHubService::getCommits($project['github_project'], $project['github_project_owner']);
+            $contributors = GitHubService::getContributors($project['github_project'], $project['github_project_owner']);
         }
 
         return view('dashboard', [

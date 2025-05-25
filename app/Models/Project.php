@@ -73,17 +73,19 @@ class Project
         ]);
     }
 
-    public static function setGitHubProject($projectId, $githubProject) {
+    public static function setGitHubProject($projectId, $githubProject, $githubOwner = null) {
         $db = Database::getInstance();
         $stmt = $db->prepare('
             UPDATE projects 
-            SET github_project = :github_project 
+            SET github_project = :github_project,
+                github_project_owner = :github_owner 
             WHERE id = :project_id
         ');
 
         return $stmt->execute([
             'project_id' => $projectId,
             'github_project' => $githubProject,
+            'github_owner' => $githubOwner,
         ]);
     }
 

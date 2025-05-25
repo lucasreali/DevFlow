@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Project;
+use App\Services\GitHubService;
 use function Core\redirect;
 
 class ProjectController
@@ -94,6 +95,7 @@ class ProjectController
         }
         
         $githubProject = $data['github_project'] ?? null;
+        $githubOwner = $data['github_owner'] ?? null;
         $projectId = $data['project_id'] ?? null;
         $userId = $_SESSION['user']['id'] ?? null;
 
@@ -130,8 +132,18 @@ class ProjectController
                 ]);
             }
 
-            // Update the GitHub project
-            $result = Project::setGitHubProject($projectId, $githubProject);
+            // If no owner provided, get repo owner info from GitHub
+            if (empty($githubOwner)) {
+                $repoInfo = GitHubService::getRepoOwnerInfo($githubProject);
+                if ($repoInfo) {
+                    $githubOwner = $repoInfo['owner'];
+                } else {
+                    $githubOwner = $_SESSION['user']['username']; // Default to current user
+                }
+            }
+
+            // Update the GitHub project with owner information
+            $result = Project::setGitHubProject($projectId, $githubProject, $githubOwner);
             
             if ($result === false) {
                 return redirect('/dashboard/' . $projectId, ['error' => 'Failed to update GitHub project']);
@@ -140,9 +152,9 @@ class ProjectController
             return redirect('/dashboard/' . $projectId, ['success' => 'GitHub project set successfully!']);
         } catch (\Exception $e) {
             // Log the error if you have a logging system
-            // logger()->error('Error setting GitHub project: ' . $e->getMessage());
+            error_log('Error setting GitHub project: ' . $e->getMessage());
             
-            return redirect('/dashboard/' . $projectId, ['error' => 'An error occurred while setting the GitHub project']);
+            return redirect('/dashboard/' . $projectId, ['error' => 'An error occurred while setting the GitHub project: ' . $e->getMessage()]);
         }
     }
 }

@@ -43,14 +43,32 @@ class GitHubService
         curl_close($ch);
 
         if ($error) {
-            throw new \Exception("Erro cURL: $error");
+            error_log("GitHub API cURL error: $error for URL: $url");
+            return [];
         }
 
-        if ($http_status !== 200) {
-            throw new \Exception("Erro: Status HTTP $http_status");
+        // Handle different status codes appropriately
+        if ($http_status >= 200 && $http_status < 300) {
+            // Success response
+            return json_decode($response, true);
+        } else if ($http_status == 404) {
+            // Not found - return empty result instead of throwing exception
+            error_log("GitHub API 404 Not Found for: $url");
+            return [];
+        } else if ($http_status == 409) {
+            // Conflict - often happens with empty repos or other conflicts
+            error_log("GitHub API 409 Conflict for: $url - This might be an empty repository");
+            return [];
+        } else if ($http_status == 401 || $http_status == 403) {
+            // Authentication or permission issue
+            error_log("GitHub API Authentication error ($http_status) for: $url");
+            return [];
+        } else {
+            // Log other errors but don't throw exceptions
+            error_log("GitHub API error: Status HTTP $http_status for: $url");
+            error_log("Response: " . substr($response, 0, 500)); // Log first 500 chars of response
+            return [];
         }
-
-        return json_decode($response, true);
     }
 
     public static function getRepositories()
@@ -58,25 +76,28 @@ class GitHubService
         return self::request("users/" . self::getUserId() . "/repos");
     }
 
-    public static function getRepository($repo)
+    public static function getRepository($repo, $owner = null)
     {
-        return self::request("repos/" . self::getUserId() . "/$repo");
+        $repoOwner = $owner ?? self::getUserId();
+        return self::request("repos/" . $repoOwner . "/$repo");
     }
 
-    public static function getBranches($repo)
+    public static function getBranches($repo, $owner = null)
     {
-        return self::request("repos/" . self::getUserId() . "/$repo/branches");
+        $repoOwner = $owner ?? self::getUserId();
+        return self::request("repos/" . $repoOwner . "/$repo/branches");
     }
 
-    public static function getCommits($repo)
+    public static function getCommits($repo, $owner = null)
     {
+        $repoOwner = $owner ?? self::getUserId();
         $allCommits = [];
         $page = 1;
         $perPage = 100; // Maximum allowed by GitHub API
         
         while (true) {
             $commits = self::request(
-                "repos/" . self::getUserId() . "/$repo/commits", 
+                "repos/" . $repoOwner . "/$repo/commits", 
                 ['page' => $page, 'per_page' => $perPage]
             );
             
@@ -97,23 +118,40 @@ class GitHubService
         return $allCommits;
     }
 
-    public static function getContributors($repo)
+    public static function getContributors($repo, $owner = null)
     {
-        return self::request("repos/" . self::getUserId() . "/$repo/contributors");
+        $repoOwner = $owner ?? self::getUserId();
+        return self::request("repos/" . $repoOwner . "/$repo/contributors");
     }
 
-    public static function getPullRequests($repo)
+    public static function getPullRequests($repo, $owner = null)
     {
-        return self::request("repos/" . self::getUserId() . "/$repo/pulls");
+        $repoOwner = $owner ?? self::getUserId();
+        return self::request("repos/" . $repoOwner . "/$repo/pulls");
     }
     
     public static function getParticipatingRepositories()
     {
         return self::request("user/repos", [
-            'affiliation' => 'collaborator,organization_member',
+            'affiliation' => 'collaborator,organization_member,owner',
             'sort' => 'updated',
             'direction' => 'desc',
             'per_page' => 100
         ]);
+    }
+
+    // Get information about repository ownership
+    public static function getRepoOwnerInfo($repoName)
+    {
+        $repos = self::getParticipatingRepositories();
+        foreach ($repos as $repo) {
+            if ($repo['name'] === $repoName) {
+                return [
+                    'owner' => $repo['owner']['login'],
+                    'is_owner' => ($repo['owner']['login'] === self::getUserId())
+                ];
+            }
+        }
+        return null;
     }
 }

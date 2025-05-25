@@ -44,6 +44,7 @@ CREATE TABLE projects (
     user_id INT NOT NULL,
     description TEXT,
     github_project VARCHAR(255),
+    github_project_owner VARCHAR(255),
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -5,6 +5,7 @@ namespace App\Controllers\Auth;
 use App\Controllers\Auth\AuthController;
 use App\Models\Account;
 use App\Models\User;
+use function Core\redirect;
 
 class AccountController
 {
@@ -71,8 +72,7 @@ class AccountController
 
         } catch (\PDOException $e) {
             error_log('Erro ao salvar a conta: ' . $e->getMessage());
-            header('Location: /error');
-            exit;
+            return redirect('/', ['error' => 'Falha ao salvar as informações da conta. Por favor, tente novamente.']);
         }
     }
 }

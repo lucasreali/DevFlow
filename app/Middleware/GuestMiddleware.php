@@ -2,6 +2,8 @@
 
 namespace App\Middleware;
 
+use function Core\redirect;
+
 class GuestMiddleware
 {
     /**
@@ -18,8 +20,7 @@ class GuestMiddleware
         }
 
         if (isset($_SESSION['user'])) {
-            header('Location: /');
-            exit();
+            return redirect('/', ['info' => 'You are already logged in.']);
         }
     }
 }

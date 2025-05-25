@@ -9,11 +9,7 @@
                     <i class="fa-brands fa-trello"></i>
                 </a>
             </li>
-            <li>
-                <button class="btn <?= $page === 'collaborators' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Collaborators">
-                    <i class="fa-solid fa-users"></i>
-                </button>
-            </li>
+
             <li>
                 <button class="btn <?= $page === 'settings' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Settings">
                     <i class="fa-solid fa-gear"></i>

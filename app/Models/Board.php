@@ -49,4 +49,14 @@ class Board
         return $stmt->fetch();
     }
     
+    public static function update($id, $title, $color)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('UPDATE boards SET title = :title, color = :color WHERE id = :id');
+        return $stmt->execute([
+            'title' => $title,
+            'color' => $color,
+            'id' => $id,
+        ]);
+    }
 }

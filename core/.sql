@@ -13,6 +13,16 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela de amizades
+CREATE TABLE friendships (
+    user_id INT NOT NULL,
+    friend_id INT NOT NULL,
+    status ENUM('pending', 'accepted', 'rejected') NOT NULL DEFAULT 'pending',
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Tabela de contas vinculadas ao GitHub
 CREATE TABLE accounts (
     github_id INT PRIMARY KEY,
@@ -65,6 +75,7 @@ CREATE TABLE tasks (
     expired_at DATETIME,
 
     position INT NOT NULL,
+    priority VARCHAR(20) DEFAULT 'Normal',
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -99,9 +110,11 @@ CREATE TABLE task_labels (
 );
 
 -- Tabela de documentos do projeto
-CREATE TABLE documantation(
+CREATE TABLE documentation(
     id INT AUTO_INCREMENT PRIMARY KEY,
     created_by INT,
+    user_id INT,
+    project_id INT,
 
     title VARCHAR(255),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -109,19 +122,30 @@ CREATE TABLE documantation(
     content TEXT,
 
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (project_id) REFERENCES projects(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
-CREATE TABLE reunioes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title TEXT,
-    assunto VARCHAR(255) NOT NULL,
-    data_reuniao DATETIME DEFAULT CURRENT_TIMESTAMP
-)
 
-CREATE TABLE participantes_reuniao (
-    id_participantes INT,
-    id_reuniao INT,
-    FOREIGN KEY (id_participantes) REFERENCES users(id),
-    FOREIGN KEY (id_reuniao) REFERENCES users(id)
-)
+
+CREATE OR REPLACE VIEW friends_view AS
+SELECT
+    f.user_id,
+    u.name            AS user_name,
+    a1.username       AS user_username,
+    a1.avatar_url     AS user_avatar,
+    f.friend_id,
+    uf.name           AS friend_name,
+    a2.username       AS friend_username,
+    a2.avatar_url     AS friend_avatar
+FROM friendships f
+JOIN users u
+  ON f.user_id = u.id
+LEFT JOIN accounts a1
+  ON u.id = a1.user_id
+JOIN users uf
+  ON f.friend_id = uf.id
+LEFT JOIN accounts a2
+  ON uf.id = a2.user_id;
+
+
+

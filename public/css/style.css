@@ -22,6 +22,10 @@
     --orange-bg: #fff5e5;
 }
 
+.dropdown-toggle-no-caret::after {
+    display: none !important;
+}
+
 li {
     list-style-type: none;
 }

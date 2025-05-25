@@ -1,63 +1,121 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
 use App\Models\Board;
+use App\Models\Label;
 use App\Models\Task;
-use function Core\view;
+use function Core\redirect;
 
-
-
-class TaskController{
-    public static function store() {
-        $title = $_POST['title'];
-        $description = $_POST['description'];
-        $boardId = $_POST['board_id'];
-        $userId = $_SESSION['user']['id']; // ID do usuário que criou a tarefa (assumindo que está na sessão)
-        $expiredAt = null; // Data de expiração (opcional, pode ser nula)
+class TaskController
+{
+    public static function store($data) {
+        $title = $data['title'] ?? null;
+        $description = $data['description'] ?? null;
+        $boardId = $data['board_id'] ?? null;
+        $expiredAt = $data['expired_at'] ?? null;
+        $priority = $data['priority'] ?? 'Normal';
+        
+        // Validate all required parameters
+        $errors = [];
+        if (empty($title)) {
+            $errors[] = 'Task title cannot be empty';
+        }
+        if (empty($boardId)) {
+            $errors[] = 'Board ID cannot be empty';
+        }
+        
+        // Handle validation errors
+        if (!empty($errors)) {
+            $errorMsg = $errors[0];
+            if (!empty($boardId)) {
+                $board = Board::getById($boardId);
+                $projectId = $board ? $board['project_id'] : null;
+                if ($projectId) {
+                    return redirect('/dashboard/' . $projectId, ['error' => $errorMsg]);
+                }
+            }
+            return redirect('/', ['error' => $errorMsg]);
+        }
+        
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        $userId = $_SESSION['user']['id'] ?? null;
+        
+        if (!$userId) {
+            return redirect('/login', ['error' => 'User not logged in']);
+        }
 
         $boardTasks = Task::getAllByBoardId($boardId);
         $position = count($boardTasks) + 1; // Posição da tarefa na lista (incrementa a contagem de tarefas existentes)
 
         // Chama o método create da classe Task para inserir a tarefa no banco de dados
-        $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt, $position);
-
-        // Redireciona para a página do dashboard após a inserção
-        $message = [];
-        if ($taskId) {
-            $message['message'] = 'Task created successfully!';
-        } else {
-            $message['message'] = 'Error creating the task.';
-        }
+        $taskId = Task::create($title, $description, $boardId, $userId, $expiredAt, $position, $priority);
 
         $board = Board::getById($boardId);
         $projectId = $board['project_id'];
 
-        header('Location: /dashboard/' . $projectId);
+        if ($taskId) {
+            return redirect('/dashboard/' . $projectId, ['success' => 'Task created successfully!']);
+        } else {
+            return redirect('/dashboard/' . $projectId, ['error' => 'Error creating the task.']);
+        }
     } 
 
-    public static function update(){
-        $id = $_POST['id'];
-        $title = $_POST['title'];
-        $description = $_POST['description'];
-        $projectId = $_POST['project_id'];
-        $expiredAt = null; // Data de expiração (opcional, pode ser nula)
+    public static function update($data)
+    {
+        $id = $data['id'] ?? null;
+        $title = $data['title'] ?? null;
+        $description = $data['description'] ?? null;
+        $expiredAt = $data['expired_at'] ?? null;
+        $priority = $data['priority'] ?? 'Normal';
+        $projectId = $data['project_id'] ?? null;
 
-        // Chama o método update da classe Task para atualizar a tarefa no banco de dados
-        Task::update($id, $title, $description, $expiredAt);
+        // ...validações...
 
-        // Redireciona para a página do dashboard após a atualização
-        header('Location: /dashboard/' . $projectId);
+        Task::update($id, $title, $description, $expiredAt, $priority);
+
+        // Redireciona para o board do projeto após atualizar
+        return redirect('/dashboard/' . $projectId, ['success' => 'Tarefa atualizada com sucesso!']);
     }
 
-    public static function delete() {
-        $id = $_POST['id'];
-        $projectId = $_POST['project_id'];
-
-        // Chama o método delete da classe Task para excluir a tarefa do banco de dados
+    public static function delete($data) {
+        $id = $data['id'] ?? null;
+        $projectId = $data['project_id'] ?? null;
+        
+        // Validate all required parameters
+        $errors = [];
+        if (empty($id)) {
+            $errors[] = 'Task ID cannot be empty';
+        }
+        if (empty($projectId)) {
+            $errors[] = 'Project ID cannot be empty';
+        }
+        
+        // Handle validation errors
+        if (!empty($errors)) {
+            $errorMsg = $errors[0];
+            if (!empty($projectId)) {
+                return redirect('/dashboard/' . $projectId, ['error' => $errorMsg]);
+            } else {
+                return redirect('/', ['error' => $errorMsg]);
+            }
+        }
+        
         Task::delete($id);
+        
+        return redirect('/dashboard/' . $projectId, ['success' => 'Task deleted successfully!']);
+    }
 
-        // Redireciona para a página do dashboard após a exclusão
-        header('Location: /dashboard/' . $projectId);
+    public static function updatePriority($data) {
+        $id = $data['id'] ?? null;
+        $priority = $data['priority'] ?? 'Normal';
+        if ($id) {
+            Task::updatePriority($id, $priority);
+            return redirect('/dashboard/' . $data['project_id'], ['success' => 'Prioridade atualizada!']);
+        }
+        return redirect('/dashboard', ['error' => 'ID da tarefa não informado']);
     }
 }

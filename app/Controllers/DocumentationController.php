@@ -8,8 +8,13 @@ use function Core\redirect;
 
 class DocumentationController {
     public static function index($data) {
-        $projectId = $data['projectId'];
+        $projectId = $data['projectId'] ?? null;
         $page = 'documentation';
+        
+        // Validate all required parameters
+        if (empty($projectId)) {
+            return redirect('/', ['error' => "Project ID is required", 'page' => $page]);
+        }
 
         $docs = Documentation::getAllByProjectId($projectId);
 
@@ -17,15 +22,28 @@ class DocumentationController {
     }
 
     public static function store(array $data) {
-        $title = $_POST["title"] ?? '';
-        $content = $_POST["content"] ?? '';
+        $title = $_POST["title"] ?? null;
+        $content = $_POST["content"] ?? null;
         $projectId = $data["projectId"] ?? null;
         $page = 'documentation';
+
+        // Validate all required parameters
+        if (empty($projectId)) {
+            return redirect('/documentation', ['error' => "Project ID is required", 'page' => $page]);
+        }
+        
+        if (empty($title)) {
+            return redirect('/documentation/' . $projectId, ['error' => "Title is required", 'page' => $page]);
+        }
+        
+        if (empty($content)) {
+            return redirect('/documentation/' . $projectId, ['error' => "Content is required", 'page' => $page]);
+        }
 
         $error = self::validateForm($title, $content);
 
         if ($error) {
-            redirect('/documentation/' . $projectId, ['error' => $error, 'page' => $page]);
+            return redirect('/documentation/' . $projectId, ['error' => $error, 'page' => $page]);
         }
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -35,7 +53,7 @@ class DocumentationController {
         $userId = $_SESSION['user']['id'] ?? null;
 
         if (!$userId) {
-            redirect('/documentation/' . $projectId, ['error' => "User not authenticated", 'page' => $page]);
+            return redirect('/documentation/' . $projectId, ['error' => "User not authenticated", 'page' => $page]);
         }
 
         $documentationId = Documentation::create($title, $content, $projectId, $userId);
@@ -61,14 +79,27 @@ class DocumentationController {
     }
 
     public static function update($data) {
-        $id = $data['id'];
-        $projectId = $data['projectId'];
-        $title = $_POST["title"] ?? '';
-        $content = $_POST["content"] ?? '';
+        $id = $data['id'] ?? null;
+        $projectId = $data['projectId'] ?? null;
+        $title = $_POST["title"] ?? null;
+        $content = $_POST["content"] ?? null;
         $page = 'documentation';
 
-        if (!$id) {
+        // Validate all required parameters
+        if (empty($id)) {
             return redirect('/documentation/' . $projectId, ['error' => "Document ID is required", 'page' => $page]);
+        }
+        
+        if (empty($projectId)) {
+            return redirect('/documentation', ['error' => "Project ID is required", 'page' => $page]);
+        }
+        
+        if (empty($title)) {
+            return redirect('/documentation/' . $projectId, ['error' => "Title is required", 'page' => $page]);
+        }
+        
+        if (empty($content)) {
+            return redirect('/documentation/' . $projectId, ['error' => "Content is required", 'page' => $page]);
         }
 
         $error = self::validateForm($title, $content);
@@ -106,12 +137,17 @@ class DocumentationController {
     }
 
     public static function delete($data) {
-        $projectId  = $data['projectId'];
-        $id = $data['id'];
+        $projectId  = $data['projectId'] ?? null;
+        $id = $data['id'] ?? null;
         $page = 'documentation';
 
-        if (!$id) {
+        // Validate all required parameters
+        if (empty($id)) {
             return redirect('/documentation/' . $projectId, ['error' => "Document ID is required", 'page' => $page]);
+        }
+        
+        if (empty($projectId)) {
+            return redirect('/documentation', ['error' => "Project ID is required", 'page' => $page]);
         }
 
         if (session_status() === PHP_SESSION_NONE) {

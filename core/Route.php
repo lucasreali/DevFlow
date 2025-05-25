@@ -55,20 +55,67 @@ class Route {
     public function run() {
         // Recupera e limpa dados de redirecionamento
         $redirectData = $this->getRedirectData();
+        
+        // Obtém todos os dados da requisição (GET, POST, PUT, DELETE)
+        $requestData = $this->getAllRequestData();
 
         // Executa middlewares
         foreach ($this->middlewares as $middleware) {
             (new $middleware)->handle();
         }
 
-        // Combina parâmetros da rota com dados de redirecionamento
-        $allData = array_merge($this->parameters, $redirectData);
+        // Combina parâmetros da rota com dados de redirecionamento e dados da requisição
+        $allData = array_merge($this->parameters, $redirectData, $requestData);
 
         // Executa o controller
         if (is_array($this->action)) {
             [$controller, $method] = $this->action;
             return (new $controller)->$method($allData);
         }
+    }
+
+    /**
+     * Obtém todos os dados enviados na requisição independente do método HTTP
+     * @return array Dados da requisição
+     */
+    private function getAllRequestData(): array {
+        $requestData = [];
+        
+        // Dados do GET
+        if (!empty($_GET)) {
+            $requestData = array_merge($requestData, $_GET);
+        }
+        
+        // Dados do POST
+        if (!empty($_POST)) {
+            $requestData = array_merge($requestData, $_POST);
+        }
+        
+        // Para PUT, DELETE ou outros métodos não processados automaticamente pelo PHP
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        $requestMethod = $_SERVER['REQUEST_METHOD'] ?? '';
+        
+        if (in_array($requestMethod, ['PUT', 'DELETE', 'PATCH']) || 
+            (!empty($_POST) && ($requestMethod !== 'POST'))) {
+            $input = file_get_contents('php://input');
+            
+            // Processa dados JSON
+            if (strpos($contentType, 'application/json') !== false) {
+                $inputData = json_decode($input, true);
+                if ($inputData && is_array($inputData)) {
+                    $requestData = array_merge($requestData, $inputData);
+                }
+            } 
+            // Processa dados de formulário
+            elseif (strpos($contentType, 'application/x-www-form-urlencoded') !== false) {
+                parse_str($input, $formData);
+                if ($formData && is_array($formData)) {
+                    $requestData = array_merge($requestData, $formData);
+                }
+            }
+        }
+        
+        return $requestData;
     }
 
     private function getRedirectData(): array {

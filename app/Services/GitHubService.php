@@ -106,4 +106,14 @@ class GitHubService
     {
         return self::request("repos/" . self::getUserId() . "/$repo/pulls");
     }
+    
+    public static function getParticipatingRepositories()
+    {
+        return self::request("user/repos", [
+            'affiliation' => 'collaborator,organization_member',
+            'sort' => 'updated',
+            'direction' => 'desc',
+            'per_page' => 100
+        ]);
+    }
 }

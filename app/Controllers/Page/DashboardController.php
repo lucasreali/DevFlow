@@ -67,7 +67,10 @@ class DashboardController
         }
 
         if (!$project['github_project']) {
-            $github_projects = GitHubService::getRepositories();
+            $github_projects_create = GitHubService::getRepositories();
+            $github_projects_participating = GitHubService::getParticipatingRepositories();
+
+            $github_projects = array_merge($github_projects_create, $github_projects_participating);
         } else {
             $commits = GitHubService::getCommits($project['github_project']);
             $contributors = GitHubService::getContributors($project['github_project']);

@@ -100,7 +100,7 @@ class TaskController
         }
 
         // Redireciona para o board do projeto após atualizar
-        return redirect('/dashboard/' . $projectId, ['success' => 'Tarefa atualizada com sucesso!']);
+        return redirect('/dashboard/' . $projectId, ['success' => 'Task updated successfully!']);
     }
 
     public static function delete($data) {
@@ -136,9 +136,9 @@ class TaskController
         $priority = $data['priority'] ?? 'Normal';
         if ($id) {
             Task::updatePriority($id, $priority);
-            return redirect('/dashboard/' . $data['project_id'], ['success' => 'Prioridade atualizada!']);
+            return redirect('/dashboard/' . $data['project_id'], ['success' => 'Priority updated!']);
         }
-        return redirect('/dashboard', ['error' => 'ID da tarefa não informado']);
+        return redirect('/dashboard', ['error' => 'Task ID not provided']);
     }
 
     public static function moveBoard($data)
@@ -156,7 +156,7 @@ class TaskController
             echo json_encode(['success' => true]);
         } else {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Dados inválidos']);
+            echo json_encode(['success' => false, 'error' => 'Invalid data']);
         }
     }
 }

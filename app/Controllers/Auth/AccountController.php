@@ -71,8 +71,8 @@ class AccountController
             }
 
         } catch (\PDOException $e) {
-            error_log('Erro ao salvar a conta: ' . $e->getMessage());
-            return redirect('/', ['error' => 'Falha ao salvar as informações da conta. Por favor, tente novamente.']);
+            error_log('Error saving account: ' . $e->getMessage());
+            return redirect('/', ['error' => 'Failed to save account information. Please try again.']);
         }
     }
 }

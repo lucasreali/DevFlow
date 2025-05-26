@@ -33,7 +33,7 @@ class Task
 
         $stmt = $db->prepare(
             "SELECT * FROM tasks 
-             WHERE board_id = :board_id"
+             WHERE board_id = :board_id ORDER BY position ASC"
         );
         $stmt->execute(['board_id' => $boardId]);
         return $stmt->fetchAll();

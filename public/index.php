@@ -67,8 +67,6 @@ require_once __DIR__ . '/../routes/web.php';
     <!-- Script global do projeto -->
     <script src="/js/script.js"></script>
     
-    <!-- Script para o modo escuro -->
-    <script src="/js/dark-mode.js"></script>
 </head>
 <body>
     <!-- Renderiza o conteúdo da rota correspondente -->

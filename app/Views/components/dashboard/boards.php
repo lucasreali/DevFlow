@@ -16,6 +16,7 @@
                         </span>
                     </div>
                     <button type="button" class="btn-edit-board"
+                            style="background-color: var(--<?= htmlspecialchars($board['color']) ?>-text); color: white; border: none;"
                             data-bs-toggle="modal"
                             data-bs-target="#editBoardModal"
                             data-id="<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>"

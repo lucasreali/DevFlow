@@ -43,10 +43,12 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/documentation/update/{projectId}/{id}',[DocumentationController::class, 'update']);
     Router::post('/documentation/delete/{projectId}/{id}',[DocumentationController::class, 'delete']);
 
-    // Board and Task Management
+    // Board Management
     Router::post('/board', [BoardController::class, 'store']);
     Router::post('/board/update', [BoardController::class, 'update']);
     Router::post('/board/delete', [BoardController::class, 'delete']);
+
+    // Task Management
     Router::post('/task', [TaskController::class, 'store']);
     Router::post('/task/update', [TaskController::class, 'update']);
     Router::post('/task/delete', [TaskController::class, 'delete']);
@@ -69,5 +71,4 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/friends/delete', [FriendshipController::class, 'delete']);
     Router::post('/friends/accept', [FriendshipController::class, 'accept']);
     Router::post('/friends/reject', [FriendshipController::class, 'reject']);
-
 });

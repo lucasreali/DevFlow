@@ -1,17 +1,4 @@
-/**
- * Sistema de Drag and Drop para Tarefas
- * 
- * Este script implementa a funcionalidade de arrastar e soltar para as tarefas entre os quadros.
- * Ele permite:
- * 1. Arrastar tarefas de um quadro para outro
- * 2. Atualizar a posição da tarefa no banco de dados via AJAX
- * 3. Fornecer feedback visual durante o processo de arrastar/soltar
- * 
- * Para adicionar novos elementos arrastáveis:
- * - Adicione a classe 'card-task' ao elemento
- * - Certifique-se de que o elemento tenha o atributo 'data-task-id'
- * - Adicione a classe 'tasks-dropzone' ao contêiner de destino
- */
+
 document.addEventListener('DOMContentLoaded', function () {
     // Referência para o elemento atualmente sendo arrastado
     let draggedTask = null;

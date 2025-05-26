@@ -110,6 +110,12 @@ input, textarea, select, .form-control {
     color: var(--text-muted) !important;
 }
 
+.btn-edit-board {
+    border: 1px solid var(--border-color);
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
 /**
  * Estilos para o botão de alternância de tema
  * 

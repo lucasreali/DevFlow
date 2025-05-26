@@ -1,4 +1,3 @@
-
 <div class="d-flex gap-3" >
     <?php if (!empty($boards)): ?>
         <!-- CSS para drag and drop -->
@@ -9,11 +8,19 @@
     
         <?php foreach ($boards as $board): ?>
             <div class="board">
-                <h4 class="title-board" style="background-color: var(--<?= htmlspecialchars($board['color']) ?>-bg); border: 1px solid var(--<?= htmlspecialchars($board['color']) ?>-text);">
-                    <div class="dot-title-board" style="background-color: var(--<?= htmlspecialchars($board['color']) ?>-text)"></div>
-                    <span class="ms-2" style="color: var(--<?= htmlspecialchars($board['color']) ?>-text);">
-                        <?= htmlspecialchars($board['title'] ?? 'Untitled Board', ENT_QUOTES, 'UTF-8') ?>
-                    </span>
+                <h4 class="title-board d-flex justify-content-between" style="background-color: var(--<?= htmlspecialchars($board['color']) ?>-bg); border: 1px solid var(--<?= htmlspecialchars($board['color']) ?>-text);">
+                    <div class="d-flex align-items-center">
+                        <div class="dot-title-board" style="background-color: var(--<?= htmlspecialchars($board['color']) ?>-text)"></div>
+                        <span class="ms-2" style="color: var(--<?= htmlspecialchars($board['color']) ?>-text);">
+                            <?= htmlspecialchars($board['title'] ?? 'Untitled Board', ENT_QUOTES, 'UTF-8') ?>
+                        </span>
+                    </div>
+                    <button type="button" class="btn-edit-board"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editBoardModal"
+                            data-id="<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-title="<?= htmlspecialchars($board['title'] ?? 'Untitled Board', ENT_QUOTES, 'UTF-8') ?>"
+                            data-color="<?= htmlspecialchars($board['color'], ENT_QUOTES, 'UTF-8') ?>">...</button>
                 </h4>
     
                 <div class="d-flex flex-column gap-2 mt-5 tasks-dropzone"

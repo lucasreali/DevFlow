@@ -16,11 +16,12 @@
                         </div>
                         <div class="d-flex align-items-center h-100">
                             <select class="form-select" id="boardColor" name="color" required>
-                                <option value="red" style="background-color: #ffcccc;">&nbsp;</option>
-                                <option value="blue" style="background-color: #cce5ff;">&nbsp;</option>
-                                <option value="green" style="background-color: #d4edda;">&nbsp;</option>
-                                <option value="yellow" style="background-color: #fff3cd;">&nbsp;</option>
-                                <option value="purple" style="background-color: #e2ccff;">&nbsp;</option>
+                                <option value="red" style="background-color: #ffcccc;">Red</option>
+                                <option value="blue" style="background-color: #cce5ff;">Blue</option>
+                                <option value="green" style="background-color: #d4edda;">Green</option>
+                                <option value="yellow" style="background-color: #fff3cd;">Yellow</option>
+                                <option value="purple" style="background-color: #e2ccff;">Purple</option>
+                                <option value="orange" style="background-color: #ffd8b3;">Orange</option>
                             </select>
                         </div>
                     </div>
@@ -31,3 +32,6 @@
         </div>
     </div>
 </div>
+
+<!-- Include the edit board modal -->
+<?php include __DIR__ . '/edit-board-modal.php'; ?>

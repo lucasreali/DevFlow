@@ -46,6 +46,7 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     // Board and Task Management
     Router::post('/board', [BoardController::class, 'store']);
     Router::post('/board/update', [BoardController::class, 'update']);
+    Router::post('/board/delete', [BoardController::class, 'delete']);
     Router::post('/task', [TaskController::class, 'store']);
     Router::post('/task/update', [TaskController::class, 'update']);
     Router::post('/task/delete', [TaskController::class, 'delete']);

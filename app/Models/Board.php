@@ -59,4 +59,11 @@ class Board
             'id' => $id,
         ]);
     }
+
+    public static function delete($id)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('DELETE FROM boards WHERE id = :id');
+        return $stmt->execute(['id' => $id]);
+    }
 }

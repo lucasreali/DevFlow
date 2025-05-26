@@ -1,38 +1,82 @@
+<?php
+/**
+ * Componente da Barra de Menu
+ * 
+ * Este componente implementa a barra de navegação lateral que está presente em todas as páginas
+ * após o login do usuário. Ele fornece acesso às principais funcionalidades do sistema.
+ * 
+ * Funcionalidades:
+ * - Links para as diferentes seções do projeto
+ * - Indicador visual da página atual
+ * - Alternador de tema claro/escuro
+ * - Menu de perfil do usuário
+ * 
+ * Como adicionar um novo item de menu:
+ * 1. Adicione um novo elemento <li> na lista
+ * 2. Use a estrutura existente, incluindo classe "menu-nav-item"
+ * 3. Compare com $page para destacar o item quando estiver ativo
+ * 4. Adicione um ícone representativo
+ */
+?>
 <div class="w-auto vh-100 shadow d-flex flex-column align-items-center px-2 pt-4" style="background-color: var(--light-gray)">
     <div>
+        <!-- Logo do DevFlow com suporte a modo escuro -->
         <a href="/">
-            <img src="/../images/logo.svg" alt="DevFlow Logo" style="width: 50px; height: 40px;" />
+            <img src="/../images/logo.svg" alt="DevFlow Logo" 
+                 class="devflow-logo"
+                 data-dark-src="/../images/logo.svg"
+                 data-light-src="/../images/logo-light.svg"
+                 style="width: 50px; height: 40px;" />
         </a>
+        <!-- Lista de itens do menu -->
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
+            <!-- Item do Dashboard -->
             <li>
                 <a href="/dashboard/<?= $projectId ?>" class="btn <?= $page === 'boards' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Boards">
-                    <i class="fa-brands fa-trello"></i>
+                    <i class="fa-brands fa-trello invert-in-dark"></i>
                 </a>
             </li>
-
+            <!-- Item de Colaboradores -->
+            <li>
+                <button class="btn <?= $page === 'collaborators' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Collaborators">
+                    <i class="fa-solid fa-users invert-in-dark"></i>
+                </button>
+            </li>
+            <!-- Item de Configurações -->
             <li>
                 <button class="btn <?= $page === 'settings' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Settings">
-                    <i class="fa-solid fa-gear"></i>
+                    <i class="fa-solid fa-gear invert-in-dark"></i>
                 </button>
             </li>
+            <!-- Item de Notificações -->
             <li>
                 <button class="btn <?= $page === 'notifications' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Notifications">
-                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-bell invert-in-dark"></i>
                 </button>
             </li>
+            <!-- Item de Perfil -->
             <li>
                 <button class="btn <?= $page === 'profile' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Profile">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="fa-solid fa-user invert-in-dark"></i>
                 </button>
             </li>
+            <!-- Item de Documentação -->
             <li>
                 <a href="/documentation/<?= $project["id"]?>" class="btn <?= $page === 'documentation' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Documentation">
-                    <i class="fa-solid fa-book"></i>
+                    <i class="fa-solid fa-book invert-in-dark"></i>
                 </a>
             </li>
+            <!-- Botão de alternar tema (claro/escuro) -->
+            <!-- <li>
+                <button id="theme-toggle" class="theme-toggle menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Toggle dark mode">
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                    <i class="fa-solid fa-sun light-icon" style="display: none;"></i>
+                </button>
+            </li> -->
         </ul>
     </div>
 
+    <!-- Menu dropdown do usuário -->
     <div class="dropdown mt-auto mb-4">
         <?php 
         $user = $_SESSION['user'];

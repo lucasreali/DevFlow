@@ -6,34 +6,58 @@ use App\Models\Documentation;
 use function Core\view;
 use function Core\redirect;
 
+/**
+ * Controlador DocumentationController
+ * 
+ * Gerencia todas as operações relacionadas à documentação de projetos, incluindo:
+ * - Listagem de documentos (com filtragem)
+ * - Criação de novos documentos
+ * - Atualização de documentos existentes
+ * - Exclusão de documentos
+ */
 class DocumentationController {
+    /**
+     * Exibe a página de documentação com uma lista de documentos
+     * 
+     * @param array $data Dados da rota, incluindo o projectId
+     * @return mixed A visualização da página de documentação ou redirecionamento em caso de erro
+     */
     public static function index($data) {
         $projectId = $data['projectId'] ?? null;
-        $type = $_GET['type'] ?? null;
+        $type = $_GET['type'] ?? null; // Obtém o tipo de filtro da query string
         $page = 'documentation';
         
-        // Validate all required parameters
+        // Valida os parâmetros necessários
         if (empty($projectId)) {
             return redirect('/', ['error' => "Project ID is required", 'page' => $page]);
         }
 
+        // Busca documentos do projeto, aplicando filtro de tipo se fornecido
         $docs = Documentation::getAllByProjectId($projectId, $type);
 
+        // Renderiza a view com os documentos e informações de contexto
         return view('documentation', [
             'projectId' => $projectId, 
             'docs' => $docs, 
             'page' => $page,
-            'selectedType' => $type
+            'selectedType' => $type // Passa o tipo selecionado para a view
         ]);
     }
 
+    /**
+     * Cria um novo documento
+     * 
+     * @param array $data Dados da rota, incluindo o projectId
+     * @return mixed Redirecionamento com mensagem de sucesso ou erro
+     */
     public static function store(array $data) {
         $title = $_POST["title"] ?? null;
         $content = $_POST["content"] ?? null;
-        $type = $_POST["type"] ?? 'Projeto';
+        $type = $_POST["type"] ?? 'project'; // Tipo padrão é 'project'
         $projectId = $data["projectId"] ?? null;
         $page = 'documentation';
 
+        // Validação de parâmetros
         // Validate all required parameters
         if (empty($projectId)) {
             return redirect('/documentation', ['error' => "Project ID is required", 'page' => $page]);
@@ -47,24 +71,25 @@ class DocumentationController {
             return redirect('/documentation/' . $projectId, ['error' => "Content is required", 'page' => $page]);
         }
 
+        // Valida o formulário
         $error = self::validateForm($title, $content);
-
         if ($error) {
             return redirect('/documentation/' . $projectId, ['error' => $error, 'page' => $page]);
         }
 
+        // Obtém o ID do usuário autenticado
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
         $userId = $_SESSION['user']['id'] ?? null;
-
         if (!$userId) {
             return redirect('/documentation/' . $projectId, ['error' => "User not authenticated", 'page' => $page]);
         }
 
+        // Cria o documento no banco de dados
         $documentationId = Documentation::create($title, $content, $projectId, $userId, $type);
 
+        // Redireciona com mensagem de sucesso ou erro
         if ($documentationId) {
             return redirect('/documentation/' . $projectId, ['success' => 'Document created successfully.', 'page' => $page]);
         } else {
@@ -72,6 +97,13 @@ class DocumentationController {
         }
     }
 
+    /**
+     * Valida os dados do formulário de documentação
+     * 
+     * @param string $title O título do documento
+     * @param string $content O conteúdo do documento
+     * @return string|null Uma mensagem de erro ou null se tudo estiver válido
+     */
     public static function validateForm($title, $content) {
         $error = [];
         if (empty($title)) {
@@ -85,6 +117,12 @@ class DocumentationController {
         return !empty($error) ? implode(", ", $error) : null;
     }
 
+    /**
+     * Atualiza um documento existente
+     * 
+     * @param array $data Dados da rota, incluindo projectId e id do documento
+     * @return mixed Redirecionamento com mensagem de sucesso ou erro
+     */
     public static function update($data) {
         $id = $data['id'] ?? null;
         $projectId = $data['projectId'] ?? null;
@@ -144,6 +182,12 @@ class DocumentationController {
         }
     }
 
+    /**
+     * Exclui um documento
+     * 
+     * @param array $data Dados da rota, incluindo projectId e id do documento
+     * @return mixed Redirecionamento com mensagem de sucesso ou erro
+     */
     public static function delete($data) {
         $projectId  = $data['projectId'] ?? null;
         $id = $data['id'] ?? null;

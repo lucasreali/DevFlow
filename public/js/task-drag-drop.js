@@ -1,47 +1,84 @@
-// Sistema de drag and drop para tasks entre boards
+/**
+ * Sistema de Drag and Drop para Tarefas
+ * 
+ * Este script implementa a funcionalidade de arrastar e soltar para as tarefas entre os quadros.
+ * Ele permite:
+ * 1. Arrastar tarefas de um quadro para outro
+ * 2. Atualizar a posição da tarefa no banco de dados via AJAX
+ * 3. Fornecer feedback visual durante o processo de arrastar/soltar
+ * 
+ * Para adicionar novos elementos arrastáveis:
+ * - Adicione a classe 'card-task' ao elemento
+ * - Certifique-se de que o elemento tenha o atributo 'data-task-id'
+ * - Adicione a classe 'tasks-dropzone' ao contêiner de destino
+ */
 document.addEventListener('DOMContentLoaded', function () {
+    // Referência para o elemento atualmente sendo arrastado
     let draggedTask = null;
 
+    /**
+     * Configura os eventos de arrastar para cada tarefa
+     * Isto é executado na inicialização e pode ser chamado novamente
+     * se novas tarefas forem adicionadas dinamicamente.
+     */
     function setupDraggableTasks() {
+        // Seleciona todas as tarefas e configura os eventos de drag and drop
         document.querySelectorAll('.card-task').forEach(function (task) {
+            // Define o elemento como arrastável
             task.setAttribute('draggable', 'true');
+            
+            // Quando o usuário começa a arrastar
             task.addEventListener('dragstart', function (e) {
                 draggedTask = this;
+                // Adiciona uma classe para feedback visual após um pequeno atraso
+                // (evita desaparecer imediatamente)
                 setTimeout(() => this.classList.add('dragging'), 0);
             });
+            
+            // Quando o usuário termina de arrastar
             task.addEventListener('dragend', function (e) {
                 this.classList.remove('dragging');
                 draggedTask = null;
             });
         });
     }
+    
+    // Inicializa o drag and drop
     setupDraggableTasks();
 
+    // Configura as áreas onde as tarefas podem ser soltas
     document.querySelectorAll('.tasks-dropzone').forEach(function (dropzone) {
+        // Quando um elemento arrastável está sobre a área
         dropzone.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            this.classList.add('drop-hover');
+            e.preventDefault(); // Necessário para permitir o drop
+            this.classList.add('drop-hover'); // Feedback visual
         });
+        
+        // Quando um elemento arrastável sai da área
         dropzone.addEventListener('dragleave', function (e) {
             this.classList.remove('drop-hover');
         });
+        
+        // Quando um elemento é solto na área
         dropzone.addEventListener('drop', function (e) {
             e.preventDefault();
             this.classList.remove('drop-hover');
+            
             if (draggedTask) {
-                // Sempre insere ANTES do botão de adicionar task
+                // Insere a tarefa antes do botão "Adicionar tarefa"
                 const addBtn = this.querySelector('.add-task');
                 if (addBtn) {
                     this.insertBefore(draggedTask, addBtn);
                 } else {
                     this.appendChild(draggedTask);
                 }
-                // Atualiza o atributo data-board-id da task para o novo board
+                
+                // Atualiza o atributo data-board-id da tarefa para o novo quadro
                 const newBoardId = this.getAttribute('data-board-id');
                 const taskId = draggedTask.getAttribute('data-task-id');
                 draggedTask.setAttribute('data-board-id', newBoardId);
 
-                // AJAX para atualizar no backend
+                // Envia requisição AJAX para atualizar no banco de dados
                 fetch('/task/move-board', {
                     method: 'POST',
                     headers: {

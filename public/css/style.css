@@ -1,8 +1,33 @@
+/**
+ * Arquivo principal de estilos do DevFlow
+ * 
+ * Este arquivo contém todos os estilos globais e variáveis utilizadas no projeto.
+ * Estrutura do sistema de design:
+ * 1. Variáveis CSS - Definem cores, espaçamentos e outros valores reutilizáveis
+ * 2. Estilos de reset - Normalizam o comportamento entre navegadores
+ * 3. Estilos de componentes - Definem a aparência de elementos específicos
+ * 4. Utilitários - Classes auxiliares para uso comum
+ * 5. Estilos do modo escuro - Customizações para o tema escuro
+ */
+
 :root {
+    /* Cores do modo claro (padrão) */
     --light-gray: #f5f5f5;
     --light-gray-hover: #e0e0e0;
-
-    /* New color variables */
+    
+    /* Variáveis de sistema - usadas nos dois modos */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --bg-card: #ffffff;
+    --bg-input: #ffffff;
+    
+    --text-primary: #000000;
+    --text-secondary: #555555;
+    --text-muted: #777777;
+    
+    --border-color: #dddddd;
+    
+    /* Variáveis de cores para tags e etiquetas */
     --red-text: #ff0000;
     --red-bg: #ffe5e5;
 
@@ -22,11 +47,128 @@
     --orange-bg: #fff5e5;
 }
 
-/* Remove caret from all Bootstrap dropdown toggles */
+/**
+ * Configurações para o modo escuro
+ * 
+ * Quando a classe 'dark-mode' é adicionada ao body, estas variáveis
+ * são aplicadas, substituindo as variáveis padrão do modo claro.
+ */
+body.dark-mode {
+    /* Cores do modo escuro */
+    --light-gray: #2a2a2a;
+    --light-gray-hover: #3a3a3a;
+    
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-card: #252525;
+    --bg-input: #2c2c2c;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    
+    --border-color: #444444;
+    
+    /* Configuração para inverter ícones no modo escuro */
+    --icon-filter: invert(1);
+    
+    /* Aplica cores de fundo e texto para o modo escuro */
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+}
+
+/* Aplicar cores dinâmicas aos elementos para suportar os dois modos */
+.card, .modal-content {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.modal-content .modal-header,
+.modal-content .modal-footer {
+    border-color: var(--border-color);
+}
+
+/* Adapta formulários para modo escuro */
+input, textarea, select, .form-control {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.btn-outline-secondary {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+.bg-light {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/**
+ * Estilos para o botão de alternância de tema
+ * 
+ * Este botão muda de aparência dependendo do modo atual,
+ * mostrando um ícone de sol ou lua conforme apropriado.
+ */
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--light-gray-hover);
+}
+
+/* Inverter ícones escuros para melhor visibilidade no modo escuro */
+.icon-inverted {
+    filter: var(--icon-filter);
+}
+
+/* Ajuste específico para ícones do Font Awesome no modo escuro */
+body.dark-mode .fa-brands,
+body.dark-mode .fa-solid {
+    color: var(--text-primary);
+}
+
+/* Cores específicas para botão de tema */
+.theme-toggle .fa-moon {
+    color: #6c757d;
+}
+
+.theme-toggle .fa-sun {
+    color: #ffc107;
+}
+
+/* Transição suave entre temas para melhor experiência do usuário */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card, .modal-content, input, textarea, select, .form-control {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Remove caretas dos toggles do Bootstrap */
 .dropdown-toggle::after {
     display: none !important;
 }
 
+/* Remover marcadores de lista */
 li {
     list-style-type: none;
 }
@@ -151,8 +293,6 @@ button.menu-nav-item > i {
 
     background: #7676766d;
 }
-
-/* ...existing CSS... */
 
 /* Selectable label styles */
 .selectable-label {

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Atualizar pré-visualização ao editar o conteúdo
     if (contentEditable<?= $doc['id'] ?>) {
+        // Garantir que o innerText seja usado para preservar quebras de linha
         contentEditable<?= $doc['id'] ?>.addEventListener('input', function() {
             const updatedContent = contentEditable<?= $doc['id'] ?>.innerText;
             markdownPreview<?= $doc['id'] ?>.innerHTML = marked.parse(updatedContent); // Renderizar Markdown

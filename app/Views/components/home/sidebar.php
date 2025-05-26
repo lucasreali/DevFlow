@@ -30,8 +30,10 @@
                     </div>
                 </button>
                 <ul class="dropdown-menu w-100">
-                    <li><a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
-                    <li><a class="dropdown-item" href="/settings"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fa-solid fa-user me-2"></i>Edit Profile</a>
+                    </li>
+                   
 
                     <?php if (empty($user['github_id'])): ?>
                         <li>
@@ -58,5 +60,48 @@
 </div>
 
 <?php include_once __DIR__ . '/friends/friends-modal.php'; ?>
+<?php 
+// Debug info to verify the path is correct
+$modalPath = __DIR__ . '/../edit-profile-modal.php';
+if (!file_exists($modalPath)) {
+    echo "<!-- Error: Modal file not found at $modalPath -->";
+}
+include_once $modalPath;
+?>
+
+<!-- Add a script to ensure proper modal initialization -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if Bootstrap is available
+    if (typeof bootstrap !== 'undefined') {
+        // Initialize all tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Manually initialize the edit profile modal for robust handling
+        var editProfileModalEl = document.getElementById('editProfileModal');
+        if (editProfileModalEl) {
+            var editProfileModal = new bootstrap.Modal(editProfileModalEl);
+            
+            // Add click handlers to all links that should open the modal
+            var modalTriggers = document.querySelectorAll('[data-bs-target="#editProfileModal"]');
+            modalTriggers.forEach(function(trigger) {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    editProfileModal.show();
+                });
+            });
+            
+            console.log('Edit profile modal initialized successfully');
+        } else {
+            console.error('Edit profile modal element not found in the DOM');
+        }
+    } else {
+        console.error('Bootstrap JavaScript library not loaded');
+    }
+});
+</script>
 
 

@@ -100,4 +100,84 @@ class UserController
 
         return $errors;
     }
+    
+    public static function update($data)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Get the logged-in user
+        $userId = $_SESSION['user']['id'] ?? null;
+        if (!$userId) {
+            return redirect('/', ['error' => 'You must be logged in to update your profile.']);
+        }
+
+        // Extract form data
+        $name = $data['name'] ?? '';
+        $email = $data['email'] ?? '';
+        $currentPassword = $data['password'] ?? '';
+        $newPassword = $data['new_password'] ?? '';
+        $newPasswordConfirm = $data['new_password_confirm'] ?? '';
+
+        // Validate required fields
+        $errors = [];
+        if (empty($name)) {
+            $errors['name'] = 'Name is required';
+        }
+        
+        if (empty($email)) {
+            $errors['email'] = 'Email is required';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Invalid email format';
+        }
+        
+        if (empty($currentPassword)) {
+            $errors['password'] = 'Current password is required to save changes';
+        }
+
+        // Verify the current password
+        if (!empty($currentPassword) && !User::verifyPassword($userId, $currentPassword)) {
+            $errors['password'] = 'Current password is incorrect';
+        }
+
+        // If a new password is provided, validate it
+        if (!empty($newPassword)) {
+            if (strlen($newPassword) < 8) {
+                $errors['new_password'] = 'New password must be at least 8 characters long';
+            } elseif ($newPassword !== $newPasswordConfirm) {
+                $errors['new_password_confirm'] = 'Passwords do not match';
+            }
+        }
+
+        // If there are errors, redirect back with errors
+        if (!empty($errors)) {
+            // Convert errors array to a single string for the error flash message
+            $errorMsg = implode(', ', array_values($errors));
+            return redirect('/', ['error' => $errorMsg]);
+        }
+
+        // Prepare data for update
+        $updateData = [
+            'name' => $name,
+            'email' => $email
+        ];
+
+        // Only include new password if it's provided
+        if (!empty($newPassword)) {
+            $updateData['new_password'] = $newPassword;
+        }
+
+        // Attempt to update the user
+        if (User::update($userId, $updateData)) {
+            // Update the session with new data
+            $user = User::findById($userId);
+            $_SESSION['user']['name'] = $user['name'];
+            $_SESSION['user']['email'] = $user['email'];
+            
+            return redirect('/', ['success' => 'Profile updated successfully.']);
+        } else {
+            return redirect('/', ['error' => 'Failed to update profile.']);
+        }
+    }
 }

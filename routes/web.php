@@ -72,4 +72,7 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/friends/delete', [FriendshipController::class, 'delete']);
     Router::post('/friends/accept', [FriendshipController::class, 'accept']);
     Router::post('/friends/reject', [FriendshipController::class, 'reject']);
+
+    // User Profile
+    Router::post('/user/update', [UserController::class, 'update']);
 });

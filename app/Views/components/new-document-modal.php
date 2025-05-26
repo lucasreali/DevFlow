@@ -31,7 +31,7 @@
                             <div id="content-editable" 
                                  contenteditable="true"
                                  class="form-control"
-                                 style="min-height: 200px; overflow-y: auto; background-color: #fff;">
+                                 style="min-height: 200px; overflow-y: auto; background-color: #fff; white-space: pre-wrap;">
                             </div>
                         </div>
                         <div class="tab-pane fade" id="preview-tab-pane" role="tabpanel" aria-labelledby="preview-tab">

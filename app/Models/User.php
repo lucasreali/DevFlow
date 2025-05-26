@@ -56,4 +56,56 @@ class User
         $stmt->execute(['username' => $username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Updates a user's profile information
+     *
+     * @param int $id User ID
+     * @param array $data Data to update (name, email, and optionally password)
+     * @return bool Whether the update was successful
+     */
+    public static function update($id, $data)
+    {
+        $db = Database::getInstance();
+        
+        // Start building the SQL statement based on what we're updating
+        $sql = 'UPDATE users SET name = :name, email = :email';
+        $params = [
+            'id' => $id,
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ];
+        
+        // If a new password is provided, add it to the update
+        if (!empty($data['new_password'])) {
+            $sql .= ', password = :password';
+            $params['password'] = password_hash($data['new_password'], PASSWORD_BCRYPT);
+        }
+        
+        $sql .= ' WHERE id = :id';
+        
+        $stmt = $db->prepare($sql);
+        return $stmt->execute($params);
+    }
+
+    /**
+     * Verifies if the provided password matches the user's stored password
+     *
+     * @param int $id User ID
+     * @param string $password Password to verify
+     * @return bool Whether the password is correct
+     */
+    public static function verifyPassword($id, $password)
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT password FROM users WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$user) {
+            return false;
+        }
+        
+        return password_verify($password, $user['password']);
+    }
 }

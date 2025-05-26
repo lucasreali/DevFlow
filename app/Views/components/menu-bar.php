@@ -56,7 +56,10 @@
             </li>
             <!-- Item de Perfil -->
             <li>
-                <button class="btn <?= $page === 'profile' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Profile">
+                <button class="btn <?= $page === 'profile' ? 'btn-secondary' : '' ?> menu-nav-item" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editProfileModal" 
+                        data-bs-title="Profile">
                     <i class="fa-solid fa-user invert-in-dark"></i>
                 </button>
             </li>
@@ -85,7 +88,9 @@
         ?>
         
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i class="fa-solid fa-user me-2"></i>Edit Profile</a>
+            </li>
             <li><a class="dropdown-item" href="/settings"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
             <li><hr class="dropdown-divider"></li>
 
@@ -95,3 +100,6 @@
         </ul>
     </div>
 </div>
+
+<!-- Include the profile edit modal component -->
+<?php include __DIR__ . '/../components/edit-profile-modal.php'; ?>

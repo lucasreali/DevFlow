@@ -53,7 +53,8 @@
                     </ul>
                     <div class="tab-content" id="editMarkdownTabsContent-<?= $doc['id'] ?>">
                         <div class="tab-pane fade show active" id="edit-tab-pane-<?= $doc['id'] ?>" role="tabpanel" aria-labelledby="edit-tab-<?= $doc['id'] ?>">
-                            <div id="content-editable-<?= $doc['id'] ?>" class="form-control" contenteditable="true" style="min-height: 200px;"><?= htmlspecialchars($doc['content']) ?></div>
+                            <div id="content-editable-<?= $doc['id'] ?>" class="form-control" contenteditable="true" 
+                                 style="min-height: 200px; white-space: pre-wrap; overflow-y: auto;"><?= htmlspecialchars($doc['content']) ?></div>
                         </div>
                         <div class="tab-pane fade" id="preview-tab-pane-<?= $doc['id'] ?>" role="tabpanel" aria-labelledby="preview-tab-<?= $doc['id'] ?>">
                             <div id="markdown-preview-<?= $doc['id'] ?>" class="p-3 border bg-light" style="min-height: 200px; overflow-y: auto;"></div>

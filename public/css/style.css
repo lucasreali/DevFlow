@@ -22,7 +22,8 @@
     --orange-bg: #fff5e5;
 }
 
-.dropdown-toggle-no-caret::after {
+/* Remove caret from all Bootstrap dropdown toggles */
+.dropdown-toggle::after {
     display: none !important;
 }
 
@@ -86,9 +87,11 @@ button.menu-nav-item > i {
 
 .main-dashboard {
     display: flex;
+    flex-direction: column;
+
     gap: 30px;
 
-    padding: 100px 50px 0 50px;
+    padding: 60px 50px 0 50px;
 
     width: 100%;
 
@@ -147,4 +150,45 @@ button.menu-nav-item > i {
     border: none;
 
     background: #7676766d;
+}
+
+/* ...existing CSS... */
+
+/* Selectable label styles */
+.selectable-label {
+    display: inline-block;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+    margin: 0.25rem;
+}
+
+.selectable-label:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.selectable-label.selected {
+    border: 2px solid var(--bs-primary) !important;
+    box-shadow: 0 0 0 1px var(--bs-primary) !important;
+}
+
+/* Hide the actual checkbox but keep it accessible for form submission */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Label selector container */
+.label-selector {
+    position: relative;
+    display: inline-block;
 }

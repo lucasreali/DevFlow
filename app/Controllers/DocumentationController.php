@@ -9,6 +9,7 @@ use function Core\redirect;
 class DocumentationController {
     public static function index($data) {
         $projectId = $data['projectId'] ?? null;
+        $type = $_GET['type'] ?? null;
         $page = 'documentation';
         
         // Validate all required parameters
@@ -16,14 +17,20 @@ class DocumentationController {
             return redirect('/', ['error' => "Project ID is required", 'page' => $page]);
         }
 
-        $docs = Documentation::getAllByProjectId($projectId);
+        $docs = Documentation::getAllByProjectId($projectId, $type);
 
-        return view('documentation', ['projectId' => $projectId, 'docs' => $docs, 'page' => $page]);
+        return view('documentation', [
+            'projectId' => $projectId, 
+            'docs' => $docs, 
+            'page' => $page,
+            'selectedType' => $type
+        ]);
     }
 
     public static function store(array $data) {
         $title = $_POST["title"] ?? null;
         $content = $_POST["content"] ?? null;
+        $type = $_POST["type"] ?? 'Projeto';
         $projectId = $data["projectId"] ?? null;
         $page = 'documentation';
 
@@ -56,7 +63,7 @@ class DocumentationController {
             return redirect('/documentation/' . $projectId, ['error' => "User not authenticated", 'page' => $page]);
         }
 
-        $documentationId = Documentation::create($title, $content, $projectId, $userId);
+        $documentationId = Documentation::create($title, $content, $projectId, $userId, $type);
 
         if ($documentationId) {
             return redirect('/documentation/' . $projectId, ['success' => 'Document created successfully.', 'page' => $page]);
@@ -83,6 +90,7 @@ class DocumentationController {
         $projectId = $data['projectId'] ?? null;
         $title = $_POST["title"] ?? null;
         $content = $_POST["content"] ?? null;
+        $type = $_POST["type"] ?? 'Projeto';
         $page = 'documentation';
 
         // Validate all required parameters
@@ -129,7 +137,7 @@ class DocumentationController {
         }
 
         try {
-            Documentation::update($id, $title, $content);
+            Documentation::update($id, $title, $content, $type);
             return redirect('/documentation/' . $projectId, ['success' => 'Document updated successfully.', 'page' => $page]);
         } catch (\Exception $e) {
             return redirect('/documentation/' . $projectId, ['error' => "Failed to update document: " . $e->getMessage(), 'page' => $page]);

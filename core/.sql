@@ -43,6 +43,8 @@ CREATE TABLE projects (
     name VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
     description TEXT,
+    github_project VARCHAR(255),
+    github_project_owner VARCHAR(255),
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -75,7 +77,7 @@ CREATE TABLE tasks (
     expired_at DATETIME,
 
     position INT NOT NULL,
-    priority VARCHAR(20) DEFAULT 'Normal',
+    priority ENUM ('low', 'medium', 'high', 'urgent') NOT NULL DEFAULT 'low',
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -120,6 +122,7 @@ CREATE TABLE documentation(
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     content TEXT,
+    doc_type ENUM('project', 'meeting') DEFAULT 'project',
 
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ,

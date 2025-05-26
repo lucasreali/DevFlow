@@ -15,6 +15,7 @@ class TaskController
         $boardId = $data['board_id'] ?? null;
         $expiredAt = $data['expired_at'] ?? null;
         $priority = $data['priority'] ?? 'Normal';
+        $labels = $data['labels'] ?? [];
         
         // Validate all required parameters
         $errors = [];
@@ -58,6 +59,13 @@ class TaskController
         $projectId = $board['project_id'];
 
         if ($taskId) {
+            // Assign labels to the newly created task
+            if (!empty($labels) && is_array($labels)) {
+                foreach ($labels as $labelId) {
+                    Label::assignToTask($taskId, $labelId);
+                }
+            }
+            
             return redirect('/dashboard/' . $projectId, ['success' => 'Task created successfully!']);
         } else {
             return redirect('/dashboard/' . $projectId, ['error' => 'Error creating the task.']);
@@ -72,10 +80,24 @@ class TaskController
         $expiredAt = $data['expired_at'] ?? null;
         $priority = $data['priority'] ?? 'Normal';
         $projectId = $data['project_id'] ?? null;
+        $labels = $data['labels'] ?? [];
 
         // ...validações...
 
         Task::update($id, $title, $description, $expiredAt, $priority);
+        
+        // Update task labels
+        if ($id) {
+            // First remove all existing labels from this task
+            Label::removeAllFromTask($id);
+            
+            // Then add the selected labels
+            if (!empty($labels) && is_array($labels)) {
+                foreach ($labels as $labelId) {
+                    Label::assignToTask($id, $labelId);
+                }
+            }
+        }
 
         // Redireciona para o board do projeto após atualizar
         return redirect('/dashboard/' . $projectId, ['success' => 'Tarefa atualizada com sucesso!']);
@@ -117,5 +139,24 @@ class TaskController
             return redirect('/dashboard/' . $data['project_id'], ['success' => 'Prioridade atualizada!']);
         }
         return redirect('/dashboard', ['error' => 'ID da tarefa não informado']);
+    }
+
+    public static function moveBoard($data)
+    {
+        // $rawInput = file_get_contents('php://input');
+        // $input = json_decode($rawInput, true);
+        
+        $taskId = $data['task_id'] ?? null;
+        $boardId = $data['board_id'] ?? null;
+        
+
+        if ($taskId && $boardId) {
+            Task::updateBoard($taskId, $boardId);
+            http_response_code(200);
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Dados inválidos']);
+        }
     }
 }

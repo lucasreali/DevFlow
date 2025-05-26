@@ -18,45 +18,53 @@
                         <label for="editTaskDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="editTaskDescription" name="description" rows="3" placeholder="Describe the task in detail"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time</label>
-                        <input type="datetime-local" class="form-control" id="editTaskExpiredAt" name="expired_at" required>
+                    <div class="d-flex gap-2 w-100">
+                        <div class="mb-3 w-100">
+                            <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="editTaskExpiredAt" name="expired_at" required>
+                        </div>
+                        
+                        <!-- Add priority selection field -->
+                        <div class="mb-3 w-100">
+                            <label for="editTaskPriority" class="form-label">Priority</label>
+                            <select class="form-control" id="editTaskPriority" name="priority" required>
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Normal</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
                     </div>
                     
-                    <!-- Add priority selection field -->
-                    <div class="mb-3">
-                        <label for="editTaskPriority" class="form-label">Priority</label>
-                        <select class="form-control" id="editTaskPriority" name="priority" required>
-                            <option value="Baixa">Baixa</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Alta">Alta</option>
-                            <option value="Urgente">Urgente</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Add labels selection field -->
+                    <!-- Add labels selection field with clickable tags instead of checkboxes -->
                     <div class="mb-3">
                         <label class="form-label">Task Labels</label>
                         <div class="d-flex flex-wrap gap-2" id="editTaskLabelsContainer">
                             <?php foreach ($availableLabels ?? [] as $label): ?>
-                                <div class="form-check">
+                                <div class="label-selector">
+                                    <!-- Hidden checkbox -->
                                     <input 
-                                        class="form-check-input task-label-checkbox" 
+                                        class="form-check-input task-label-checkbox visually-hidden" 
                                         type="checkbox" 
                                         name="labels[]" 
                                         value="<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>" 
                                         id="label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
                                     >
-                                    <label 
-                                        class="form-check-label" 
-                                        for="label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                    <!-- Clickable label tag -->
+                                    <span 
+                                        class="badge selectable-label"
+                                        data-label-id="<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-checkbox-id="label-<?= htmlspecialchars($label['id'], ENT_QUOTES, 'UTF-8') ?>"
                                         style="background-color: var(--<?= htmlspecialchars($label['color'], ENT_QUOTES, 'UTF-8') ?>-bg); 
                                                color: var(--<?= htmlspecialchars($label['color'], ENT_QUOTES, 'UTF-8') ?>-text);
-                                               padding: 0.25rem 0.5rem;
-                                               border-radius: 0.25rem;"
+                                               padding: 0.5rem 0.75rem;
+                                               border-radius: 0.25rem;
+                                               cursor: pointer;
+                                               border: 2px solid transparent;
+                                               transition: all 0.2s ease;"
                                     >
                                         <?= htmlspecialchars($label['title'], ENT_QUOTES, 'UTF-8') ?>
-                                    </label>
+                                    </span>
                                 </div>
                             <?php endforeach; ?>
                         </div>

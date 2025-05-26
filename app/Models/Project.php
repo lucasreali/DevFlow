@@ -72,4 +72,46 @@ class Project
             'project_id' => $projectId,
         ]);
     }
+
+    public static function setGitHubProject($projectId, $githubProject, $githubOwner = null) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            UPDATE projects 
+            SET github_project = :github_project,
+                github_project_owner = :github_owner 
+            WHERE id = :project_id
+        ');
+
+        return $stmt->execute([
+            'project_id' => $projectId,
+            'github_project' => $githubProject,
+            'github_owner' => $githubOwner,
+        ]);
+    }
+
+    public static function getByGitHubProject($githubProject, $userId, $excludeProjectId = null) {
+        $db = Database::getInstance();
+        $sql = 'SELECT * FROM projects 
+                WHERE github_project = :github_project 
+                AND user_id = :user_id';
+        
+        if ($excludeProjectId !== null) {
+            $sql .= ' AND id != :exclude_project_id';
+        }
+        
+        $stmt = $db->prepare($sql);
+        
+        $params = [
+            'github_project' => $githubProject,
+            'user_id' => $userId
+        ];
+        
+        if ($excludeProjectId !== null) {
+            $params['exclude_project_id'] = $excludeProjectId;
+        }
+        
+        $stmt->execute($params);
+        return $stmt->fetch();
+    }
+
 }

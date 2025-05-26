@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Label;
 use App\Models\Project;
 use App\Models\Task;
+use App\Services\GitHubService;
 use function Core\redirect;
 use function Core\view;
 
@@ -30,13 +31,13 @@ class DashboardController
             session_start();
         }
         
-        $userId = $_SESSION['user']['id'] ?? null;
+        $user = $_SESSION['user'] ?? null;
         
-        if (!$userId) {
+        if (!$user['id']) {
             return redirect('/login', ['error' => 'User not logged in']);
         }
 
-        if ($project['user_id'] !== $userId) {
+        if ($project['user_id'] !== $user['id']) {
             return redirect('/', ['error' => 'You do not have access to this project']);
         }
         
@@ -49,7 +50,7 @@ class DashboardController
             $board['tasks'] = Task::getAllByBoardId($board['id']);
         }
 
-        $dataOtherProjects = Project::getAll($_SESSION['user']['id']);
+        $dataOtherProjects = Project::getAll($user['id']);
 
         $otherProjects = [];
         foreach ($dataOtherProjects as $dataProject) {
@@ -65,6 +66,16 @@ class DashboardController
             ]);
         }
 
+        if (!$project['github_project']) {
+            // $github_projects_create = GitHubService::getRepositories();
+            $github_projects = GitHubService::getParticipatingRepositories();
+
+            //$github_projects = array_merge($github_projects_create, $github_projects_participating);
+        } else {
+            $commits = GitHubService::getCommits($project['github_project'], $project['github_project_owner']);
+            $contributors = GitHubService::getContributors($project['github_project'], $project['github_project_owner']);
+        }
+
         return view('dashboard', [
             'project' => $project,
             'boards' => $boards,
@@ -72,6 +83,13 @@ class DashboardController
             'page' => 'boards',
             'labels' => $labels,
             'availableLabels' => $availableLabels,
+            'github_projects' => $github_projects ?? null,
+            'commits' => $commits ?? null,
+
+            'contributors' => $contributors ?? null,
+
+            'error' => $params['error'] ?? null,
+            'success' => $params['success'] ?? null,
         ]);
     }
 }

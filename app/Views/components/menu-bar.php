@@ -1,8 +1,7 @@
-<div class="w-auto vh-100 menu-bar shadow d-flex flex-column align-items-center px-2 pt-4" style="background-color: var(--light-gray)">
+<div class="w-auto vh-100 shadow d-flex flex-column align-items-center px-2 pt-4" style="background-color: var(--light-gray)">
     <div>
-        
         <a href="/">
-            <img src="/images/logo.svg" alt="DevFlow Logo" style="width: 50px; height: 40px;" />
+            <img src="/../images/logo.svg" alt="DevFlow Logo" style="width: 50px; height: 40px;" />
         </a>
         <ul class="d-flex flex-column align-items-center gap-4 p-0 mt-5">
             <li>
@@ -10,11 +9,7 @@
                     <i class="fa-brands fa-trello"></i>
                 </a>
             </li>
-            <li>
-                <button class="btn <?= $page === 'collaborators' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Collaborators">
-                    <i class="fa-solid fa-users"></i>
-                </button>
-            </li>
+
             <li>
                 <button class="btn <?= $page === 'settings' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Settings">
                     <i class="fa-solid fa-gear"></i>

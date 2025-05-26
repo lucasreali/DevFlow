@@ -5,13 +5,12 @@ use App\Controllers\Auth\CallbackController;
 use App\Controllers\BoardController;
 use App\Controllers\DocumentationController;
 use App\Controllers\FriendshipController;
+use App\Controllers\GitHubController;
 use App\Controllers\LabelController;
-use App\Controllers\MeetingController;
 use App\Controllers\Page\DashboardController;
 use App\Controllers\Page\HomeController;
 use App\Controllers\ProjectController;
 use App\Controllers\TaskController;
-use App\Controllers\TaskLabelsController;
 use App\Controllers\UserController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -51,11 +50,13 @@ Router::group(['middleware' => AuthMiddleware::class], function() {
     Router::post('/task/update', [TaskController::class, 'update']);
     Router::post('/task/delete', [TaskController::class, 'delete']);
     Router::post('/task/update-priority', [TaskController::class, 'updatePriority']);
+    Router::post('/task/move-board', [TaskController::class, 'moveBoard']);
 
     // Project Management
     Router::post('/project', [ProjectController::class, 'store']);
     Router::post('/project/update', [ProjectController::class, 'update']);
     Router::post('/project/delete', [ProjectController::class, 'delete']);
+    Router::post('project/set-github-project', [ProjectController::class, 'setGitHubProject']);
 
     // Label
     Router::post("/label/{projectId}", [LabelController::class, 'store']);

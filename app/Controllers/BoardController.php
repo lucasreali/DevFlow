@@ -51,8 +51,7 @@ class BoardController
             return redirect('/dashboard/' . $projectId, ['error' => 'Failed to create board']);
         }
 
-        header('Location: /dashboard/' . $projectId);
-        exit;
+        return redirect('/dashboard/' . $projectId, ['success' => 'Board created successfully']);
     }
 
     public function show() {
@@ -76,8 +75,8 @@ class BoardController
 
         return view('dashboard', ['boards' => $boards]);
     }
-
-        public function update($data) {
+    
+    public function update($data) {
         $id = $data['id'] ?? null;
         $title = $data['title'] ?? null;
         $color = $data['color'] ?? null;

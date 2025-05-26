@@ -143,20 +143,36 @@ class TaskController
 
     public static function moveBoard($data)
     {
-        // $rawInput = file_get_contents('php://input');
-        // $input = json_decode($rawInput, true);
-        
         $taskId = $data['task_id'] ?? null;
         $boardId = $data['board_id'] ?? null;
+        $position = $data['position'] ?? null;
         
-
-        if ($taskId && $boardId) {
-            Task::updateBoard($taskId, $boardId);
+        if ($taskId && $boardId && $position !== null) {
+            Task::updateBoardAndPosition($taskId, $boardId, $position);
             http_response_code(200);
             echo json_encode(['success' => true]);
         } else {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'Invalid data']);
         }
+    }
+    
+    public static function updatePositions($data)
+    {
+        $boardId = $data['board_id'] ?? null;
+        $taskPositions = $data['task_positions'] ?? null;
+        
+        if ($boardId && $taskPositions && is_array($taskPositions)) {
+            $result = Task::reorderTasks($boardId, $taskPositions);
+            
+            if ($result) {
+                http_response_code(200);
+                echo json_encode(['success' => true]);
+                return;
+            }
+        }
+        
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Invalid data']);
     }
 }

@@ -90,4 +90,48 @@ class Task
         $stmt = $db->prepare("DELETE FROM tasks WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
+    
+    // Atualiza a posição de uma tarefa
+    public static function updatePosition($taskId, $position) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("UPDATE tasks SET position = :position WHERE id = :id");
+        return $stmt->execute([
+            'position' => $position,
+            'id' => $taskId
+        ]);
+    }
+    
+    // Atualiza o board_id e a posição de uma tarefa
+    public static function updateBoardAndPosition($taskId, $boardId, $position) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("UPDATE tasks SET board_id = :board_id, position = :position WHERE id = :id");
+        return $stmt->execute([
+            'board_id' => $boardId,
+            'position' => $position,
+            'id' => $taskId
+        ]);
+    }
+    
+    // Reordena todas as tarefas de um quadro
+    public static function reorderTasks($boardId, $taskPositions) {
+        $db = Database::getInstance();
+        
+        try {
+            $db->beginTransaction();
+            
+            foreach ($taskPositions as $taskId => $position) {
+                $stmt = $db->prepare("UPDATE tasks SET position = :position WHERE id = :id AND board_id = :board_id");
+                $stmt->execute([
+                    'position' => $position,
+                    'id' => $taskId,
+                    'board_id' => $boardId
+                ]);
+            }
+            
+            return $db->commit();
+        } catch (\Exception $e) {
+            $db->rollBack();
+            return false;
+        }
+    }
 }

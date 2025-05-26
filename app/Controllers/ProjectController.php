@@ -154,4 +154,33 @@ class ProjectController
             return redirect('/dashboard/' . $projectId, ['error' => 'An error occurred while setting the GitHub project: ' . $e->getMessage()]);
         }
     }
+
+    public static function addGitHubParticipant($projectId, $username)
+    {
+        // Obter informações do projeto
+        $project = Project::getById($projectId);
+        
+        if (!$project || empty($project['github_project'])) {
+            return false;
+        }
+        
+        // Verificar se o usuário participa do repositório
+        $isParticipant = GitHubService::isUserRepositoryCollaborator(
+            $project['github_project'],
+            $username,
+            $project['github_project_owner']
+        );
+        
+        if ($isParticipant) {
+            // Buscar ID do usuário pelo nome de usuário do GitHub
+            $account = \App\Models\Account::findByUsername($username);
+            
+            if ($account) {
+                // Adicionar à tabela de participantes
+                return Project::addProjectMember($account['user_id'], $projectId);
+            }
+        }
+        
+        return false;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Page;
 
+use App\Controllers\ProjectController;
 use App\Models\Board;
 use App\Models\Label;
 use App\Models\Project;
@@ -48,7 +49,7 @@ class DashboardController
             
             // Se não for membro, verificar se participa no GitHub e adicionar
             if (!$isMember && isset($user['username']) && !empty($user['access_token']) && !empty($project['github_project'])) {
-                $addedAsMember = Project::addGitHubParticipant($projectId, $user['username']);
+                $addedAsMember = ProjectController::addGitHubParticipant($projectId, $user['username']);
                 $isMember = $addedAsMember;
             }
         }

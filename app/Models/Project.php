@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\GitHubService;
 use Core\Database;
 
 class Project
@@ -114,12 +115,6 @@ class Project
         return $stmt->fetch();
     }
 
-    /**
-     * Busca projetos por nome de repositório GitHub
-     * 
-     * @param string $githubProject Nome do repositório GitHub
-     * @return array Projetos encontrados
-     */
     public static function findByGitHubProject($githubProject) {
         $db = Database::getInstance();
         $stmt = $db->prepare('
@@ -134,13 +129,6 @@ class Project
         return $stmt->fetchAll();
     }
 
-    /**
-     * Verifica se um usuário é membro do projeto
-     * 
-     * @param int $userId ID do usuário
-     * @param int $projectId ID do projeto
-     * @return bool True se for membro, false caso contrário
-     */
     public static function isProjectMember($userId, $projectId)
     {
         $db = Database::getInstance();
@@ -156,49 +144,11 @@ class Project
         
         return (bool) $stmt->fetch();
     }
-    
 
-    public static function addGitHubParticipant($projectId, $username)
-    {
-        // Obter informações do projeto
-        $project = self::getById($projectId);
-        
-        if (!$project || empty($project['github_project'])) {
-            return false;
-        }
-        
-        // Verificar se o usuário participa do repositório
-        $isParticipant = \App\Services\GitHubService::isUserRepositoryCollaborator(
-            $project['github_project'],
-            $username,
-            $project['github_project_owner']
-        );
-        
-        if ($isParticipant) {
-            // Buscar ID do usuário pelo nome de usuário do GitHub
-            $account = \App\Models\Account::findByUsername($username);
-            
-            if ($account) {
-                // Adicionar à tabela de participantes
-                return self::addProjectMember($account['user_id'], $projectId);
-            }
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Adiciona um usuário como membro de um projeto
-     * 
-     * @param int $userId ID do usuário
-     * @param int $projectId ID do projeto
-     * @return bool Resultado da operação
-     */
     public static function addProjectMember($userId, $projectId)
     {
         $db = Database::getInstance();
         
-        // Verificar se já é membro
         $checkStmt = $db->prepare('
             SELECT 1 FROM project_members 
             WHERE user_id = :user_id AND project_id = :project_id
@@ -210,7 +160,6 @@ class Project
         ]);
         
         if ($checkStmt->fetch()) {
-            // Já é membro
             return true;
         }
         
@@ -226,12 +175,6 @@ class Project
         ]);
     }
     
-    /**
-     * Obtém todos os membros de um projeto
-     * 
-     * @param int $projectId ID do projeto
-     * @return array Lista de membros
-     */
     public static function getProjectMembers($projectId)
     {
         $db = Database::getInstance();

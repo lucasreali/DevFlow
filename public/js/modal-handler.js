@@ -144,4 +144,13 @@ function setupSelectableLabels() {
             }
         });
     });
+
+    $(document).ready(function () {
+        $('.btn-edit-board').on('click', function () {
+            $('#editBoardId').val($(this).data('id'));
+            $('#editBoardTitle').val($(this).data('title'));
+            $('#editBoardColor').val($(this).data('color')).change();
+            $('#editBoardModal').modal('show');
+        });
+    });
 }

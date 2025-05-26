@@ -40,6 +40,10 @@
     <?php include __DIR__ . '/components/dashboard/board-modal.php'; ?>
     <?php include __DIR__ . '/components/dashboard/edit-task-modal.php'; ?>
     <?php include __DIR__ . '/components/dashboard/label-modals.php'; ?>
+<<<<<<< HEAD
+=======
+    <?php include __DIR__ . '/components/dashboard/edit-board-modal.php'; ?>
+>>>>>>> Alyson
 
     <?php include __DIR__ . "/components/error-modal.php"?>
     <?php include __DIR__ . "/components/success-modal.php"?>

@@ -14,6 +14,18 @@
                     <span class="ms-2" style="color: var(--<?= htmlspecialchars($board['color']) ?>-text);">
                         <?= htmlspecialchars($board['title'] ?? 'Untitled Board', ENT_QUOTES, 'UTF-8') ?>
                     </span>
+<<<<<<< HEAD
+=======
+                    <button class="btn btn-sm btn-outline-secondary ms-auto btn-edit-board"
+                        data-id="<?= htmlspecialchars($board['id'], ENT_QUOTES, 'UTF-8') ?>"
+                        data-title="<?= htmlspecialchars($board['title'], ENT_QUOTES, 'UTF-8') ?>"
+                        data-color="<?= htmlspecialchars($board['color'], ENT_QUOTES, 'UTF-8') ?>"
+                        style="float: right; margin-left: 8px;"
+                        data-bs-toggle="modal" data-bs-target="#editBoardModal"
+                        title="Edit Board">
+                        <i class="fa fa-pen"></i>
+                    </button>
+>>>>>>> Alyson
                 </h4>
     
                 <div class="d-flex flex-column gap-2 mt-5 tasks-dropzone"

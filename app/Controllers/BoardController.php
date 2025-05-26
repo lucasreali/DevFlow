@@ -75,4 +75,26 @@ class BoardController
 
         return view('dashboard', ['boards' => $boards]);
     }
+    
+    public function update($data) {
+        $id = $data['id'] ?? null;
+        $title = $data['title'] ?? null;
+        $color = $data['color'] ?? null;
+
+        if (empty($id) || empty($title) || empty($color)) {
+            return redirect('/', ['error' => 'All fields are required']);
+        }
+
+        $board = \App\Models\Board::getById($id);
+        if (!$board) {
+            return redirect('/', ['error' => 'Board not found']);
+        }
+
+        \App\Models\Board::update($id, $title, $color);
+
+        // Redireciona de volta para o dashboard do projeto
+        $projectId = $board['project_id'];
+        header('Location: /dashboard/' . $projectId);
+        exit;
+    }
 }

@@ -33,11 +33,11 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" value="<?= $doc['id'] ?>">
                     <div class="form-group mb-3">
-                        <label for="edit-title-<?= $doc['id'] ?>">Title:</label>
+                        <label for="edit-title-<?= $doc['id'] ?>">Title: <span class="text-danger">*</span></label>
                         <input type="text" name="title" id="edit-title-<?= $doc['id'] ?>" class="form-control" value="<?= htmlspecialchars($doc['title']) ?>" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="edit-type-<?= $doc['id'] ?>">Type:</label>
+                        <label for="edit-type-<?= $doc['id'] ?>">Type: <span class="text-danger">*</span></label>
                         <select name="type" id="edit-type-<?= $doc['id'] ?>" class="form-select">
                             <option value="project" <?= $doc['doc_type'] === 'project' ? 'selected' : '' ?>>Project</option>
                             <option value="meeting" <?= $doc['doc_type'] === 'meeting' ? 'selected' : '' ?>>Meeting</option>

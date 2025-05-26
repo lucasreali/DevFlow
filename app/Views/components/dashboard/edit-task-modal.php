@@ -11,7 +11,7 @@
                     <input type="hidden" name="id" id="editTaskId">
                     <input type="hidden" name="project_id" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
                     <div class="mb-3">
-                        <label for="editTaskTitle" class="form-label">Task Title</label>
+                        <label for="editTaskTitle" class="form-label">Task Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="editTaskTitle" name="title" required placeholder="Enter the task title">
                     </div>
                     <div class="mb-3">
@@ -20,13 +20,13 @@
                     </div>
                     <div class="d-flex gap-2 w-100">
                         <div class="mb-3 w-100">
-                            <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time</label>
+                            <label for="editTaskExpiredAt" class="form-label">Expiration Date & Time <span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control" id="editTaskExpiredAt" name="expired_at" required>
                         </div>
                         
                         <!-- Add priority selection field -->
                         <div class="mb-3 w-100">
-                            <label for="editTaskPriority" class="form-label">Priority</label>
+                            <label for="editTaskPriority" class="form-label">Priority <span class="text-danger">*</span></label>
                             <select class="form-control" id="editTaskPriority" name="priority" required>
                                 <option value="low">Low</option>
                                 <option value="medium" selected>Normal</option>

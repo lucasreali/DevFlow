@@ -19,14 +19,14 @@
             <form action="/login" method="post">
 
             <div class="mb-1">
-                    <label for="email" class="form-label">Email address:</label>
+                    <label for="email" class="form-label">Email address: <span class="text-danger">*</span></label></label>
                     <input type="text" class="form-control" id="email" name="email" placeholder="mail@example.com" style="<?php if (isset($errors['error_email'])) {echo 'border-color: red;';}?>">
                     <div style="color: red;">
                         <?php if (isset($errors['error_email'])) {echo $errors['error_email'];} ?>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="form-label">Password:</label>
+                    <label for="password" class="form-label">Password: <span class="text-danger">*</span></label></label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="*********" style="<?php if (isset($errors['error_password'])) {echo 'border-color: red;';}?>">
                     <div style="color: red;">
                         <?php if (isset($errors['error_password'])) {echo $errors['error_password'];} ?>

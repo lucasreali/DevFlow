@@ -9,14 +9,14 @@
                 <form id="editProfileForm" action="/user/update" method="POST">
                     <!-- Form fields for editing profile -->
                     <div class="mb-3">
-                        <label for="editName" class="form-label">Name</label>
+                        <label for="editName" class="form-label">Name <span class="text-danger">*</span></label></label>
                         <input type="text" class="form-control" id="editName" name="name" 
                                value="<?= htmlspecialchars($user['name'] ?? '') ?>" required>
                         <div class="invalid-feedback" id="nameError"></div>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="editEmail" class="form-label">Email</label>
+                        <label for="editEmail" class="form-label">Email <span class="text-danger">*</span></label></label>
                         <input type="email" class="form-control" id="editEmail" name="email" 
                                value="<?= htmlspecialchars($user['email'] ?? '') ?>" required>
                         <div class="invalid-feedback" id="emailError"></div>

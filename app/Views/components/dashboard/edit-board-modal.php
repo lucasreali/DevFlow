@@ -9,7 +9,7 @@
                 <form id="editBoardForm" action="/board/update" method="POST">
                     <input type="hidden" name="id" id="editBoardId">
                     <div class="mb-3">
-                        <label for="editBoardTitle" class="form-label">Board Name</label>
+                        <label for="editBoardTitle" class="form-label">Board Name <span class="text-danger">*</span></label></label>
                         <input type="text" class="form-control" id="editBoardTitle" name="title" required>
                     </div>
                     <div class="mb-3">

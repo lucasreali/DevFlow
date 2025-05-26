@@ -154,4 +154,23 @@ class GitHubService
         }
         return null;
     }
+    
+    public static function isUserRepositoryCollaborator($repo, $username, $owner = null)
+    {
+        $repoOwner = $owner ?? self::getUserId();
+        
+        try {
+            $result = self::request("repos/" . $repoOwner . "/$repo/collaborators/$username");
+            
+            return !empty($result);
+        } catch (\Exception $e) {
+            error_log('Error checking collaborator status: ' . $e->getMessage());
+            return false;
+        }
+    }
+    public static function getCollaborators($repo, $owner = null)
+    {
+        $repoOwner = $owner ?? self::getUserId();
+        return self::request("repos/" . $repoOwner . "/$repo/collaborators", ['affiliation' => 'all']);
+    }
 }

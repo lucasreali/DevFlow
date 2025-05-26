@@ -11,7 +11,7 @@
                     <input type="hidden" name="projectId" value="<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>">
                     <div class="mb-3 d-flex align-items-end gap-3">
                         <div class="flex-grow-1">
-                            <label for="boardName" class="form-label">Board Name</label>
+                            <label for="boardName" class="form-label">Board Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="boardName" name="title" required placeholder="Enter the board name">
                         </div>
                         <div class="d-flex align-items-center h-100">

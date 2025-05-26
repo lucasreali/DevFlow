@@ -8,11 +8,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="title" class="form-label">Title:</label>
+                        <label for="title" class="form-label">Title: <span class="text-danger">*</span></label>
                         <input type="text" name="title" id="title" placeholder="Enter the document title" required class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="type" class="form-label">Type:</label>
+                        <label for="type" class="form-label">Type: <span class="text-danger">*</span></label>
                         <select name="type" id="type" class="form-select">
                             <option value="project">Project</option>
                             <option value="meeting">Meeting</option>

@@ -9,11 +9,11 @@
             <div class="modal-body">
                 <form id="editLabelForm" action="/label/update/<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>" method="POST">
                     <div class="mb-3">
-                        <label for="editLabelTitle" class="form-label">Label Title</label>
+                        <label for="editLabelTitle" class="form-label">Label Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="editLabelTitle" name="title" required placeholder="Enter the label title">
                     </div>
                     <div class="mb-3">
-                        <label for="editLabelColor" class="form-label">Label Color</label>
+                        <label for="editLabelColor" class="form-label">Label Color <span class="text-danger">*</span></label>
                         <select class="form-select" id="editLabelColor" name="color" required>
                             <option value="red" style="background-color: #ffcccc;">Red</option>
                             <option value="blue" style="background-color: #cce5ff;">Blue</option>
@@ -43,11 +43,11 @@
             <div class="modal-body">
                 <form id="addLabelForm" action="/label/<?= htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8') ?>" method="POST">
                     <div class="mb-3">
-                        <label for="labelTitle" class="form-label">Label Title</label>
+                        <label for="labelTitle" class="form-label">Label Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="labelTitle" name="title" required placeholder="Enter the label title">
                     </div>
                     <div class="mb-3">
-                        <label for="labelColor" class="form-label">Label Color</label>
+                        <label for="labelColor" class="form-label">Label Color <span class="text-danger">*</span></label>
                         <select class="form-select" id="labelColor" name="color" required>
                             <option value="red" style="background-color: #ffcccc;">Red</option>
                             <option value="blue" style="background-color: #cce5ff;">Blue</option>

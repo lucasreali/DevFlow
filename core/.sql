@@ -129,6 +129,16 @@ CREATE TABLE documentation(
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
+CREATE TABLE project_members (
+    user_id INT NOT NULL,
+    project_id INT NOT NULL,
+
+    PRIMARY KEY (user_id, project_id),
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+);
+
 
 CREATE OR REPLACE VIEW friends_view AS
 SELECT

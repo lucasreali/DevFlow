@@ -29,6 +29,7 @@
 
             <!-- Boards -->
             <?php include __DIR__ . '/components/dashboard/boards.php'; ?>
+            
         </main>
 
         <!-- Git logs -->
@@ -43,8 +44,6 @@
 
     <?php include __DIR__ . "/components/error-modal.php"?>
     <?php include __DIR__ . "/components/success-modal.php"?>
-
-
 </div>
 
 <!-- Include the modal handler script -->

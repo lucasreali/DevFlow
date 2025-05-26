@@ -10,7 +10,7 @@
                 <form action="/project/update" method="POST">
                     <input type="hidden" name="projectId" value="<?= $project['id'] ?>">
                     <div class="mb-3">
-                        <label for="editProjectName-<?= $project['id'] ?>" class="form-label">Project Name</label>
+                        <label for="editProjectName-<?= $project['id'] ?>" class="form-label">Project Name <span class="text-danger">*</span></label>
                         <input 
                             type="text" 
                             class="form-control" 
@@ -21,7 +21,7 @@
                             placeholder="Enter project name"
                         >
 
-                        <label for="editProjectDescription-<?= $project['id'] ?>" class="form-label">Project Description</label>
+                        <label for="editProjectDescription-<?= $project['id'] ?>" class="form-label">Project Description <span class="text-danger">*</span></label>
                         <textarea 
                             class="form-control" 
                             id="editProjectDescription-<?= $project['id'] ?>" 

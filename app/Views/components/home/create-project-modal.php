@@ -8,10 +8,10 @@
             <div class="modal-body">
                 <form action="/project" method="POST" id="createProjectForm">
                     <div class="mb-3">
-                        <label for="projectName" class="form-label">Project Name</label>
+                        <label for="projectName" class="form-label">Project Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="projectName" name="name" required placeholder="Enter project name">
 
-                        <label for="projectDescription" class="form-label mt-3">Project Description</label>
+                        <label for="projectDescription" class="form-label mt-3">Project Description <span class="text-danger">*</span></label>
                         <textarea class="form-control" id="projectDescription" name="description" rows="3" required placeholder="Describe your project"></textarea>
                     </div>
                     <div class="d-flex justify-content-between">

@@ -36,46 +36,12 @@
                     <i class="fa-brands fa-trello invert-in-dark"></i>
                 </a>
             </li>
-            <!-- Item de Colaboradores -->
-            <li>
-                <button class="btn <?= $page === 'collaborators' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Collaborators">
-                    <i class="fa-solid fa-users invert-in-dark"></i>
-                </button>
-            </li>
-            <!-- Item de Configurações -->
-            <li>
-                <button class="btn <?= $page === 'settings' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Settings">
-                    <i class="fa-solid fa-gear invert-in-dark"></i>
-                </button>
-            </li>
-            <!-- Item de Notificações -->
-            <li>
-                <button class="btn <?= $page === 'notifications' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Notifications">
-                    <i class="fa-solid fa-bell invert-in-dark"></i>
-                </button>
-            </li>
-            <!-- Item de Perfil -->
-            <li>
-                <button class="btn <?= $page === 'profile' ? 'btn-secondary' : '' ?> menu-nav-item" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#editProfileModal" 
-                        data-bs-title="Profile">
-                    <i class="fa-solid fa-user invert-in-dark"></i>
-                </button>
-            </li>
             <!-- Item de Documentação -->
             <li>
                 <a href="/documentation/<?= $project["id"]?>" class="btn <?= $page === 'documentation' ? 'btn-secondary' : '' ?> menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Documentation">
                     <i class="fa-solid fa-book invert-in-dark"></i>
                 </a>
             </li>
-            <!-- Botão de alternar tema (claro/escuro) -->
-            <!-- <li>
-                <button id="theme-toggle" class="theme-toggle menu-nav-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Toggle dark mode">
-                    <i class="fa-solid fa-moon dark-icon"></i>
-                    <i class="fa-solid fa-sun light-icon" style="display: none;"></i>
-                </button>
-            </li> -->
         </ul>
     </div>
 

@@ -10,7 +10,7 @@
                 <form id="taskForm" action="/task" method="POST">
                     <input type="hidden" name="board_id" id="modalBoardId">
                     <div class="mb-3">
-                        <label for="taskTitle" class="form-label">Task Title</label>
+                        <label for="taskTitle" class="form-label">Task Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="taskTitle" name="title" required placeholder="Enter the task title">
                     </div>
                     <div class="mb-3">
@@ -19,12 +19,12 @@
                     </div>
                     <div class="d-flex gap-2 w-100">
                         <div class="mb-3 w-100">
-                            <label for="taskExpiredAt" class="form-label">Expiration Date & Time</label>
+                            <label for="taskExpiredAt" class="form-label">Expiration Date & Time <span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control" id="taskExpiredAt" name="expired_at" required>
                         </div>
                         
                         <div class="mb-3 w-100">
-                            <label for="taskPriority" class="form-label">Priority</label>
+                            <label for="taskPriority" class="form-label">Priority <span class="text-danger">*</span></label>
                             <select class="form-control" id="taskPriority" name="priority" required>
                                 <option value="low">low</option>
                                 <option value="medium" selected>medium</option>

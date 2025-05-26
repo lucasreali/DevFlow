@@ -30,8 +30,10 @@
                                      class="rounded-circle me-2"
                                      width="30" height="30">
                             <?php endif; ?>
-                            <strong>Autor:</strong>
+                            <span>
+                            <strong>Autor: </strong>
                             <?= htmlspecialchars($commit['commit']['author']['name']) ?>
+                            </span>
                         </div>
                         <div class="mb-2">
                             <strong>Data:</strong>

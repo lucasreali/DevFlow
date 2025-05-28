@@ -30,7 +30,7 @@
         <!-- Project Modals (Edit/Delete) -->
         <?php if (isset($projects) && count($projects) > 0) : ?>
             <?php foreach ($projects as $project) : ?>
-                <?php include __DIR__ . '/components/home/project-modals.php'; ?>
+                <?php include __DIR__ . '/components/home/edit-project-modal.php'; ?>
             <?php endforeach; ?>
         <?php endif; ?>
 

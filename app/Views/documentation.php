@@ -33,7 +33,7 @@
                             <?php foreach ($docs as $doc): ?>
                                 <?php 
                                     include __DIR__ . '/components/documentation/document-card.php';
-                                    include __DIR__ . '/components/documentation/document-modals.php';
+                                    include __DIR__ . '/components/documentation/document-modal.php';
                                 ?>
                             <?php endforeach; ?>
                         </div>

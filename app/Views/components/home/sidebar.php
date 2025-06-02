@@ -7,14 +7,7 @@
                 <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
             </form>
             
-                <ul class="nav nav-pills flex-column">
-            
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="openFriendsModal">
-                            <i class="fas fa-user-friends"></i> Friends
-                        </a>
-                    </li>
-                </ul>
+                
             </div>
             <div class="dropup">
                 <button class="btn btn-light d-flex align-items-center gap-2 p-2 rounded dropdown-toggle dropdown-toggle-no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; background-color: #f2f2f2;">
@@ -59,7 +52,6 @@
     </div>
 </div>
 
-<?php include_once __DIR__ . '/friends/friends-modal.php'; ?>
 <?php 
 // Debug info to verify the path is correct
 $modalPath = __DIR__ . '/../edit-profile-modal.php';

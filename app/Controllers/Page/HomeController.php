@@ -65,40 +65,12 @@ class HomeController
             }
         }
 
-        $friendsRelenshionship = Friendship::getFriends($user['id']);
 
-        $friends = [];
-
-        foreach ($friendsRelenshionship as &$friend) {
-            if ($friend['status'] === "rejected") {
-                continue;
-            }
-
-            if ($friend['user_id'] == $user['id']) {
-                $friends[] = [
-                    'id' => $friend['friend_id'],
-                    'name' => $friend['friend_name'],
-                    'username' => $friend['friend_username'],
-                    'avatar_url' => $friend['friend_avatar'],
-                    'status' => $friend['status'],
-                    'invited' => false
-                ];
-            } else {
-                $friends[] = [
-                    'id' => $friend['user_id'],
-                    'name' => $friend['user_name'],
-                    'username' => $friend['user_username'],
-                    'avatar_url' => $user['avatar'],
-                    'status' => $friend['status'],
-                    'invited' => true
-                ];
-            }
-        }
+        
 
         return view('home', [
             'user' => $user,
             'projects' => $projects,
-            'friends' => $friends,
             'error' => $error,
             'success' => $success,
         ]);
